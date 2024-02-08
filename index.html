@@ -174,6 +174,148 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://example.com/2024/02/08/Raft/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CaesarCaser">
+      <meta itemprop="description" content="Personal Blog, Computer Science, SDN, Distributed, Travel Notes">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/02/08/Raft/" class="post-title-link" itemprop="url">Raft</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-02-08 17:43:59 / 修改时间：17:56:46" itemprop="dateCreated datePublished" datetime="2024-02-08T17:43:59+08:00">2024-02-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/literatureNotes/" itemprop="url" rel="index"><span itemprop="name">literatureNotes</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="名词对照"><a href="#名词对照" class="headerlink" title="名词对照"></a>名词对照</h3><table>
+<thead>
+<tr>
+<th>Log entries</th>
+<th>log index</th>
+<th>term</th>
+<th>commit index</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>日志条目</td>
+<td>日志编号</td>
+<td>任期号，每一次重新选举都会进入一个新的term</td>
+<td>提交编号</td>
+</tr>
+</tbody></table>
+<h3 id="Raft状态机"><a href="#Raft状态机" class="headerlink" title="Raft状态机"></a>Raft状态机</h3><table>
+<thead>
+<tr>
+<th>Acknowledge 确认</th>
+<th>Commit 提交</th>
+<th>Apply 确认</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Leader收到客户端请求后，将请求写入日志中，化为一块日志条目，随后向各Follower发起复制请求，直到follower返回确认信号。当收到半数以上的成功复制确认信号，进入下一阶段。在Follower视角中，当收到Leader发送的复制请求，就将该日志条目增加到自己的日志中，并返回确认请求。</td>
+<td>当Leader收到半数以上的成功复制确认信号，则将该日志条目提交Commit，并向各follower发送提交信号。当CommitIndex大于最新的Apply日志条目的CommitIndex时，将当前日志条目Apply到状态机。</td>
+<td>当日志条目被Apply到状态机时，可以使用快照技术等记录一个checkpoint，代表当前被Apply的日志条目之前的所有日志条目都已被持久化。</td>
+</tr>
+</tbody></table>
+<img align="center" src="/2024/02/08/Raft/logEntries.png" height="100px" width="500px" alt>
+
+<h2 id="日志同步"><a href="#日志同步" class="headerlink" title="日志同步"></a>日志同步</h2><p> Leader选出后，就开始接收客户端的请求。Leader把请求作为日志条目（Log entries）加入到它的日志中，然后并行的向其他服务器发起 AppendEntries RPC （RPC细节参见八、Raft算法总结）复制日志条目。当这条日志被复制到大多数服务器上，Leader将这条日志应用到它的状态机并向客户端返回执行结果。</p>
+<img align="center" src="/2024/02/08/Raft/Synchronization.png" height="350px" width="500px" alt>
+
+
+<img align="center" src="/2024/02/08/Raft/log.png" height="350px" width="500px" alt>
+
+<p>日志由有序编号（log index）的日志条目组成。每个日志条目包含它被创建时的任期号（term），和用于状态机执行的命令。如果一个日志条目被复制到大多数服务器上，就被认为可以提交（commit）了。</p>
+<p>Raft日志同步保证如下两点：</p>
+<ul>
+<li>如果不同日志中的两个条目有着相同的索引和任期号，则它们所存储的命令是相同的。</li>
+<li>如果不同日志中的两个条目有着相同的索引和任期号，则它们之前的所有条目都是完全一样的。</li>
+</ul>
+<p>第一条特性源于Leader在一个term内在给定的一个日志索引最多创建一条日志条目，同时该条目在日志中的位置也从来不会改变。</p>
+<p>第二条特性源于 AppendEntries 的一个简单的一致性检查。当发送一个 AppendEntries RPC 时，Leader会把新日志条目紧接着之前的条目的log index和term都包含在里面。如果Follower没有在它的日志中找到log index和term都相同的日志，它就会拒绝新的日志条目。(相当于leader在发送增加条目请求的时候，会把自己新增的日志条目之前的日志条目的日志索引和任期都带上，如果Follower没有在自己的日志中找到索引和任期都对应的上的日志条目，根据第一条特性，它与leader存在着不同的日志条目，这就可能存在着该follower存在落后日志或者旧Leader可能没有完全复制完日志中的所有条目的情况)。</p>
+<p>一般情况下，Leader和Followers的日志保持一致，因此 AppendEntries 一致性检查通常不会失败。然而，Leader崩溃可能会导致日志不一致：旧的Leader可能没有完全复制完日志中的所有条目。</p>
+<img align="center" src="/2024/02/08/Raft/Inconsistency.png" height="350px" width="500px" alt>
+
+<p>上图阐述了一些Followers可能和新的Leader日志不同的情况。一个Follower可能会丢失掉Leader上的一些条目，也有可能包含一些Leader没有的条目，也有可能两者都会发生。丢失的或者多出来的条目可能会持续多个任期。Leader通过强制Followers复制它的日志来处理日志的不一致，Followers上的不一致的日志会被Leader的日志覆盖。</p>
+<p>Leader为了使Followers的日志同自己的一致，Leader需要找到Followers同它的日志一致的地方，然后覆盖Followers在该位置之后的条目。Leader会从后往前试，每次AppendEntries失败后尝试前一个日志条目，直到成功找到每个Follower的日志一致位点，然后向后逐条覆盖Followers在该位置之后的条目。</p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><img align="center" src="/2024/02/08/Raft/Safty.png" height="500px" width="500px" alt>
+
+
+<ul>
+<li>在阶段a，term为2，S1是Leader，且S1写入日志（term, index）为(2, 2)，并且日志被同步写入了S2；</li>
+<li>在阶段b，S1离线，触发一次新的选主，此时S5被选为新的Leader，此时系统term为3，且写入了日志（term, index）为（3，2）;</li>
+<li>S5尚未将日志推送到Followers就离线了，进而触发了一次新的选主，而之前离线的S1经过重新上线后被选中变成Leader，此时系统term为4，此时S1会将自己的日志同步到Followers，按照上图就是将日志（2，2）同步到了S3，而此时由于该日志已经被同步到了多数节点（S1, S2, S3），因此，此时日志（2，2）被提交；</li>
+<li>在阶段d，S1又下线了，触发一次选主，而S5有可能被选为新的Leader（这是因为S5可以满足作为主的一切条件：1. term &#x3D; 5 &gt; 4，2. 最新的日志为（3，2），比大多数节点（如S2&#x2F;S3&#x2F;S4的日志都新），然后S5会将自己的日志更新到Followers，于是S2、S3中已经被提交的日志（2，2）被截断了。</li>
+<li>增加上述限制后，即使日志（2，2）已经被大多数节点（S1、S2、S3）确认了，但是它不能被提交，因为它是来自之前term（2）的日志，直到S1在当前term（4）产生的日志（4， 4）被大多数Followers确认，S1方可提交日志（4，4）这条日志，当然，根据Raft定义，（4，4）之前的所有日志也会被提交。此时即使S1再下线，重新选主时S5不可能成为Leader，因为它没有包含大多数节点已经拥有的日志（4，4）。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://example.com/2024/02/08/PolarFS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -199,7 +341,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-02-08 15:49:10 / 修改时间：17:38:27" itemprop="dateCreated datePublished" datetime="2024-02-08T15:49:10+08:00">2024-02-08</time>
+              <time title="创建时间：2024-02-08 15:49:10 / 修改时间：17:45:07" itemprop="dateCreated datePublished" datetime="2024-02-08T15:49:10+08:00">2024-02-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -495,7 +637,7 @@ streaming-catch-up(全量同步)：由于比leader检查点还早的日志条目
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -508,7 +650,7 @@ streaming-catch-up(全量同步)：由于比leader检查点还早的日志条目
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -565,12 +707,12 @@ streaming-catch-up(全量同步)：由于比leader检查点还早的日志条目
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">11k</span>
+    <span title="站点总字数">14k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">10 分钟</span>
+    <span title="站点阅读时长">13 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
