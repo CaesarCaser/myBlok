@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://wushangyang.cn/myPartner/index.html</loc>
+    <loc>https://wushangyang.cn/about/index.html</loc>
     
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://wushangyang.cn/about/index.html</loc>
+    <loc>https://wushangyang.cn/myPartner/index.html</loc>
     
     <lastmod>2024-12-14</lastmod>
     
@@ -139,7 +139,7 @@
 
   <url>
     <loc>https://wushangyang.cn/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -147,42 +147,42 @@
   
   <url>
     <loc>https://wushangyang.cn/tags/Parallel-Raft/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wushangyang.cn/tags/Distributed-consistency/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wushangyang.cn/tags/VLDB-2018/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wushangyang.cn/tags/Raft/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wushangyang.cn/tags/USENIX-2014/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wushangyang.cn/tags/travelNotes/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -191,14 +191,14 @@
   
   <url>
     <loc>https://wushangyang.cn/categories/literatureNotes/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://wushangyang.cn/categories/travelNotes/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-01-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
