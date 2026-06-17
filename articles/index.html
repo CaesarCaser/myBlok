@@ -189,6 +189,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CNc,default">
+    <link itemprop="mainEntityOfPage" href="https://wushangyang.cn/2026/06/17/coding-tips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CaesarCaser">
+      <meta itemprop="description" content="Personal Blog, Computer Science, SDN, Distributed, Travel Notes">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2026/06/17/coding-tips/" class="post-title-link" itemprop="url">编码Tips</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-06-17 16:13:00 / Modified: 16:13:35" itemprop="dateCreated datePublished" datetime="2026-06-17T16:13:00+08:00">2026-06-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/coding/" itemprop="url" rel="index"><span itemprop="name">coding</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>262</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>1 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>由于项目工程需要，有一部分的功能是由C++开发的，然而工程主体是JAVA开发的，在网上浏览了一些通过JAVA的JNA等工具来调用C++，感觉比较麻烦，且项目时间较紧，所以想通过命令行来执行C++可执行文件(.exe)，而通过JAVA来执行命令行命令。以下是C++可执行文件的产生过程：</p>
+<ol>
+<li><p>首先设置解决方案配置为Release，看电脑配置选择x64或x32，笔者使用的是64位操作系统</p>
+  <img src="/2026/06/17/coding-tips/C-plus-1.png" alt>
+</li>
+<li><p>修改项目运行库为多线程(&#x2F;MT)</p>
+</li>
+</ol>
+  <img src="/2026/06/17/coding-tips/C-plus-2.png" alt>
+
+<ol start="3">
+<li>重新生成解决方案</li>
+</ol>
+  <img src="/2026/06/17/coding-tips/C-plus-3.png" alt>
+
+<p>生成的.exe文件一般在(工程路径&#x2F;x64&#x2F;Release)路径下。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CNc,default">
     <link itemprop="mainEntityOfPage" href="https://wushangyang.cn/2024/05/16/fanjingshanTravelNote/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -796,20 +893,20 @@ streaming-catch-up(全量同步)：由于比leader检查点还早的日志条目
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -889,7 +986,7 @@ streaming-catch-up(全量同步)：由于比leader检查点还早的日志条目
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">14 mins.</span>
+    <span title="Reading time total">15 mins.</span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
