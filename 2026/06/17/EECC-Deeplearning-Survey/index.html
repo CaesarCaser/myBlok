@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en,zh-CNc,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wushangyang.cn","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="New TermLifelong Learning 终身学习(Continual Learning 持续学习、Incremental Learning 增量学习)终身学习 是机器学习的一个范式，它旨在模仿人类的学习方式：一个智能系统能够持续地、增量地从一系列任务中学习，并在学习新知识的同时，不会灾难性地遗忘以前掌握的知识。终身学习的核心挑战与目标：克服灾难性遗忘：这是最核心的挑战。指的是模型在学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="End-Edge-Cloud Collaborative Computing for  Deep Learning: A Comprehensive Survey">
+<meta property="og:url" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="New TermLifelong Learning 终身学习(Continual Learning 持续学习、Incremental Learning 增量学习)终身学习 是机器学习的一个范式，它旨在模仿人类的学习方式：一个智能系统能够持续地、增量地从一系列任务中学习，并在学习新知识的同时，不会灾难性地遗忘以前掌握的知识。终身学习的核心挑战与目标：克服灾难性遗忘：这是最核心的挑战。指的是模型在学习">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/Online%20Learning.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/overview-eecc-dl.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/framework-eecc.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/42376787/1760097640189-9581a335-3e66-4c31-8294-f6b51336548f.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/model%20parallelism_layer%20level%20and%20neuron-level.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/BranchyNet.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/equation-1.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/equation-2.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/equation-3-5.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/equation-6.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/comparison_early%20exit%20and%20layer-level%20distributed%20co-inference.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/eec%20knowledge%20share.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/structure%20knowledge%20sharing%20between%20Cloud-DLM%20and%20EndEdge-DLM.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/Sparse%20constraint%20training.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/42376787/1761397754676-e48e0be5-4402-4374-8a48-675b26019b12.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/Neurpsurgeon.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/DADS.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/JointDNN.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/neuron-level%20partition.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/Input%20data%20channel%20partitioning%20of%20a%20convolutional%20layer.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/output%20data%20channel%20partitioning%20of%20a%20convolutional%20layer.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/output%20data%20channel%20partitioning%20of%20a%20convolutional%20layer-2.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/42376787/1761663607847-81bd7054-9478-43f6-836e-6e72a962540d.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/42376787/1761663624033-40761403-386b-4432-9981-ad399c14b442.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2025/png/42376787/1761663650294-c44e4c41-de09-4ae0-b5c3-9603fbb19534.png">
+<meta property="og:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/EEC-CPN-DL-Challenges.png">
+<meta property="article:published_time" content="2026-06-17T08:38:00.000Z">
+<meta property="article:modified_time" content="2026-06-17T10:38:21.733Z">
+<meta property="article:author" content="CaesarCaser">
+<meta property="article:tag" content="End-Edge-Cloud Collaborative">
+<meta property="article:tag" content="Survey">
+<meta property="article:tag" content="Deep Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/Online%20Learning.png">
+
+<link rel="canonical" href="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>End-Edge-Cloud Collaborative Computing for  Deep Learning: A Comprehensive Survey | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+       <a target="_blank" rel="noopener" href="https://github.com/CaesarCaser" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">一壶浊酒喜相逢</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">来一杯吗？</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-mypartner">
+
+    <a href="/myPartner/" rel="section"><i class="fa fa-dog fa-fw"></i>My Partner</a>
+
+  </li>
+        <li class="menu-item menu-item-travelnotes">
+
+    <a href="/categories/travelNotes/" rel="section"><i class="fa fa-plane fa-fw"></i>Travel Notes</a>
+
+  </li>
+        <li class="menu-item menu-item-literaturenotes">
+
+    <a href="/categories/literatureNotes/" rel="section"><i class="fa fa-book fa-fw"></i>Literature Notes</a>
+
+  </li>
+        <li class="menu-item menu-item-recommend">
+
+    <a href="/recommend/" rel="section"><i class="fa fa-thumbs-up fa-fw"></i>Recommend</a>
+
+  </li>
+        <li class="menu-item menu-item-capriccio">
+
+    <a href="/categories/capriccio/" rel="section"><i class="fa fa-eye fa-fw"></i>Capriccio</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="CaesarCaser">
+      <meta itemprop="description" content="Personal Blog, Computer Science, SDN, Distributed, Travel Notes">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          End-Edge-Cloud Collaborative Computing for  Deep Learning: A Comprehensive Survey
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2026-06-17 16:38:00 / Modified: 18:38:21" itemprop="dateCreated datePublished" datetime="2026-06-17T16:38:00+08:00">2026-06-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/literatureNotes/" itemprop="url" rel="index"><span itemprop="name">literatureNotes</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>55k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>50 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="New-Term"><a href="#New-Term" class="headerlink" title="New Term"></a>New Term</h1><p><details class="lake-collapse"><summary id="u3aeb0af2"><strong><span class="ne-text">Lifelong Learning 终身学习(</span></strong><strong><span class="ne-text" style="color: rgb(15, 17, 21)">Continual Learning 持续学习、</span></strong><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">Incremental Learning 增量学习</span></strong><strong><span class="ne-text">)</span></strong></summary><p id="u11a21157" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21)">终身学习 是机器学习的一个范式，它旨在模仿人类的学习方式：一个智能系统能够持续地、增量地从一系列任务中学习，并在学习新知识的同时，不会灾难性地遗忘以前掌握的知识。</span></p><p id="u28912d28" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">终身学习的核心挑战与目标：</span></strong></p><ol class="ne-ol"><li id="u21860785" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">克服灾难性遗忘</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：这是最核心的挑战。指的是模型在学习新任务时，性能在旧任务上急剧下降的现象。</span></li><li id="u9bd9fa73" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">知识正向迁移</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：利用过去学到的知识来加速和改善新任务的学习。例如，学会识别猫的特征可能有助于学习识别老虎。</span></li><li id="u409d9774" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">系统可塑性</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：模型需要有足够的“灵活性”来学习新事物，同时又要有足够的“稳定性”来保留旧知识。这被称为“稳定性-可塑性困境”。</span></li></ol><p id="ubd6c33ea" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">典型方法</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：包括基于正则化的方法（如EWC）、基于回放的方法（使用旧数据的存储或生成）、基于动态架构的方法（扩展网络结构）等。</span></p><p id="u431080c1" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">终身学习</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">明确假设和应对“数据分布的变化”</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。新的任务或数据块与旧的在特征、领域或类别上不同。它的核心挑战就是克服因这种分布变化而导致的“灾难性遗忘”。</span></p></details></p>
+<p><details class="lake-collapse"><summary id="ua00bdd1b"><strong><span class="ne-text">Online Learning 在线学习</span></strong></summary><br><img src="/2026/06/17/EECC-Deeplearning-Survey/Online Learning.png" alt></details></p>
+<p></p><p id="u490bbc43" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">默认或希望数据来源于一个稳定或缓慢演变的相同分布</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。它的核心挑战是在计算和存储资源有限的情况下，快速适应数据流的最新模式，而不是防止忘记很久以前的模式。</span></p>&lt;/details&gt;<p></p>
+<h2 id="Board-Learning-广义学习"><a href="#Board-Learning-广义学习" class="headerlink" title="Board Learning 广义学习"></a>Board Learning 广义学习</h2><p>“<strong>Broad Learning（广义学习系统）</strong>”是近年来在深度学习之外提出的一种<strong>轻量级、可增量更新的神经网络学习范式</strong>。<br>它的核心思想是：不依赖“深度”（Deep），而是通过“宽度”（Broad）来增强模型的表示能力。</p>
+<h3 id="Broad-Learning-的核心思想"><a href="#Broad-Learning-的核心思想" class="headerlink" title="Broad Learning 的核心思想"></a>Broad Learning 的核心思想</h3><p>在传统的深度学习（Deep Learning）中，我们提升模型能力主要靠“堆层”：</p>
+<ul>
+<li>更多的隐藏层；</li>
+<li>更复杂的非线性变换；</li>
+<li>更深的网络结构。</li>
+</ul>
+<p>但这带来了计算量大、训练慢、参数多等问题。</p>
+<p><strong>Broad Learning 的出发点：</strong></p>
+<p>不一味“加深”，而是“加宽”——在网络的<strong>宽度方向扩展特征空间</strong>，<br>用更多的特征节点和增强节点（enhancement nodes）来捕获复杂关系。 因此，它被称为“<strong>Broad Learning System (BLS)</strong>”，由中国学者 <strong>Chen Chaoyang（陈朝阳）</strong> 在 2017 年提出。  </p>
+<h3 id="Broad-Learning-System（BLS）的基本结构"><a href="#Broad-Learning-System（BLS）的基本结构" class="headerlink" title="Broad Learning System（BLS）的基本结构"></a>Broad Learning System（BLS）的基本结构</h3><p>Broad Learning 的核心结构由两部分组成：</p>
+<ol>
+<li><strong>特征映射层（Feature Mapping Layer）</strong><ul>
+<li>对输入数据进行线性或非线性映射，产生初步特征。</li>
+<li>类似于传统神经网络的输入层 + 隐藏层。</li>
+</ul>
+</li>
+<li><strong>增强节点层（Enhancement Nodes Layer）</strong><ul>
+<li>对特征映射层的输出进行再映射（通常通过随机权重 + 激活函数）；</li>
+<li>扩展特征空间维度；</li>
+<li>提高模型的非线性表达能力。</li>
+</ul>
+</li>
+</ol>
+<p>最后，两层的输出被<strong>水平拼接（concatenate）</strong>，然后用简单的线性回归（如最小二乘法）得到输出权重。</p>
+<p><strong>与深度学习的区别：</strong></p>
+<ul>
+<li>Deep Learning：堆叠多层非线性映射（纵向加深）；</li>
+<li>Broad Learning：扩展并联特征节点（横向加宽）。</li>
+</ul>
+<h3 id="Broad-Learning-的训练方式"><a href="#Broad-Learning-的训练方式" class="headerlink" title="Broad Learning 的训练方式"></a>Broad Learning 的训练方式</h3><p>Broad Learning 的一个关键优点是——它不需要反向传播（Backpropagation）来更新所有层的参数。</p>
+<ul>
+<li>特征映射层和增强层的权重通常是<strong>随机生成的、固定不变</strong>；</li>
+<li>只有最后的输出层权重通过<strong>广义逆矩阵（pseudo-inverse）**</strong>或<strong>**最小二乘法</strong>一次性求解。</li>
+</ul>
+<p>这意味着：</p>
+<ul>
+<li><strong>训练速度极快</strong>；</li>
+<li><strong>计算代价低</strong>；</li>
+<li>适合<strong>在线学习、增量学习、持续学习</strong>等场景。</li>
+</ul>
+<h3 id="Broad-Learning-的可扩展性与增量学习机制"><a href="#Broad-Learning-的可扩展性与增量学习机制" class="headerlink" title="Broad Learning 的可扩展性与增量学习机制"></a>Broad Learning 的可扩展性与增量学习机制</h3><p>BLS 支持两种增量更新方式：</p>
+<ol>
+<li><strong>增量节点学习（Incremental Node Learning）</strong><ul>
+<li>如果模型性能不足，可以添加新的特征映射节点或增强节点；</li>
+<li>只需更新输出层权重，而不需重新训练整个模型。</li>
+</ul>
+</li>
+<li><strong>增量样本学习（Incremental Sample Learning）</strong><ul>
+<li>当新数据到达时，可以在线更新模型权重；</li>
+<li>实现“持续学习（continual learning）”，无需从头再训练。</li>
+</ul>
+</li>
+</ol>
+<p>✅ 因此，Broad Learning 非常适合在 <strong>资源受限（边缘计算）</strong> 或 <strong>任务不断变化（持续学习）</strong> 的环境中使用。</p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>基于云的DL训练遇到了一定的挑战和问题：</p>
+<ol>
+<li>决策响应时间(网络约束：数据量大、通信延迟高；计算限制：模型复杂度、算力、任务并行度)：DL应用的响应时间取决于计算延迟和通信延迟。计算延迟受DLM的大小、可用计算能力和任务并行程度等因素的影响。即使云中心有足够的计算资源和成熟的DLM并行化技术，用户设备和云服务器之间的数据传输也会引入不可避免的通信延迟。受当前通信技术的限制，广域网由于最初的设计目的是提高带宽容量和链路效率，因此不可避免地存在高延迟和性能不稳定的问题[13]。此外，传感器和物联网（IoT）设备的激增产生的多模态数据呈指数增长，给网络带来了巨大的压力。这些数据可以达到每秒数亿兆字节。例如，仅谷歌的自动驾驶汽车每秒就能产生高达750兆字节的传感器数据[14]。将如此巨量的数据上传到云服务器会给核心网络带来巨大压力，并加剧通信延迟。</li>
+<li>终身学习和自适应（online learning的弊端，需要持续交互）：移动DL应用，如无人驾驶车辆和无人机，需要与动态环境持续交互，以及基于感知和反馈自学习和自适应其行为的能力。然而，基于云的DLM的采用和更新需要移动设备（例如车辆）与云中心之间的频繁交互，从而导致这些移动设备的能耗增加。此外，不可靠的网络可能会导致传输中断或错误，从而显著影响工业DL应用的终身学习、适应过程和整体稳健运行。</li>
+<li>数据安全和隐私：传统的云计算范式涉及将原始或预处理的数据传输到云中进行存储和分析。尽管对加密通信和计算技术进行了大量研究，但它们的广泛应用和部署受到与加密和解密相关的高成本的限制。而且，数据所有者越来越优先考虑数据隐私和安全，导致他们不愿意让个人数据离开本地。因此，在可行的情况下，权力下放和强调在数据源或数据源附近进行处理变得势在必行。</li>
+</ol>
+<p>面对这些挑战和问题，将DLM迁移到靠近数据源的边缘节点或终端设备，即边缘人工智能，成为一种有效的解决方案。这种方法旨在显著减少服务响应时间，减轻数据上传对网络的影响，同时增强数据隐私，提高DLM的适应性[15]，[16]。许多研究已经探索了在边缘或终端设备上部署DLM的各种方法。<font style="background-color:#FBDE28;">一种方法涉及在单个边缘或终端设备上部署DLM，而不影响性能和准确性。这包括模型压缩和加速[17]、[18]、轻量级模型设计[19]以及硬件设计和优化[20]</font>。另一种方法是<font style="background-color:#81DFE4;">利用多个边缘节点或端设备的集体资源来处理DL任务，并克服单个设备的局限性，例如联邦学习(FL)。</font>然而，边缘和终端设备的计算、存储、能量和通信资源通常是有限的。满足各种应用的多样化和严格要求仍然具有挑战性。而且，对于大模型，尤其是预训练的基础模型，云中心提供的强大算力依然不可或缺。因此，DL的计算范式已经向端-边缘-云计算发展。</p>
+<p>虽然端边云计算方法提供了多种优势，但需要解决某些问题和障碍，以充分利用端边云协作DL的潜力：</p>
+<ol>
+<li>协作的基本要素是什么？</li>
+<li>如何实现有效协作？</li>
+<li>哪些关键技术起着举足轻重的作用？</li>
+<li>挑战和研究方向是什么？</li>
+</ol>
+<p>为了回答上述问题并释放分布式端边云计算环境中DL的全部潜力，本综述分析了关键协作元素，并提出了端边云协作DL的模式和机制，包括<font style="background-color:#81DFE4;">协同训练、协同推理和协同更新</font>。然后，它强调了技术进步和挑战，为面向DL的端边缘云计算的未来研究奠定了基础。</p>
+<h2 id="对比与作者的贡献"><a href="#对比与作者的贡献" class="headerlink" title="对比与作者的贡献"></a>对比与作者的贡献</h2><h3 id="1-AI-for-End-Edge-Cloud-Computing（AI-服务于端-边-云计算）"><a href="#1-AI-for-End-Edge-Cloud-Computing（AI-服务于端-边-云计算）" class="headerlink" title="1. AI for End-Edge-Cloud Computing（AI 服务于端-边-云计算）"></a><font style="color:rgb(15, 17, 21);">1.</font><font style="color:rgb(15, 17, 21);"> </font><strong><font style="color:rgb(15, 17, 21);">AI for End-Edge-Cloud Computing（AI 服务于端-边-云计算）</font></strong></h3><ul>
+<li><strong><font style="color:rgb(15, 17, 21);">已有研究</font></strong><font style="color:rgb(15, 17, 21);">：很多综述关注的是</font><strong><font style="color:rgb(15, 17, 21);">如何用 AI 技术优化端-边-云计算系统</font></strong><font style="color:rgb(15, 17, 21);">，例如资源分配、任务卸载、安全和隐私等。</font></li>
+<li><strong><font style="color:rgb(15, 17, 21);">典型例子</font></strong><font style="color:rgb(15, 17, 21);">：Hua 等人的研究探讨了边缘计算的性能优化和 AI 应用场景。</font></li>
+<li><strong><font style="color:rgb(15, 17, 21);">本文定位</font></strong><font style="color:rgb(15, 17, 21);">：与之不同，本文关注的是</font><strong><font style="color:rgb(15, 17, 21);">如何在端-边-云架构中部署和运行 AI 模型本身</font></strong><font style="color:rgb(15, 17, 21);">，即“</font><strong><font style="color:rgb(15, 17, 21);">端-边-云计算服务于 AI</font></strong><font style="color:rgb(15, 17, 21);">”。</font></li>
+</ul>
+<h3 id="2-End-Edge-Cloud-Computing-for-AI（端-边-云计算服务于-AI）"><a href="#2-End-Edge-Cloud-Computing-for-AI（端-边-云计算服务于-AI）" class="headerlink" title="2. End-Edge-Cloud Computing for AI（端-边-云计算服务于 AI）"></a><font style="color:rgb(15, 17, 21);">2.</font><font style="color:rgb(15, 17, 21);"> </font><strong><font style="color:rgb(15, 17, 21);">End-Edge-Cloud Computing for AI（端-边-云计算服务于 AI）</font></strong></h3><ul>
+<li><strong><font style="color:rgb(15, 17, 21);">已有研究分为两类</font></strong><font style="color:rgb(15, 17, 21);">：</font><ul>
+<li><strong><font style="color:rgb(15, 17, 21);">单设备优化</font></strong><font style="color:rgb(15, 17, 21);">：如模型压缩、轻量化设计、硬件加速等。</font></li>
+<li><strong><font style="color:rgb(15, 17, 21);">分布式 AI</font></strong><font style="color:rgb(15, 17, 21);">：如联邦学习、边缘协同训练等。</font></li>
+</ul>
+</li>
+<li><strong><font style="color:rgb(15, 17, 21);">局限性</font></strong><font style="color:rgb(15, 17, 21);">：</font><ul>
+<li><font style="color:rgb(15, 17, 21);">大多数研究只关注</font>**<font style="color:rgb(15, 17, 21);">单一模型</font>**<font style="color:rgb(15, 17, 21);">的协同，忽略了</font>**<font style="color:rgb(15, 17, 21);">多模型之间的知识共享与协作</font>**<font style="color:rgb(15, 17, 21);">。</font></li>
+<li><font style="color:rgb(15, 17, 21);">缺乏对</font>**<font style="color:rgb(15, 17, 21);">端-边-云协同更新机制</font>**<font style="color:rgb(15, 17, 21);">的深入探讨。</font></li>
+<li><font style="color:rgb(15, 17, 21);">对</font>**<font style="color:rgb(15, 17, 21);">知识迁移技术（如知识蒸馏、迁移学习）</font>**<font style="color:rgb(15, 17, 21);"> 在端-边-云中的整合研究不足。</font>
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-本文的独特贡献"><a href="#3-本文的独特贡献" class="headerlink" title="3. 本文的独特贡献"></a><font style="color:rgb(15, 17, 21);">3.</font><font style="color:rgb(15, 17, 21);"> </font><strong><font style="color:rgb(15, 17, 21);">本文的独特贡献</font></strong></h3><ul>
+<li><strong><font style="color:rgb(15, 17, 21);">系统性分析</font></strong><font style="color:rgb(15, 17, 21);">：首次从</font><strong><font style="color:rgb(15, 17, 21);">数据、模型、算力</font></strong><font style="color:rgb(15, 17, 21);">三个维度系统分析端-边-云协同深度学习的要素。</font></li>
+<li><strong><font style="color:rgb(15, 17, 21);">完整生命周期覆盖</font></strong><font style="color:rgb(15, 17, 21);">：提出</font><strong><font style="color:rgb(15, 17, 21);">协同训练、协同推理、协同更新</font></strong><font style="color:rgb(15, 17, 21);">的分类体系，覆盖模型全生命周期。</font></li>
+<li><strong><font style="color:rgb(15, 17, 21);">关键技术深入探讨</font></strong><font style="color:rgb(15, 17, 21);">：详细阐述了</font><strong><font style="color:rgb(15, 17, 21);">模型压缩、模型划分、知识迁移</font></strong><font style="color:rgb(15, 17, 21);">等关键技术。</font></li>
+<li><strong><font style="color:rgb(15, 17, 21);">挑战与未来方向</font></strong><font style="color:rgb(15, 17, 21);">：提出六大开放性问题，为后续研究指明方向。</font></li>
+</ul>
+<h2 id="本综述的组织结构"><a href="#本综述的组织结构" class="headerlink" title="本综述的组织结构"></a><strong><font style="color:rgb(15, 17, 21);">本综述的组织结构</font></strong></h2><font style="color:rgb(15, 17, 21);">文章结构清晰，逻辑严密，围绕四个核心问题展开：</font>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><font style="color:rgb(15, 17, 21);">章节</font></th>
+<th><font style="color:rgb(15, 17, 21);">对应问题</font></th>
+<th><font style="color:rgb(15, 17, 21);">内容概要</font></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><font style="color:rgb(15, 17, 21);">Section II</font></td>
+<td><font style="color:rgb(15, 17, 21);">协作的要素是什么？</font></td>
+<td><font style="color:rgb(15, 17, 21);">从数据、模型、算力三个维度分析协作基础</font></td>
+</tr>
+<tr>
+<td><font style="color:rgb(15, 17, 21);">Section III</font></td>
+<td><font style="color:rgb(15, 17, 21);">如何实现有效协作？</font></td>
+<td><font style="color:rgb(15, 17, 21);">提出协同训练、协同推理、协同更新的机制</font></td>
+</tr>
+<tr>
+<td><font style="color:rgb(15, 17, 21);">Sections IV–VI</font></td>
+<td><font style="color:rgb(15, 17, 21);">哪些关键技术起关键作用？</font></td>
+<td><font style="color:rgb(15, 17, 21);">模型压缩、模型划分、知识迁移等技术详解</font></td>
+</tr>
+<tr>
+<td><font style="color:rgb(15, 17, 21);">Section VII</font></td>
+<td><font style="color:rgb(15, 17, 21);">存在哪些挑战与研究方向？</font></td>
+<td><font style="color:rgb(15, 17, 21);">提出六大挑战与未来研究方向</font></td>
+</tr>
+<tr>
+<td><font style="color:rgb(15, 17, 21);">Section VIII</font></td>
+<td><font style="color:rgb(15, 17, 21);">总结</font></td>
+<td><font style="color:rgb(15, 17, 21);">回顾全文，展望未来</font></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="面向深度学习的端边云协同计算"><a href="#面向深度学习的端边云协同计算" class="headerlink" title="面向深度学习的端边云协同计算"></a>面向深度学习的端边云协同计算</h1><p><img src="/2026/06/17/EECC-Deeplearning-Survey/overview-eecc-dl.png" alt></p>
+<h2 id="数据维度"><a href="#数据维度" class="headerlink" title="数据维度"></a>数据维度</h2><p>在知识管理的背景下，感知和理解客观现象的复杂过程系统地跨越三个相互关联的阶段展开：数据、信息和知识。</p>
+<h3 id="基于数据的端边云协同"><a href="#基于数据的端边云协同" class="headerlink" title="基于数据的端边云协同"></a>基于数据的端边云协同</h3><p>在DL应用领域，“数据”是指从各种来源（如物联网传感器或互联网）收集的原始和未处理的观察和测量。<font style="background-color:#FBDE28;">“数据”本身缺乏上下文和意义，使得回答问题或支持决策变得具有挑战性</font>。基于数据的协作需要将收集的原始数据从本地设备或服务器直接上传到其他终端设备、边缘节点或云服务器，以进行进一步处理，例如训练或推理。这种方法有助于在网络内的各种设备和服务器之间有效地共享和利用原始数据。它在基于云的DL应用中尤为普遍。</p>
+<h3 id="基于信息的端边云协同"><a href="#基于信息的端边云协同" class="headerlink" title="基于信息的端边云协同"></a>基于信息的端边云协同</h3><p>“信息”表示充满逻辑关系和上下文相关性的计算处理和良好组织的数据。它使我们能够得出推论和辨别模式。根据Shannon的说法，信息是衡量通信交流的严格定量指标，对于减少不确定性至关重要。<font style="background-color:#FBDE28;">在DL中，信息在训练和推理过程中具体化为中间数据，例如训练阶段期间的梯度。</font>此外，可以通过数据预处理和分析来获取信息，包括数据清理、转换、组合、挖掘[49]、加密和压缩等任务。基于信息的协作需要跨端-边缘-云节点共享此类处理过的数据。这表现为多种形式，包括将压缩或加密的数据从终端设备传输到边缘或云服务器进行进一步处理，将端DLM生成的中间数据与边缘或云DLM交换用于后续推理，以及协同共享模型梯度以促进端-边-云分布式训练。</p>
+<h3 id="基于知识的端边云协同"><a href="#基于知识的端边云协同" class="headerlink" title="基于知识的端边云协同"></a>基于知识的端边云协同</h3><p><font style="background-color:#FBDE28;">“知识”包含通过信息处理或学习获得的系统运行的事实、原理和解释</font>。它意味着信息与现有知识和经验的融合，从而产生深刻的见解、明智的决策以及在不同场景中有效应用这些知识的能力。在DL中，知识可以分为各种类型，包括实例知识、数据表示知识、数据关系知识、模型关系知识、特征知识和模型结构化知识。这些形式的知识构成了我们对数据中隐藏的信息、模式、相关性和趋势的理解，这将在III-C节中讨论。基于知识的协作表示如上所述跨端-边缘-云节点共享知识。为了说明，考虑与知识蒸馏技术相结合，其中较小的学生模型可以部署在末端或边缘节点上，而驻留在云中的较大教师模型可以通过利用教师DLM的输出特征知识、中间特征知识、关系知识和结构知识来监督这些学生模型的训练。这有助于端边云协作更新，如III-C节所述。<font style="background-color:#FBDE28;">信息和知识的交换有助于减少端边云节点之间的数据传输开销，并在一定程度上保护数据隐私</font>[8]，[48]。例如，诸如DLM的特征图的中间数据在大小上可以比原始数据小得多，从而减轻私有数据泄露的风险。</p>
+<h2 id="模型维度"><a href="#模型维度" class="headerlink" title="模型维度"></a>模型维度</h2><p>鉴于DL应用环境的动态性质，其特征是新数据和任务的不断到来，DL生命周期的概念演变为终身或持续学习之一，通常包括三个主要阶段：训练、推理和更新，如图2所示。</p>
+<p>训练，包括大型基础模型中的预训练，是指使用数据集调整DLM参数的过程，以便模型可以从数据中学习复杂的表示和函数，并为特定任务做出推断[1]。现有的训练方法大多基于给定的数据集[4]、[50]、[51]。在这些方法中，任务（例如，分类任务中的成员类别）和数据集是预定义的，并且在整个训练和推理过程中保持不变。然而，在现实世界中运行的DL系统暴露于连续的数据流，并且需要从动态数据分布中连续学习和记忆多个任务[52]，[53]。虽然从头开始在由新旧数据集组成的新大型数据集上训练模型是一种实用的方法，但它可能是资源密集型和耗时的，特别是在处理广泛和多样化的数据集时。<font style="background-color:#FBDE28;">仅用新数据进一步训练部署的DL模型是一种替代的有前途的解决方案，但它面临着灾难性遗忘的重大挑战，即当吸收新的和不熟悉的数据观察时，先前获得的知识会褪色</font>[54]。最近的技术，如增量学习【55】和终身学习【50】、【52】、【56】，已经集中精力解决灾难性遗忘问题，并使DL能够从增量可用的异构数据中不断学习和更新。</p>
+<p>鉴于传统的训练概念不涉及灾难性遗忘和持续学习，并且为了强调DL是一个进化、不断学习和适应的过程，我们采用更广泛的术语“更新”来涵盖持续学习，如增量学习和终身学习，将其与传统的“训练”概念区分开来。自然，“更新”阶段发生在DL模型在实验室中训练并部署在生产环境中之后。总之，在初始训练和推理之后，DL经历了一个持续更新阶段，涵盖了DL的整个生命周期。</p>
+<p>在传统的基于云的DL应用框架中，DLM通常在高性能服务器上执行，可以访问大量数据。这与机器学习即服务[57]的范式相一致，该范式为数据所有者提供了在云平台上训练和部署其DLM的能力，而无需构建自己的计算基础设施和开发环境。相比之下，在端-边缘-云协作领域内，DLM生命周期活动可以在终端设备、边缘或云服务器处执行。端边云协同计算在促进端边云协同训练、协同推理和协同更新过程方面具有巨大潜力。例如，基于FL的协同训练和协同更新可以在end-edge-cloud节点上执行，而协同推理可以通过特定机制来实现，例如提前退出或模型划分，如第III-B节中详述的。</p>
+<h2 id="算力维度"><a href="#算力维度" class="headerlink" title="算力维度"></a>算力维度</h2><p><img src="/2026/06/17/EECC-Deeplearning-Survey/framework-eecc.png" alt></p>
+<p>如图3所示，云服务器、边缘服务器或终端设备各自为DL提供计算支持。云服务器拥有充足的存储和计算资源。然而，基于云的应用面临着高延迟、有限的态势感知和数据隐私考虑等挑战。另一方面，边缘计算试图通过在终端设备或数据源附近的网络边缘部署边缘服务器来增强用户体验。这些边缘服务器在感知位置的情况下处理用户请求，从而减少延迟并缓解核心网络拥塞[58]。然而，边缘服务器的计算资源比云中心的计算资源有限得多，并且不能有效地托管大规模DLM。终端设备涵盖了广泛的异构物联网和嵌入式设备，包括笔记本电脑、手机、工业机器人、摄像头、微控制器单元等。虽然这些设备可以提供即时计算服务，但由于其严重的计算限制，在终端设备上执行DLM（即使是轻量级DLM）会带来挑战。相比之下，面向DL的end-edge-cloud协同计算结合了这三种计算模式的优势。它有助于整合来自不同规模和位置的数据处理结果，以满足不同的应用需求。</p>
+<p>如图3所示，计算中的协作模式可以根据计算层次划分为垂直协作、水平协作和集成协作。</p>
+<ol>
+<li>垂直协作：它涉及跨越端-边缘-云计算系统不同层的协作和协调努力。其主要目标是通过利用每一层的独特能力来优化资源和增强整体系统性能。</li>
+<li>水平协作：集中于同一层内多个计算节点之间的协作，如边缘计算节点之间的协作。通过水平分布DL计算任务，它可以提高分布式计算环境内的系统可扩展性、健壮性和负载均衡。</li>
+<li>集成协作：它代表了一种包含垂直和水平协作元素的混合模型。这种模式涉及跨多个层和实体的计算资源、数据和服务的无缝集成和协调。它利用每个组件的优势，最大限度地发挥端边云计算的优势，实现高效灵活的DL应用。</li>
+</ol>
+<p>总之，通过全面考察端边云协同DL、数据、模型和计算能力方面的使能因素，制定有效利用这些要素的策略和机制变得可行。这反过来又促进了协作DL系统的创建和部署，这些系统利用分布式端边云计算环境的优势，并满足各种应用的独特需求。</p>
+<h1 id="深度学习的端-边-云协作机制"><a href="#深度学习的端-边-云协作机制" class="headerlink" title="深度学习的端-边-云协作机制"></a>深度学习的端-边-云协作机制</h1><p>本节致力于介绍围绕模型生命周期构建的端边云协同训练、协同推理和协同更新的机制和方法。</p>
+<h2 id="端边云协同训练"><a href="#端边云协同训练" class="headerlink" title="端边云协同训练"></a>端边云协同训练</h2><p>对于单个DLM，根植于分布式训练概念的端边云协同训练涉及利用多种计算资源训练模型的过程，包括终端设备、边缘服务器和云服务器。这些资源中的每一个都保存数据集的分区（称为数据并行）或模型的分区（称为模型并行）。端边云协同训练提供了几个优势：（i）它可以大大减少大型数据集和复杂模型的训练时间，这些数据集和复杂模型可能不适合单个机器的内存。(ii)它利用现有的端边缘云计算资源，提供成本和效率优势。（iii）它有可能通过纳入不同的视角和减少过度拟合来提高整体模型质量和准确性。在下面的章节中，我们将介绍两种主要的并行方法。此外，结合数据和模型并行方法的混合方法是一种可行的选择。</p>
+<h3 id="基于数据并行的端边云协同训练"><a href="#基于数据并行的端边云协同训练" class="headerlink" title="基于数据并行的端边云协同训练"></a>基于数据并行的端边云协同训练</h3><p>在诸如FL的基于数据并行的方法中，端边云内的每个计算节点拥有模型的副本并处理训练数据的子集。随后，对局部模型参数的更新被聚合以更新全局模型。数据并行可以进一步分类为集中式数据并行和分布式数据并行。</p>
+<h4 id="集中式数据并行"><a href="#集中式数据并行" class="headerlink" title="集中式数据并行"></a>集中式数据并行</h4><p>参数服务器架构支持在分布式机器集群上训练具有大量参数的DLM，使得高效处理海量数据集成为可能。通常，采用中央参数服务器来跨多个机器或节点分发和管理模型参数。这种集中式数据并行方法具有易于部署、高可扩展性和高容错性等特点。一个典型的例子是联合平均（FedAvg）算法[59]。在端-边缘-云框架内，云或边缘计算节点通常用作参数服务器，而每个工作节点通常表示边缘或端计算节点。参数服务器架构下的训练过程如下。(i)每个工作节点处理其分配的数据批以计算损失函数相对于模型参数w的梯度，然后将梯度信息gi发送到参数服务器。(ii)参数服务器聚合来自所有工作节点的这些梯度gi，并使用诸如<!-- 这是一张图片，ocr 内容为： --><br><img src="https://cdn.nlark.com/yuque/0/2025/png/42376787/1760097640189-9581a335-3e66-4c31-8294-f6b51336548f.png" alt>的算法计算全局模型的更新模型参数，并将全局模型参数分发回所有工作节点。（iii）重复上述步骤，直到全局模型收敛。</p>
+<p>训练过程经历多次迭代。对于参数聚合，可以采用同步和异步方法。在同步方案中，工作节点在预定义的同步点将其模型更新同步到参数服务器。参与者在进入下一轮之前等待其他工作节点完成本地训练。在异步方案中，参与者在准备好的时候独立地将他们的模型更新发送到参数服务器，不需要等待其他人。虽然异步方案在灵活性和效率方面提供了优势，但它也可能导致参数不一致和管理更新定时的挑战。相比之下，同步方案确保每个工作节点以全局模型的相同副本开始每个时期。这不仅在理论上保证了模型收敛，而且确保了训练过程的可重复性[60]。</p>
+<h4 id="分布式数据并行"><a href="#分布式数据并行" class="headerlink" title="分布式数据并行"></a>分布式数据并行</h4><p>分散式数据并行架构不广泛依赖于参数服务器，仅利用它来初始化全局模型参数并促进工作节点之间的通信，而不是参与模型更新过程。因此，这种架构最大限度地减少了频繁的全局信息交换的需要。分散结构中的典型训练过程如下。(i)在每个时期，工作节点使用其本地数据更新梯度，并将梯度发送给另一个指定的工作节点。(ii)指定的工作节点使用其本地数据和接收到的梯度来更新本地模型。（iii）重复上述步骤，直到每个工作节点完成模型更新，之后将最终的模型参数广播给所有参与方。</p>
+<p><details class="lake-collapse"><summary id="ue0afc0af"><span class="ne-text">分布式参数更新范式：</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">环形All-Reduce 协议</span></strong></summary><p id="u8eddef9d" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">让我们用一个具体的例子来理解这个过程。假设有4个节点（N=4），每个节点有一个梯度向量，我们想要求和。</span></p><p id="ua2a69326" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">初始状态：</span></strong></p><ul class="ne-ul"><li id="u1e3e1921" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点0: [A0, A1, A2, A3]</span></li><li id="u6860dece" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点1: [B0, B1, B2, B3]</span></li><li id="ua9869dce" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点2: [C0, C1, C2, C3]</span></li><li id="u4eb17ef8" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点3: [D0, D1, D2, D3]</span></li></ul><p id="ue28e2901" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">目标：所有节点最终得到 [A0+B0+C0+D0, A1+B1+C1+D1, A2+B2+C2+D2, A3+B3+C3+D3]</span></p><h4 id="39c17f38"><span class="ne-text" style="color: rgb(15, 17, 21)">阶段1：Scatter-Reduce（分散-归约）</span></h4><p id="u48d86535" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">这个阶段的目标是：</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">让每个节点专门负责计算一个数据块的全局和</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。</span></p><p id="u818af12b" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">Scatter-Reduce阶段的发送规则：</span></strong></p><ul class="ne-ul"><li id="u20d278e5" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">在步骤k发送第(i - k) mod N块</span></strong></li></ul><p id="u0c22b5e9" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">步骤k=0：</span></strong></p><ul class="ne-ul"><li id="ufca01758" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点0发送块A0给节点1，接收节点3的块D3 → 节点0: [A0, A1, A2, A3+D3]</span></li><li id="ufdd117b8" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点1发送块B1给节点2，接收节点0的块A3 → 节点1: [B0+A0, B1, B2, B3]</span></li><li id="u7ea24438" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点2发送块C2给节点3，接收节点1的块B0 → 节点2: [C0, C1+B1, C2, C3]</span></li><li id="u1f174828" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点3发送块D3给节点0，接收节点2的块C1 → 节点3: [D0, D1, D2+C2, D3]</span></li></ul><p id="u8c16e9ef" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">等等...</span></p><p id="u057b6858" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">Scatter-Reduce完成后：</span></strong></p><ul class="ne-ul"><li id="u09ccf104" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点0负责第3块的和: </span><span class="ne-text" style="color: rgb(97, 102, 107); font-size: 14px">A0, A1+D1+C1+B1, A2+D2+C2, A3+D3</span></li><li id="u90d9c337" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点1负责第2块的和: </span><span class="ne-text" style="color: rgb(97, 102, 107); font-size: 14px">B0+A0, B1, B2+A2+D2+C2, B3+A3+D3</span></li><li id="u066a1f1d" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点2负责第1块的和: </span><span class="ne-text" style="color: rgb(97, 102, 107); font-size: 14px">C0+B0+A0, C1+B1, C2, C3+B3+A3+D3</span></li><li id="u787e6989" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点3负责第0块的和: </span><span class="ne-text" style="color: rgb(97, 102, 107); font-size: 14px">D0+C0+B0+A0, D1+C1+B1, D2+C2, D3</span></li></ul><p id="udcf60a02" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">每个节点都成为了一个数据块的&quot;专家&quot;！</span></p><h4 id="bce5ea29"><span class="ne-text" style="color: rgb(15, 17, 21)">阶段2：All-Gather（全收集）</span></h4><p id="u8ee5b6a4" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">这个阶段的目标是：</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">让所有专家把各自的计算结果分享给所有人</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。</span></p><p id="u3e23f9b3" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">步骤k=4：</span></strong></p><ul class="ne-ul"><li id="ud0809245" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">节点0发送块</span><span class="ne-text" style="color: rgb(97, 102, 107); font-size: 14px">A1+D1+C1+B1</span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">给节点1，接收节点3的块</span><span class="ne-text" style="color: rgb(97, 102, 107); font-size: 14px">D0+C0+B0+A0</span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px"> → 节点0: [</span><span class="ne-text" style="color: rgb(97, 102, 107); font-size: 14px">D0+C0+B0+A0</span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">, </span><span class="ne-text" style="color: rgb(97, 102, 107); font-size: 14px">A1+D1+C1+B1, A2+D2+C2, A3+D3</span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">]</span></li><li id="u0a9ef22c" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">等等...</span></li></ul><p id="u89941316" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">经过All-Gather阶段的3个步骤后，</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">所有节点都拥有了完整的结果</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：<br></span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">[A0+B0+C0+D0, A1+B1+C1+D1, A2+B2+C2+D2, A3+B3+C3+D3]</span></p></details></p>
+<h4 id="个性化联邦学习-解决数据并行中非IID特性导致的模型不收敛、性能不优问题"><a href="#个性化联邦学习-解决数据并行中非IID特性导致的模型不收敛、性能不优问题" class="headerlink" title="个性化联邦学习(解决数据并行中非IID特性导致的模型不收敛、性能不优问题)"></a>个性化联邦学习(解决数据并行中非IID特性导致的模型不收敛、性能不优问题)</h4><p>数据并行通常用于涉及大型训练数据集或地理上分散的数据的DL中。传统的数据并行算法通常假设参与者之间的同质性，各方的训练样本遵循独立且相同分布的模式。相比之下，端边云协同训练架构引入了跨计算节点的硬件和软件配置的变化。此外，日益增长的隐私问题和数据法规，如通用数据保护法规[61]，导致训练数据碎片化。这种情况，加上现实场景中非独立且同分布（非IID）数据的广泛存在，将影响全局DLM的性能。例如，传统FedAvg算法的准确性明显受到权重发散的影响，导致性能下降【62】。此外，全局DLM可能无法捕获个体参与者的特定特征和偏好，因为唯一的全局模型被训练以适应具有异构本地数据分布的不同参与者。为了应对这些挑战，个性化FL可以集成到端边云架构中。它致力于解决非IID问题，为每个参与者训练个性化模型，同时仍然利用FL带来的优势。</p>
+<p><details class="lake-collapse"><summary id="uae8bbbeb"><span class="ne-text">数据并行的挑战</span></summary><h3 id="c97252c2"><span class="ne-text" style="color: rgb(15, 17, 21)">核心问题：从“理想世界”到“现实世界”的挑战</span></h3><p id="ufa11b457" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">这段文字描述的是，当数据并行技术从</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">理想的实验室环境</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">应用到</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">复杂的现实世界</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">时，会遇到的一系列问题。</span></p><h4 id="fd4d6a19"><span class="ne-text" style="color: rgb(15, 17, 21)">1. 传统数据并行的“理想假设”</span></h4><ul class="ne-ul"><li id="ueb28a8f5" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">同质性假设</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 它假设所有参与计算的设备（节点）在硬件（CPU、内存）、软件（框架、版本）和网络条件上都是相似或一致的。</span></li><li id="u565a2f84" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">IID数据假设</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 它假设每个节点上的数据都是</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">独立同分布</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">的。好比从一个大蛋糕（全局数据集）上随机切下几块分给大家，每块蛋糕的成分和味道都代表整体。</span></li></ul><p id="ue3542eb2" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">在这种理想情况下，像</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">FedAvg</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">这样的算法很有效：各节点用本地数据计算梯度或模型更新，然后中心服务器聚合这些更新得到一个更好的</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">全局模型</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。这个全局模型对所有参与者都表现良好。</span></p><h4 id="49ea17ae"><span class="ne-text" style="color: rgb(15, 17, 21)">2. 现实世界的“骨感现实”</span></h4><p id="u9670c692" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">文章指出了三个残酷的现实，尤其在</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">终端-边缘-云</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">架构中：</span></p><ul class="ne-ul"><li id="u78de5c7b" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">系统异构</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 参与计算的节点五花八门，有强大的云服务器、能力适中的边缘网关、还有资源受限的终端设备（如手机、IoT传感器）。它们的计算能力、存储、电量、网络稳定性天差地别。</span></li><li id="u0839a07e" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">数据碎片化与隐私法规</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 由于像GDPR这样的隐私法规，数据不能随意集中。数据被“锁”在各自的设备或数据中心里，形成了“数据孤岛”。</span></li><li id="uea5b51da" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">非独立同分布数据</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 这是最关键的一点。</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">现实世界的数据天然就是Non-IID的</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。</span></li></ul><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="u97a5c542" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">例子1</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 不同用户的手机里，照片风格、输入法词汇、购物偏好完全不同。</span></li><li id="ue19b4166" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">例子2</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 上海和乌鲁木齐的传感器，收集的气象数据模式差异巨大。</span></li></ul></ul><h3 id="babca111"><span class="ne-text" style="color: rgb(15, 17, 21)">Non-IID数据带来的严重后果</span></h3><ol class="ne-ol"><li id="uf88be252" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">权重发散</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 由于每个节点的数据分布差异巨大，它们计算出的模型更新（梯度）方向也可能南辕北辙。强行把这些方向各异的更新平均起来，得到的全局模型可能谁也无法很好地代表，导致</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">模型性能显著下降</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。</span></li><li id="u6d43f244" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">“一个模型无法适应所有”</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 训练一个单一的全局模型，试图去拟合所有拥有异构数据的参与者，注定会</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">丧失对个体特性的捕捉能力</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。这个模型会变成一个“中庸”的模型，对每个特定用户或场景来说都不是最优的。</span></li></ol><h3 id="1a87ecf4"><span class="ne-text" style="color: rgb(15, 17, 21)">解决方案：个性化联邦学习</span></h3><p id="uc604ef8a" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">为了解决上述挑战，文章提出了将</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">个性化联邦学习</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">集成到终端-边缘-云架构中。</span></p><p id="uca04c5b5" class="ne-p"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">它的核心思想是：从追求“唯一的最优全局模型”转变为“为每个参与者打造最适合的个性化模型”。</span></strong></p><p id="u44f51bc9" class="ne-p"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">它如何实现这一目标？在仍然利用联邦学习协作优势（数据不离开本地、共同学习）的前提下，主要有以下几种技术路径：</span></p><ol class="ne-ol"><li id="ufbc5bb82" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">全局模型微调</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：</span></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="u98cb3d70" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">步骤</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 先通过联邦学习训练一个不错的全局模型作为基础。</span></li><li id="u332c7048" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">个性化</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 然后每个参与者用自己的本地数据对这个全局模型进行少量的</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">微调</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">，使其适应自己的数据分布。</span></li><li id="u47fcc684" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">比喻</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 先造一辆“标准版”汽车（全局模型），然后让每个用户根据自己的喜好去改装座椅、刷ECU（微调），变成适合自己的“个性化”座驾。</span></li></ul></ul><ol start="2" class="ne-ol"><li id="ue7401851" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">模型混合</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：</span></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="u1485a5da" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">步骤</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 每个参与者既训练自己的本地模型，也参与全局模型的训练。</span></li><li id="ue9dd993e" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">个性化</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 最终的个性化模型是本地模型和全局模型的加权结合，平衡了通用知识和个人特性。</span></li></ul></ul><ol start="3" class="ne-ol"><li id="u2063f918" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">元学习</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">：</span></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="uc2462899" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">目标</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 联邦学习的目标不是直接产生一个全局模型，而是训练一个“</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">学会学习的模型</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">”。</span></li><li id="ud174eaaf" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">个性化</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">： 这个模型具备快速适应新任务的能力。当它被部署到某个参与者时，只需少量本地数据就能快速适配成一个高质量的个性化模型。</span></li></ul></ul></details><br>一种通用的个性化FL方法是训练全局模型，然后通过对每个本地数据集的额外训练或微调来为每个参与者个性化它。这种方法的效率取决于全局模型的性能，因此许多PFL方法旨在解决非IID数据集下全局模型的性能问题，如参数发散、数据分布偏差和无保证收敛，以提高局部数据后续个性化的性能。</p>
+<p>减轻不同参与者之间数据异质性的一种简单方法包括<font style="background-color:#FBDE28;">共享一小部分私人数据或私人统计信息</font>[62]、[63]、[64]。例如，Huang等人。[63]提出了一种数据共享策略，通过创建在所有边缘节点之间全局共享的一小部分数据来优化非IID数据的训练过程。实验结果表明，CIFAR-10数据集的准确性可以提高30%，而全局共享的数据仅为5%。然而，这种方法可能不切实际，因为向服务器发送本地数据违反了FL的基本隐私假设。虽然可以采用诸如差分隐私之类的隐私保护技术来解决隐私问题，但是它们可能导致FL框架内的性能下降。因此，提出了虚拟同质学习【65】，通过在所有客户端之间共享虚拟同质数据集来纠正数据异质性。独立于私有数据集的虚拟数据集可以从跨客户端共享的纯噪声生成。它的目的是校准异构客户端的特性。然而，实现虚拟同质性学习不仅由于虚拟数据的传输而对网络带宽施加了额外的负担，而且还需要仔细设计和构造这种辅助数据。</p>
+<p>另一种方法侧重于<font style="background-color:#FBDE28;">微调和优化FL训练过程</font>，以解决数据异质性带来的挑战，而无需求助于合成数据集。这涉及调整训练算法、超参数或参数聚合方法。FedProx【66】为FedAvg的局部子问题引入了一个近端项，限制了可变局部更新的影响。近端项提供了两个优点：（i）它通过约束它们更接近初始（全局）模型来鼓励更稳定的局部更新。(ii)它有助于安全地合并来自所选设备的部分更新。许多其他研究也在非IID数据集下从不同角度改进和优化了FedAvg，如通信频率的归一化和调制【67】、动量更新【68】和控制变量【69】以及自适应优化器【70】。</p>
+<p>此外，元学习、迁移学习、知识蒸馏和多任务学习等技术已被应用于支持个性化或特定于设备的建模。例如，知识蒸馏可用于传递从高性能模型获得的知识，以增强更简单的设备特定模型的性能，而多任务学习使模型能够同时学习多个相关任务，以提供更好的个性化支持或设备特定建模。这些方法可以与FL相结合来处理统计数据异质性，如联邦元学习上的FedMeta[71]、PerFedAvg[72]、personalized FL[73]、FedFomo[74]、FedRECON[75]和Fedavg-Reptile[76]。个性化FL的进一步进展可以在文献[77]中找到。</p>
+<p>总体而言，基于数据并行的端边云协同训练为用大量训练数据训练大规模DLM提供了可行的解决方案。然而，（i）随着参与训练的异构节点数量的增加，与节点之间的参数和梯度更新相关联的通信开销可能成为瓶颈。（ii）由于异构节点在端边云频谱上的性能不同，训练期间的最佳批量分配变得至关重要。未能实现这种平衡可能导致延长训练时间以达到期望的准确度水平。（iii）为了在各种端边云节点之间保持同步和一致的模型参数，需要同步策略，这可能导致训练效率降低和训练速度波动。(iv)端边云分布式环境中的调试和故障排除通常更复杂，因为问题可能涉及地理上分布的多个节点和组件。</p>
+<h3 id="基于模型并行的端边云协同训练-可以解决数据并行中，异构设备性能不一，有些设备无法承担如此大的模型的问题"><a href="#基于模型并行的端边云协同训练-可以解决数据并行中，异构设备性能不一，有些设备无法承担如此大的模型的问题" class="headerlink" title="基于模型并行的端边云协同训练(可以解决数据并行中，异构设备性能不一，有些设备无法承担如此大的模型的问题)"></a>基于模型并行的端边云协同训练(可以解决数据并行中，异构设备性能不一，有些设备无法承担如此大的模型的问题)</h3><p>它涉及在端边云架构中跨多个计算节点划分DLM。每个节点负责计算模型的特定部分，例如前向和后向计算。计算结果随后在节点之间交换，以促进梯度传播和模型参数更新。模型并行策略可以大致分为层级并行和神经元级并行，如图4所示。此外，结合层级和神经元级并行方法的混合方法提供了一种可行的选择。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/model parallelism_layer level and neuron-level.png" alt></p>
+<h4 id="层级并行"><a href="#层级并行" class="headerlink" title="层级并行"></a>层级并行</h4><p>假设DLM通常包括连续的层，直接的模型并行策略涉及将大DLM按层划分。一组连续层被分组并分配给端-边缘-云架构内的特定计算节点。这些节点以流水线方式对小批量数据执行前向和后向计算。然而，这种方法的局限性在于，在任何给定时刻只有一个节点执行计算任务，从而导致其他节点的空闲周期，从而不可避免地增加训练时间。为了解决这个问题，引入了流水线并行的概念[78]，[79]。流水线并行结合了模型并行和数据并行的原理。在流水线并行中，每个小批数据被进一步划分为更小的批（微批）。然后在这些微批之间流水线执行，使所有节点能够最大程度地参与并行计算。每个微批经历两次通过：向前通过和向后通过。这些通道的调度和梯度的聚合在不同的方法中有所不同。一些方法，如GPipe【78】，采用同步调度，而其他方法，如PipeDream【79】，采用异步方法。</p>
+<h4 id="神经元级并行"><a href="#神经元级并行" class="headerlink" title="神经元级并行"></a>神经元级并行</h4><p>它涉及将卷积神经网络（CNN）中的权重矩阵、滤波器和卷积核等神经元沿着特定维度划分为多个片段。然后在端-边缘-云基础设施内的各种计算节点上独立处理这些段。Megatron-LM[80]是一种训练大规模transformer模型的技术，其中针对transformer的多层感知器和自注意力实现了一维张量并行化。然而，在Megatron-LM中，每个节点都需要处理整套激活，这在处理大规模模型时可能会导致内存瓶颈。为了缓解这种内存限制，研究人员探索了张量并行的替代形式，如2D【81】、2.5 D【82】和3D【83】并行，所有这些都基于可扩展的通用矩阵乘法算法。这些方法旨在减少内存需求，同时保持神经网络训练的高效并行化。</p>
+<p>总体而言，模型并行性主要作为解决训练过程中挑战的解决方案，这些挑战是由超过单个计算节点容量的超大规模DLM提出的。然而，</p>
+<ol>
+<li>与数据并行相比，模型并行引入了通信开销的显著增加。在数据并行中，模型参数和梯度在不同节点之间的传递是首要的通信需求。相反，模型并行性需要中间数据（例如特征图）的传输，从而导致更大的通信开销。这一方面强调了解决通信开销作为模型并行性的潜在瓶颈的重要性。考虑到这一挑战，以更局部连接的结构为特征的模型往往比具有更完全连接的架构的模型更适合模型并行性。</li>
+<li>在端-边-云系统内，不同计算资源的存在，包括GPU、FPGA和TPU各自拥有不同的计算能力和通信带宽，进一步使优化DLM的分区的任务复杂化。</li>
+<li>并非所有模型架构都容易适应模型并行。一些模型，如递归神经网络，可能需要额外的工程设计，以使它们与模型并行技术兼容。</li>
+<li>流水线模型并行性受到前端模型执行时间的限制，先前计算中的任何错误都可能导致完全的计算停滞。(木桶效应)</li>
+</ol>
+<h2 id="端边云协同推理"><a href="#端边云协同推理" class="headerlink" title="端边云协同推理"></a>端边云协同推理</h2><h3 id="基于早期退出的高效端边云渐进协同推理"><a href="#基于早期退出的高效端边云渐进协同推理" class="headerlink" title="基于早期退出的高效端边云渐进协同推理"></a>基于早期退出的高效端边云渐进协同推理</h3><p><img src="/2026/06/17/EECC-Deeplearning-Survey/BranchyNet.png" alt></p>
+<p>通过向DLM添加更多层来实现的改进性能是以增加推理期间的计算时间和能量消耗为代价的。有鉴于此，Teerapittayanon等人。[84]提出了一种新的开源深度神经网络（DNN）框架，称为BranchyNet，它通过侧分支或出口分支整合了早期退出机制。如图5所示，这些分支，例如出口1和出口2，与原始基线神经网络无缝集成，使得相当大比例的输入样本能够经由这些分支退出网络。该设计可用于满足各种应用的实时性和能效要求。具体地，当满足诸如置信度阈值的特定预定标准时，BranchyNet允许推理样本通过诸如出口1的指定分支从网络中提前退出。在不满足这些预设要求的情况下，可以利用附加层或更深的分支(例如出口2或出口3)来进行最终确定。</p>
+<h4 id="利用早期退出的端-边-云渐进式协同推理机制"><a href="#利用早期退出的端-边-云渐进式协同推理机制" class="headerlink" title="利用早期退出的端-边-云渐进式协同推理机制"></a>利用早期退出的端-边-云渐进式协同推理机制</h4><p>早期退出是一种通用技术，适用于各种类型的DLM，如图神经网络（GNN）【85】和深度CNN【86】。它形成了端边云渐进协同推理的基本组成部分，如图5所示。在这个框架中，在末端（边缘）节点上部署了一个浅层DLM分支(<font style="color:rgb(15, 17, 21);">原深度模型的</font><strong><font style="color:rgb(15, 17, 21);">前面几层（浅层分支）</font></strong>)，以促进实时推理。必要时(例如用于融合分布式端部或边缘节点信息或增强推断置信度)，可以将中间数据(例如由端部(边缘)-DLM分支生成的特征向量)传输到驻留在边缘(云)节点上的更深DLM分支以用于进一步推断。例如，Teerapittayanon等人。[87]提出了分布式端边云计算层次结构上的分布式DNN。它引入了具有局部出口点的末端和边缘DNN分支（实际上是DNN的一些浅部分），其可以在末端和边缘设备处对具有高置信度的样本进行局部和快速分类。如果需要，浅DNN部分的输出数据将被卸载到边缘或云，用于使用DNN的较高层进行额外处理。</p>
+<p><details class="lake-collapse"><summary id="u95c48257"><span class="ne-text">例子</span></summary><ol class="ne-ol"><li id="u577f7570" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">端侧/边侧部署浅层分支：</span></strong></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="u2ccd3482" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">在端设备或边缘节点上，部署的是原深度模型的</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">前面几层（浅层分支）</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。</span></li><li id="uebf87b92" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">目的：</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px"> </span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">实现快速、实时的推理。对于大量简单的任务，在端侧或边侧就能直接完成，结果立即可用，体验非常流畅。</span></li></ul></ul><ol start="2" class="ne-ol"><li id="uf14812a5" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">边侧/云侧部署深层分支：</span></strong></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="uaa724f33" data-lake-index-type="0"><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">在边缘节点或云端，部署的是原深度模型的</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">后面几层（深层分支）</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。</span></li></ul></ul><ol start="3" class="ne-ol"><li id="u1c3f3807" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">协同工作流程：</span></strong></li></ol><ul class="ne-list-wrap"><ul ne-level="1" class="ne-ul"><li id="u77f562a5" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">步骤一（本地尝试）：</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px"> </span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">输入数据（如图片）首先在端侧的浅层分支上进行推理。</span></li><li id="uba298603" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">决策点：</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px"> </span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">如果浅层分支的出口给出了高置信度的结果，那么流程结束，结果直接返回。这叫</span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px"> </span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">“本地退出”</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">。</span></li><li id="uc3935d73" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">步骤二（上传深化）：</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px"> </span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">如果浅层分支的置信度</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">不高</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">（说明这个问题比较难，或者需要结合其他信息），它不会输出一个不确定的结果，而是将计算得到的</span><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">中间特征向量</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px"> </span><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">传输到边侧或云侧的深层分支上。</span></li><li id="ub1844d54" data-lake-index-type="0"><strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px">步骤三（远程处理）：</span></strong><span class="ne-text" style="color: rgb(15, 17, 21); font-size: 16px"> 深层分支接收这些特征，继续完成更复杂、更精细的推理，最终输出一个更可靠的结果。</span></li></ul></ul></details><br>在更广泛的背景下，跨端边缘云节点的DLM部署不仅包括DLM的不同分支【87】，还包括不同规模的DLM。具体来说，<strong>基于云的DLM可以代表大规模的DLM，而末端或边缘节点上的DLM可以通过模型压缩和轻量级技术来实现</strong>，如参数量化【88】、【89】、神经网络剪枝【90】和知识蒸馏【7】。如果初始推理未能满足精度要求，则将从第一卷积层生成的中间数据发送到边缘，用于使用未修剪的CNN进行第二次推断。此外，当边缘经历来自终端Web应用程序的大量并发请求时，某些推理任务可以卸载到云中，以确保快速和实时的决策。</p>
+<p>此外，模型压缩和早期退出技术的组合提供了在终端或边缘节点上部署DLM时实现更高压缩率和更大灵活性的潜力。例如，Huang等人。[88]、[89]提出了一种面向移动Web应用的端边协同系统。在这种设置中，全精度DNN部署在边缘服务器上，而带有分支的二进制DNN部署在移动设备上。当所有分支的推理精度都达不到要求时，将二进制DNN的中间数据传输到边缘服务器进行更准确的推理，从而既保证了推理精度，又保证了移动用户的隐私。模型压缩技术的细节在第四节中阐述。</p>
+<p>端边云渐进式协同推理框架具有水平和垂直扩展的灵活性。(i)垂直扩展涉及端边云架构内不同层计算节点的动态协调和集成，包括端云、边云、端边、端边云协同。（ii）水平缩放需要添加更多专用于特定任务的端（边）节点，随后使用投票和加权等各种策略融合它们的推理结果，以实现联合推理。如果联合推理结果未能满足预定义的标准，则每个节点可以将中间数据传输到上层，以使用诸如加权、级联或张量积的特征融合技术进行特征聚合。然后，上层的更大规模DLM将聚合的特征作为输入，从而产生更准确和无缝的推理。</p>
+<blockquote>
+<p>纵向扩展侧重于不同层次的计算节点（端设备、边缘节点、云端）之间的协作，横向扩展则通过增加更多的端设备或边缘节点并融合它们的推理结果来提高效率和准确性。通过特征聚合与融合，最终能够利用大规模DLM提供更精确的推理结果，从而优化整个推理过程。  </p>
+</blockquote>
+<h4 id="端-边-云渐进式协同推理的退出准则"><a href="#端-边-云渐进式协同推理的退出准则" class="headerlink" title="端-边-云渐进式协同推理的退出准则"></a>端-边-云渐进式协同推理的退出准则</h4><p>端边云渐进式推理机制的本质在于确定何时退出当前计算节点。现有的退出策略包括<strong>基于规则的策略和基于学习的策略</strong>。</p>
+<ol>
+<li><strong>基于规则的策略</strong></li>
+</ol>
+<p>基于规则的策略依赖于预定义的规则或启发式来确定何时应该发生提前退出。这些规则通常是基于推理置信度、时间约束和资源限制等因素制定的。一种普遍的做法是置信度阈值，它涉及将从给定输入导出的推理置信度与表示为t的阈值进行比较。阈值用于在DLM的延迟和准确性之间进行权衡。方等人。[86]和拉斯卡里迪斯等人。[93]使用CNN的softmax层的Top-1输出值来估计推理置信度。通常，较高的Top-1输出值与较高的准确度相关联。然而，这些值在不同的输入之间可能表现出显著的变化，这给选择适当的阈值带来了挑战。</p>
+<p>在信息论中，熵是随机变量中平均信息或不确定性的度量。较低的熵值对应于诸如输出向量的随机变量中降低的不确定性，其可用于测量推理置信度。BranchyNet【84】使用非归一化熵作为推理置信度的度量，定义如下。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/equation-1.png" alt></p>
+<p>其中C表示所有可能标签的集合，x表示概率向量。DeeCap[94]计算了解码器层输出分布的熵作为置信度。越小的熵值表示对DLM的推理结果的置信度越大。为了便于比较和增强可解释性，归一化熵[87]、[88]、[89]、[90]通常如下使用。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/equation-2.png" alt></p>
+<p>其中η的值在0和1之间。<strong>熵阈值方法通常用于基于CNN的网络领域</strong>。然而，这种方法可能不适用于某些任务，如回归任务。</p>
+<p>阈值t的选择取决于各种因素，包括数据集、特定DLM和应用要求。必须选择阈值以在推理延迟和准确性要求之间进行权衡。一种简单的方法包括在多个随机选择的测试集[84]、[86]、[87]、[88]、[89]中搜索最佳t值。然而，在某些情况下，阈值不是静态的，而是应该根据模型的实际性能动态调整。这种方法有其局限性，并且不能自动产生最佳阈值，尤其是在端-边缘-云通信不稳定的情况下。</p>
+<p>此外，可以基于工程经验或业务需求手动设置早期退出规则。例如，在实时处理或资源受限的应用中，可以基于人为施加的时间或计算资源约束来做出提前退出的决定。如果处理时间或消耗的资源超过预定限制，即使推理置信水平没有达到设定的阈值，模型也可能被迫提前退出。这种方法易于实现，非常适合具有严格约束的（工业）场景。</p>
+<ol>
+<li><strong>基于学习的策略</strong></li>
+</ol>
+<p>Offline-预测退出点  ：基于学习的策略使用数据驱动的方法来确定退出点。一方面，可以在推断之前预测可能的退出点。基于对输入数据特征的估计，使用预测算法（如回归模型和多层感知器）来预测最佳退出点是可行的。例如，李等人。[95]提出了一个预测退出框架，能够预测网络将在哪里退出，提高DL应用中的计算和能效。</p>
+<p>Online-推理过程中动态预测是否能够准确推理  ：另一方面，通常通过在训练过程中结合额外的学习退出模块，可以预测给定样本是否将在推理过程中在特定的退出点被正确地推断。例如，Ghodrati等人。[96]在每个退出点使用多层感知器来确定部分观察到的剪辑是否包含足够的信息来准确分类整个视频。Xin等人。[97]提出了一个学习到退出模块，一个简单的单层全连接网络，用于预测给定输入的确定性水平。</p>
+<p>基于规则的策略易于实现，并且在良好推理的标准被很好地理解和一致的场景中非常有效。然而，基于规则的策略存在泛化和阈值调整的问题，并且可能不总是很好地适应变化的数据分布或复杂的场景。例如，置信度阈值方法需要仔细调整超参数t，超参数t在不同的应用和数据集上变化很大。基于学习的策略与模式识别问题特别相关。它可以处理不确定的情况，如异常样本和不断变化的通信和计算环境，而不需要阈值调整。因此，这是一种更有前途的方法。然而，它引入了额外的计算成本，这可能会给资源有限的终端设备带来挑战。<strong>因此，进一步探索更高效的退出方式和策略至关重要。例如，Sun等[98]使用哈希函数取代了学习退出模块，并将每个令牌分配给BERT中的固定退出层</strong>。</p>
+<h4 id="训练端-边-云深度学习模型"><a href="#训练端-边-云深度学习模型" class="headerlink" title="训练端-边-云深度学习模型"></a>训练端-边-云深度学习模型</h4><p>与BranchyNet的训练过程一样，可以应用联合训练方法来训练端-边缘-云架构内的DLM。这种联合训练方法旨在最小化分布在各种端边缘云节点上的DLM损失函数的加权和，确保每个DLM或出口分支达到与其网络深度和规模相称的高精度[84]，[99]。例如，当使用softmax交叉熵损失函数作为优化目标时，适用于cloud-DLM、edge-DLM和end-DLM的每个决策退出点的损失函数定义如下。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/equation-3-5.png" alt></p>
+<p>其中y表示one-hot ground truth(独热真实数据)标签向量，x表示输入样本，C表示所有可能标签的集合。函数f<sub>exitn</sub>表示从入口点到第n个出口分支的神经网络层的计算，θ表示网络参数，例如这些层的权重和偏差。</p>
+<p>联合训练期间的目标是最小化与每个退出相关联的损失函数的加权和，如下所示。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/equation-6.png" alt></p>
+<p>其中N表示出口点的总数，w<sub>n</sub>表示每个出口的相关权重。[87]中使用了等权重w<sub>n</sub>=1/N。<strong> 在联合训练中，模型不仅优化最终输出（最后一层的出口），还同时优化所有中间出口的预测能力</strong>。  </p>
+<p>联合训练有助于在网络的不同尺度水平上学习更鲁棒的特征表示，并确保主网络和辅助分支都得到有效训练。然而，它也带来了挑战，包括增加的训练复杂性和资源需求、超参数调整的困难以及过度拟合的风险。</p>
+<h4 id="更新端-边-云深度学习模型"><a href="#更新端-边-云深度学习模型" class="headerlink" title="更新端-边-云深度学习模型"></a>更新端-边-云深度学习模型</h4><p>为了更新端边缘云DLM，可以采用各种更新模式，包括集中式、分散式和端边缘云协作方法。(i)集中更新涉及使用中央计算服务器上的新数据集重新训练整个DLM或特定模型组件(仅更新相关参数)。这种方法有效地利用了中央服务器的计算能力。然而，它需要将原始数据传输到远程服务器，从而引起与数据隐私和服务延迟相关的问题。（ii）本地更新涉及使用新生成的数据在本地重新训练端-边-云DLM。这种方法允许快速模型更新，而无需传输原始数据，从而实现对特定任务要求的个性化适应。然而，由于在单个端或边缘节点收集的数据集通常很小，局部更新可能会引入与泛化和模型鲁棒性相关的挑战。（iii）<font style="background-color:#FBDE28;">端-边-云协作更新方法采用知识转移方法</font>，在cloud-DLM的帮助下训练端或边缘DLM，如第III-C节所述。</p>
+<h3 id="基于模型分割的端-边-云分布式协同推理"><a href="#基于模型分割的端-边-云分布式协同推理" class="headerlink" title="基于模型分割的端-边-云分布式协同推理"></a>基于模型分割的端-边-云分布式协同推理</h3><p>跨端-边缘-云基础设施的模型-分布式协同推理的核心思想类似于基于模型并行的协同训练。它涉及跨不同端边云计算节点的DLM的分割和部署，并依赖于这些分布式分割的协作进行推理。DLM的这种划分极大地减少了每个部分的计算资源需求，使得能够在多个资源受限的计算设备上运行大规模DLM。最合适的模型划分策略取决于几个因素，包括DLM的类型和内部结构（如图层类型、特征图形状和滤波器大小）以及外部环境，包括计算和网络资源【100】、【101】。就像图4所示的基于模型并行的协同训练一样，分布式推理的DLM划分方法可以分为两种类型：层级分布式协同推理和神经元级分布式协同推理。</p>
+<h4 id="层级分布式协同推理"><a href="#层级分布式协同推理" class="headerlink" title="层级分布式协同推理"></a>层级分布式协同推理</h4><p> 将一个大型深度学习模型（DLM）按照“层”的粒度（granularity of layers）拆分为若干部分，然后分布到不同的计算节点（端设备、边缘服务器、云端服务器）上进行<strong>流水线式（pipelined）协同推理</strong>。  例如用于端-云协作的JointDNN【102】、用于边缘-云协作的BBNet【103】、用于端-边协作的Cogent【104】和用于端-端协作的DeepX【105】。一个实际的例子是淘宝的EdgeRec推荐系统[42]，其中包含消耗大量存储资源（约230MB）的嵌入矩阵的DLM的一部分部署在云端。同时，模型中没有嵌入层的剩余部分被部署到终端移动设备，并利用来自云的嵌入特征作为模型推理的输入。另一个案例是Auto-Split[12]，它已被用于实现机器视觉的端云协同推理。在车辆识别系统中，Auto-Split将YOLOv3模型分为end-DNN和cloud-DNN组件。终端摄像头运行end-DNN，并将输出数据上传到云端，云端再执行cloud-DNN和长短期记忆模型进行车牌识别。最后，将结果返回到终端摄像头。层级分区的技术细节在V-A节中阐述。</p>
+<p>:::info<br>probably innovation：这种端-边-云结构的层级分布式推理，能不能用流水线并行的方式减少cloud-DLM或是end-DLM的推理时间(需要等待分布式的其他部分生成中间数据才能进行推理)</p>
+<p>:::</p>
+<p>在层级分布式协同推理中，早期退出或模型压缩技术的结合可以进一步降低模型大小和执行延迟。例如，物联网环境下的按需协同DNN推理框架Boomerang[106]利用早期退出机制和层级划分实现了低延迟和高准确率的推理。Edgent[107]，[108]是一个按需端边协作框架。它对DNN内每一层的延迟和能耗进行建模，以确定最佳划分点。然后将DNN分割部署到终端设备和边缘服务器，允许end-DNN根据时延和精度要求提前退出。</p>
+<p><details class="lake-collapse"><summary id="uee177a63"><span class="ne-text"> </span><strong><span class="ne-text">早期退出机制（early exit）与层级分布式协同推理（layer-level distributed co-inference）的区别</span></strong></summary><p id="uc03b69c7" class="ne-p"><span class="ne-text"> 无论是</span><strong><span class="ne-text">早期退出机制（early exit）还是层级分布式协同推理（layer-level distributed co-inference）</span></strong><span class="ne-text">，它们都确实在</span><strong><span class="ne-text">端设备（或边缘节点）部署部分轻量的模型（DLM）</span></strong><span class="ne-text">，以实现高效推理。  </span></p><p id="ub423697e" class="ne-p"><span class="ne-text"> 但它们的</span><strong><span class="ne-text">核心思路、触发机制、数据流向和协同方式</span></strong><span class="ne-text">却有明显区别。  </span></p><p id="u42c8dfea" class="ne-p">
+<img src="/2026/06/17/EECC-Deeplearning-Survey/comparison_early exit and layer-level distributed co-inference.png" alt>
+</p></details></p>
+<h4 id="神经元级分布式协同推理"><a href="#神经元级分布式协同推理" class="headerlink" title="神经元级分布式协同推理"></a>神经元级分布式协同推理</h4><p>它涉及将权重矩阵、滤波器和卷积核等神经元沿着特定维度分割成不同的部分，并在不同的端边云节点上分别计算它们，例如用于端-端协作的MoDNN【109】和用于边-边协作的DeepThings【110】。根据划分的维度，神经元级划分可以进一步分为两种亚型：channel partition和space partition，如第V-B节所述。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>含义</th>
+<th>类比理解</th>
+<th>优点</th>
+<th>挑战</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Channel Partition（通道划分）</strong></td>
+<td>按照通道（channel）方向划分特征图或卷积核。例如，不同节点计算不同通道的卷积。</td>
+<td>像多人分工画画：一个人画红色通道，一个人画蓝色通道。</td>
+<td>减少单节点计算量，天然并行</td>
+<td>最后需要拼接通道（concat），增加通信开销</td>
+</tr>
+<tr>
+<td><strong>Space Partition（空间划分）</strong></td>
+<td>按输入特征图的空间区域划分（如左半边由设备A计算，右半边由设备B计算）。</td>
+<td>像裁剪图片后由多人分别处理各部分。</td>
+<td>空间局部性强，数据传输小</td>
+<td>边界区域需同步处理，易引入边缘效应</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>关于分区DLM的训练和更新，虽然分布式训练方法是可用的，但由于在训练过程中大量的参数和中间数据的频繁传输，它们通常被认为对于端-边缘-云通信系统是不经济的。因此，<strong>目前的研究主要采用集中式训练+分布式推理方法：</strong></p>
+<ul>
+<li><strong>在性能强大的服务器上（如云端GPU集群）**</strong>集中训练完整的模型（DLM）<strong>**；</strong></li>
+<li><strong>训练完成后，将模型**</strong>按照神经元级划分方式切分<strong>**；</strong></li>
+<li><strong>将切分后的子模型分别部署到端、边、云节点上执行协同推理。</strong></li>
+</ul>
+<h2 id="端-边-云协同更新-持续学习"><a href="#端-边-云协同更新-持续学习" class="headerlink" title="端-边-云协同更新(持续学习)"></a>端-边-云协同更新(持续学习)</h2><p>虽然第III-A节主要关注单个模型的端边云分布式训练，但本节深入研究了<strong>端-边-云框架内多个DLM的协同更新方法</strong>，主要通过知识转移技术来完成。</p>
+<h3 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h3><p>在实际应用中，一个常见的挑战来自DL的训练集和测试集的分布之间的差异(<strong>训练数据分布 ≠ 实际运行环境中的数据分布</strong>)。部署后的DLM可能不适合动态和不断发展的世界。这就要求DLMs具备终身学习和自我适应的能力，通过更新或适应来应对不断变化的环境。</p>
+<p>一种直接的方法涉及在本地重新训练或增量训练原始DLM。然而，可能缺乏足够的领域数据来训练高性能模型，导致过度拟合和泛化能力差。</p>
+<p><details class="lake-collapse"><summary id="u9c9154ad"><span class="ne-text">本地重新或增量训练的问题</span></summary><ul class="ne-ul"><li id="ube7f09dd" data-lake-index-type="0"><strong><span class="ne-text">数据不足（Data Scarcity）</span></strong></li><li id="u6afc413f" data-lake-index-type="0"><span class="ne-text">实际场景中，往往没有足够的标注数据（比如故障样本非常难获取）。</span></li><li id="ua85ccd31" data-lake-index-type="0"><span class="ne-text">少量样本训练容易导致 </span><strong><span class="ne-text">过拟合（overfitting）</span></strong><span class="ne-text">，泛化能力差。</span></li><li id="u8dd128ed" data-lake-index-type="0"><strong><span class="ne-text">计算资源有限（Limited Compute）</span></strong></li><li id="u337c9173" data-lake-index-type="0"><span class="ne-text">边缘设备或端设备算力弱；</span></li><li id="u627823a9" data-lake-index-type="0"><span class="ne-text">训练一个大型DLM非常耗时、耗能；</span></li><li id="uf1e033c7" data-lake-index-type="0"><span class="ne-text">在边缘本地完成大规模训练通常</span><strong><span class="ne-text">不可行（inefficient）</span></strong><span class="ne-text">。</span></li></ul></details><br>例如，在轴承故障诊断中，获取故障样本可能是一项具有挑战性的工作[92]。另一方面，这种方法效率低下，因为训练大型DLM通常需要大量的计算资源和时间。为了解决这些问题，由于以下优点，<strong>在不同的DLM之间共享知识以实现终身学习和领域适应</strong>成为一种有效的策略：</p>
+<ol>
+<li>在数据有限情况下的学习  ： 从其他模型或领域（source domain）中“借知识”，帮助在目标领域（target domain）中学习更快、更好，特别适用于那些<strong>训练数据少</strong>或<strong>标注成本高</strong>的任务。如<strong>迁移学习（Transfer Learning）</strong>：用在 ImageNet 上训练好的模型参数来初始化新模型；即使没有大量标注数据，也能快速适应新的任务（比如医疗图像识别）， 同时提升模型的<strong>准确性（accuracy）</strong>、<strong>鲁棒性（robustness）和泛化能力（generalization）</strong>。</li>
+<li>提高模型性能： 不同模型间共享知识（如特征表示、网络结构、层间关系），能让模型学习更快、收敛更稳定，如<strong>知识蒸馏（Knowledge Distillation）</strong>：大模型（教师模型）将知识传递给小模型（学生模型），小模型能继承教师的经验，在抗噪、抗干扰等方面表现更强。  </li>
+<li>高效适应新场景  ：从一个DLM学到的知识可以有效地重新利用，为下游或个性化领域应用快速开发和定制模型，从而消除了完全从头开始训练这些模型的必要性。例如，预训练的基础模型通常通过自监督学习在大规模、多样化和未标记的数据集上进行训练(如BERT、GPT等大模型)，并且可以针对大量下游任务进行微调(如情感分析、目标识别等)，从而减少训练时间和所需的计算资源。</li>
+</ol>
+<p>鉴于知识共享的引人注目的优势，我们将其集成到云-边-端架构中，以提出端-边-云协同更新（学习）的概念，这将在下一节中详细阐述。</p>
+<p><details class="lake-collapse"><summary id="ucaf23b65"><span class="ne-text"> 在端、边、云的协同架构中实现持续学习与知识共享  </span></summary><ul class="ne-ul"><li id="udaf152f9" data-lake-index-type="0"><span class="ne-text">云端的大模型可以作为“知识中心”（teacher / source），为边缘和终端提供更新指导；</span></li><li id="ud702c358" data-lake-index-type="0"><span class="ne-text">边缘设备可以结合本地数据进行小规模自适应；</span></li><li id="ua70465c3" data-lake-index-type="0"><span class="ne-text">终端设备可从边缘/云端同步学习更新后的模型权重；</span></li><li id="u55e8f2fa" data-lake-index-type="0"><span class="ne-text">形成一个“知识流动”的系统（knowledge flow），让整个体系不断自我进化。</span></li></ul></details></p>
+<h3 id="端-边-云协同更新的分类"><a href="#端-边-云协同更新的分类" class="headerlink" title="端-边-云协同更新的分类"></a>端-边-云协同更新的分类</h3><p>如图6所示，共享知识可以涵盖实例知识、数据表示知识、数据关系知识和模型知识，包括诸如中间和输出特征的特征知识、模型结构知识和模型关系知识。这些形式的知识通过知识转移技术共享，如转移学习和知识提炼。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/eec knowledge share.png" alt></p>
+<h4 id="基于实例、数据表示和数据关系知识的端-边-云协同更新"><a href="#基于实例、数据表示和数据关系知识的端-边-云协同更新" class="headerlink" title="基于实例、数据表示和数据关系知识的端-边-云协同更新"></a>基于实例、数据表示和数据关系知识的端-边-云协同更新</h4><p>这些方法涉及从端边云节点（迁移学习中称为源域，其中标记数据丰富）的数据获得的实例知识、数据表示知识和数据关系知识[111]的迁移，以训练另一个节点的DLM（迁移学习中称为目标域任务，其中标记数据有限或问题不同但与源域相关）。这些方法的实现主要依赖于迁移学习技术，这将在第六节中讨论，上述知识的含义如下。(i)实例知识假设来自源域的某些标记数据可以被重用，例如通过重新加权，以帮助目标域中的学习。(ii)数据表示知识与源域和目标域中的数据共享的公共特征子空间有关。在迁移学习中，原始特征被变换以获得公共特征表示。（iii）数据关系知识涉及源域中数据之间的关系和规则。例如，像角度和距离关系【112】、相似性和相关性【113】以及相似性保持【114】这样的技术被用来在训练过程中评估样本数据之间的关系。</p>
+<h4 id="基于特征知识的端-边-云协同更新"><a href="#基于特征知识的端-边-云协同更新" class="headerlink" title="基于特征知识的端-边-云协同更新"></a>基于特征知识的端-边-云协同更新</h4><p>特征知识包括DLMs处理样本数据获得的抽象特征，包括输出特征和中间特征。通过在端边云节点上模拟其他DLM（在知识蒸馏中称为教师模型）的特征知识，可以训练和更新本地DLM（在知识蒸馏中称为学生模型），服务于模型压缩或性能增强的目的。</p>
+<ol>
+<li><strong>输出特征</strong>知识涉及从DLM的最后一个隐藏层或输出层导出的数据，例如分类任务【111】中softmax激活层之前的逻辑单元，或者从softmax层获得的表示类别概率的软目标。在极端情况下，如果没有中间层输出可用，最终预测结果（比如类别标签）也可以被视作一种输出知识。例如，在研究【43】中，位于云上的CloudCNN用于预测从终端设备上传的数据的标签，并将标签传输到边缘服务器。因此，EdgeCNN可以用那些标记的数据重新训练，这有效地补充了边缘训练数据集。输出特征知识广泛应用于知识蒸馏过程。<strong>然而，教师模型输出的特征知识主要指导学生模型深层的训练，而不是负责特征提取的浅层</strong>[115]。复杂教师模型中隐藏层的信息容量与简单学生模型中隐藏层的信息容量显著不同，导致不同的特征表示能力。因此，仅输出特征知识可能不足以指导学生模型的训练。( 教学生模型学习教师的输出结果  )</li>
+<li><strong>中间特征</strong>知识涉及从教师模型的隐藏层中提取的特征，并且可以作为学生模型中相应隐藏层的有价值的提示，提示学生模型生成类似的中间表示。例如，FitNets【116】通过利用教师模型学习的输出和中间表示来训练更薄但更深的学生模型，以提高学生模型的性能。研究[117]、[118]证明了学生模型从教师模型中学习关键中间特征的价值。（ 教学生模型模仿教师的特征表达  ）</li>
+</ol>
+<h4 id="基于模型关系知识的端-边-云协同更新"><a href="#基于模型关系知识的端-边-云协同更新" class="headerlink" title="基于模型关系知识的端-边-云协同更新"></a>基于模型关系知识的端-边-云协同更新</h4><p>模型关系知识涉及模型层或权重参数之间的逻辑关系和规则。采用各种技术来测量这些关系，例如用于测量DLM层之间的关系的 Flow of Solution Process Matrix( 分析不同层之间的解空间变化和信息流路径  ) [119]、雅可比矩阵( 衡量输入扰动对输出的敏感度，即梯度传播关系)[120]、 Graph-based Knowledge( 将模型的层和连接抽象为图结构，分析信息传播路径  ) [121]和 Information Flow <a href="分析不同层之间的信息传输强度, 如互信息、熵">122</a>。这些模型关系知识可以指导其他模型进行训练。</p>
+<ul>
+<li>Jacobian矩阵可以用来判断哪一层对模型输出最敏感；</li>
+<li>Graph-based方法可以用“图节点表示层、边表示信息流”，建模层间依赖；</li>
+<li>Information Flow 则定量表示“哪些层在信息流中起关键作用”。</li>
+</ul>
+<h4 id="基于结构化知识的端-边-云协同更新"><a href="#基于结构化知识的端-边-云协同更新" class="headerlink" title="基于结构化知识的端-边-云协同更新"></a>基于结构化知识的端-边-云协同更新</h4><p>结构化知识是指可以轻松记录和传输的结构化和标准化信息，通常涉及参数或DLM超参数的先验分布，如学习率(与模型参数（parameters）、超参数（hyperparameters）或模型结构（architecture）相关 )。例如，Cloud-DLM的特定层可以直接合并到End-DLM和Edge-DLM中，如图7所示。在源自Cloud-DLM的EdgeDLM和End-DLM中分别有5个和3个卷积层。在Edge-DLM和End-DLM训练过程中，这些共享层被冻结，只有剩余的层被更新以实现快速收敛。再者，预训练的基础模型对下游任务的领域适配是结构化知识转移的另一个典型例子，可以通过微调、提示调优、指令调优等方式实现。</p>
+<p><details class="lake-collapse"><summary id="ufc392d16"><span class="ne-text">结构化知识</span></summary><p id="u31348137" class="ne-p"><span class="ne-text">在神经网络中：</span></p><ul class="ne-ul"><li id="ud7a65076" data-lake-index-type="0"><span class="ne-text">每一层的权重矩阵（weights）和偏置（biases）</span></li><li id="u3e6d3e89" data-lake-index-type="0"><span class="ne-text">网络的层结构（architecture）</span></li><li id="ub71b7516" data-lake-index-type="0"><span class="ne-text">超参数（hyperparameters，如学习率、正则化系数等）</span></li></ul></details><br><img src="/2026/06/17/EECC-Deeplearning-Survey/structure knowledge sharing between Cloud-DLM and EndEdge-DLM.png" alt></p>
+<p>在实际应用中，端-边-云环境下的结构化知识共享得到了广泛的研究。例如，Lu等人。[123]在他们的边缘-云协作学习方法COLLA中提出了一种模型参数共享方法，用于用户行为预测。这里，来自使用历史数据的云训练模型的<strong>模型参数(而不是梯度、中间特征数据等)</strong>被分发到边缘设备。每个边缘设备使用本地数据进行增量学习，以构建个性化边缘模型。云模型充当聚合器，整合来自多个边缘模型的知识（<strong>模型参数</strong>），并与边缘设备共享这些参数(云端定期收集边缘模型的参数，对它们进行整合（聚合知识），再将优化后的参数同步回边缘设备)，以缓解有限本地数据带来的过拟合问题。</p>
+<p>Ding等[43]提出了认知服务的边缘-云协同框架。他们在边缘服务器上部署了一个浅层模型（EdgeCNN）来提供即时认知服务，在云服务器上部署了一个深度模型（CloudCNN），通过共享预测标签、模型结构和参数来增强EdgeCNN的性能。实验结果显示，EdgeCNN在edgecloud协作框架内，将认知服务的平均响应时间降低高达55.08%，准确率提升高达26.70%。</p>
+<p><details class="lake-collapse"><summary id="uceac5686"><span class="ne-text">共享的结构化知识</span></summary><p id="ua0d7b8a1" class="ne-p"><span class="ne-text">云端和边缘之间共享三类结构化知识：</span></p><ol class="ne-ol"><li id="u0a81e0e2" data-lake-index-type="0"><strong><span class="ne-text">预测标签（predicted labels）</span></strong><span class="ne-text">：CloudCNN 为 EdgeCNN 提供软监督；</span></li><li id="u5e90a966" data-lake-index-type="0"><strong><span class="ne-text">模型结构（model structure）</span></strong><span class="ne-text">：部分层结构可共享；</span></li><li id="u9c790fef" data-lake-index-type="0"><strong><span class="ne-text">模型参数（parameters）</span></strong><span class="ne-text">：云端参数同步更新至边缘。</span></li></ol></details><br>Jing等[124]设计了一个用于预测机械剩余使用寿命的边缘-云协作框架。在该框架中，内置深度预测DLM的云预测引擎（Cloud-PE）封装在云服务层，而配备浅层预测DLM的边缘预测引擎（Edge-PE）则定位在边缘服务层。CloudPE通过提供软监督和共享深度模型参数，在协助Edge-PE实现快速和高精度预测方面发挥着举足轻重的作用。实验结果表明，与现有的数据驱动预测方法相比，边缘-云协作框架产生了更准确的预测，并减少了边缘模型的训练时间。</p>
+<h3 id="联邦持续学习"><a href="#联邦持续学习" class="headerlink" title="联邦持续学习"></a>联邦持续学习</h3><p>模型需要<strong>不断学习新任务或新数据分布</strong>，但要避免<strong>灾难性遗忘（Catastrophic Forgetting）</strong>：即学了新任务后忘记旧任务。</p>
+<p>FL涉及跨多个异构设备的分布式训练，而不共享私有本地数据。是端-边-云架构中常用的知识转移策略。标准FL，甚至个性化FL都遵循静态配置，其中本地数据和任务不会随着时间的推移而改变。然而，在现实任务中，在训练的同时逐步收集数据是很常见的，并且可能需要随着时间的推移学习新的任务。最近，一些有趣的研究致力于探索联邦持续学习（FCL），其假设学习的任务随时间变化，其中多个客户端C<sub>c</sub>∈{C1，C2，…，C<sub>c</sub>}在来自私有数据流的任务序列{T<sub>c</sub><sup>1</sup>，T<sub>c</sub><sup>2</sup>，…，T<sub>c</sub><sup>t</sup>}上被连续训练，同时与全局模型通信学习的参数或知识。</p>
+<h4 id="参数隔离"><a href="#参数隔离" class="headerlink" title="参数隔离"></a>参数隔离</h4><p>一方面，一些FCL方法利用<strong>参数隔离策略</strong>，试图<strong>从参数的角度区分旧知识和新知识</strong>。FedWeIT【125】<strong>将网络权重分解为全局联合参数和任务特定参数</strong>，包括局部基本参数和任务自适应参数。每个客户端C<sub>c</sub>∈{C1，C2，…，C<sub>c</sub>}<strong>通过对其他客户端的任务特定参数进行加权组合来接收来自其他客户端的选择性知识</strong>。</p>
+<p>在FedWeIT中，客户端C处的任务t的模型参数<script type="math/tex">\theta_c^{(t)}</script>的集合被定义为</p>
+<script type="math/tex; mode=display">
+\theta_c^{(t)} = B_c^{(t)} \odot m_c^{(t)} + A_c^{(t)} + \sum_{i \in C_c} \sum_{j < |t|} \alpha_{i,j}^{(t)} A_i^{(j)}</script><p>其中<script type="math/tex">B_c^{(t)}</script>是在客户端中的所有任务之间共享的客户端c的基本参数集，<script type="math/tex">m_c^{(t)}</script>是允许针对任务t自适应地变换<script type="math/tex">B_c^{(t)}</script>的稀疏向量掩码的集合$(B·m会得到全局通用参数)，<script type="math/tex">A_c^{(t)}</script>是客户端c处的稀疏任务自适应参数的集合(只为任务 t 新增，用于学习特定任务的知识)，<script type="math/tex">\alpha_{i,j}^{(t)}</script>是权重(控制从其他客户端（i）的历史任务（j）中吸收多少知识)。</p>
+<p>Dong等人[126]开发了一种全局-局部遗忘补偿模型来缓解FL中的灾难性遗忘，该模型采用 <strong>类别感知梯度补偿损失</strong>  和 <strong>类别语义蒸馏损失</strong>  来均衡梯度传播并保证跨任务的稳定类间关系。Le等人。[127]提出了一种基于广义学习(board learning)的FCL方案，其中提出了一种<strong>加权处理策略</strong>来解决灾难性遗忘问题，并提出了一种<strong>局部独立训练</strong>解决方案来支持快速和准确的训练。</p>
+<h4 id="知识蒸馏"><a href="#知识蒸馏" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h4><p>另一方面，一些研究试图从<strong>知识蒸馏和提取(不需要共享数据或模型参数，各参与者可独立、异步地进行更新)</strong>的角度进行FCL。例如，马等人。[128]提出了带蒸馏的连续FL，它在客户端和服务器上执行知识蒸馏，每一个参与方都独立地拥有一个<strong>无标签的代理数据集</strong>和<strong>不同的学习目标</strong>，如学习新任务和回顾旧任务。FedKnow[129]是一个客户端FCL框架，由知识提取器、梯度恢复器和梯度积分器组成，通过全局模型组合从过去的本地任务和其他客户端的当前任务中识别出的签名任务(每个客户端保存“签名任务（signature tasks）”：代表过去任务的重要特征或样本，在训练新任务时利用知识提取器提取旧知识，用梯度修复器恢复旧任务的重要方向，再通过梯度整合器结合全局模型中其他客户端的当前任务梯度)。</p>
+<p>然而，这些方法<strong>忽略了旧知识的维护或巩固</strong>：</p>
+<ol>
+<li>参数隔离(防止覆盖)：虽然避免新任务覆盖旧任务（确实防止了灾难性遗忘），支持多任务共存。但也冻结了旧参数，久而久之， 这种“静态旧知识”会产生<strong>概率偏差</strong>。</li>
+<li>知识蒸馏(模仿旧分布)： 通过蒸馏机制，用旧模型输出的“软标签（soft labels）”指导新模型 ，或提取旧任务的特征、梯度等信息来辅助新任务训练。但 蒸馏只“复现”旧知识的输出分布，而没有真正“巩固”旧知识的内部结构或特征空间，且通常是单向的(老师-&gt;学生)，旧知识没有在蒸馏后得到更新，长期蒸馏会产生累积偏差(因为每次蒸馏都是在“旧模型”上蒸馏，而旧模型本身也有偏移)。</li>
+</ol>
+<p>由于<strong>概率偏差问题</strong>，这将不可避免地导致模型在先前任务上的性能下降[130]。另一方面，这些方法<strong>忽略了异步学习</strong>【131】，其中多个任务的连续学习发生在每个客户端以不同的顺序和异步时隙中。每个客户端学习的异步性质会导致参数变化的不平衡。</p>
+<ol>
+<li>针对<strong>旧知识的维护或巩固问题</strong>的解决方案</li>
+</ol>
+<p>虽然Wang等人。[130]提出了一个<strong>联邦概率记忆回忆框架</strong>来缓解概率偏差问题和参数变化的不平衡( 通过在联邦聚合阶段引入记忆机制，保留各任务的概率分布信息，在全局模型更新时”回忆”旧任务概率，减少模型对新任务过度拟合，从而缓解概率偏差问题)；</p>
+<ol>
+<li>针对<strong>异步学习</strong>的解决方案</li>
+</ol>
+<p><details class="lake-collapse"><summary id="u3952d317"><span class="ne-text">什么是异步学习问题</span></summary><p id="u111f345f" class="ne-p" style="text-indent: 2em"><span class="ne-text">现实中，不同客户端的学习过程并</span><strong><span class="ne-text">不同步</span></strong><span class="ne-text">：</span></p><ul class="ne-ul"><li id="u7a9c6050" data-lake-index-type="0"><span class="ne-text">有的设备在学习任务 A；</span></li><li id="u0473ebad" data-lake-index-type="0"><span class="ne-text">有的设备在学习任务 B；</span></li><li id="uccf649c1" data-lake-index-type="0"><span class="ne-text">有的可能暂时离线；</span></li><li id="u73733fc2" data-lake-index-type="0"><span class="ne-text">还有的在不同时间更新参数。</span></li></ul><p id="ucc4ccf25" class="ne-p"><span class="ne-text">这种**异步性（asynchronous nature）**导致：</span></p><ul class="ne-ul"><li id="ucd75322e" data-lake-index-type="0"><span class="ne-text">模型参数更新不同步；</span></li><li id="u2171e7d6" data-lake-index-type="0"><span class="ne-text">云端聚合时，参数变化幅度差异大；</span></li><li id="u745f25a8" data-lake-index-type="0"><span class="ne-text">结果是</span><strong><span class="ne-text">参数不平衡（parameter variation imbalance）</span></strong><span class="ne-text">；</span></li><li id="u7fdbce85" data-lake-index-type="0"><span class="ne-text">聚合模型可能变得不稳定，甚至退化。</span></li></ul></details><br>Shenaj等人。[131]考虑了<strong>异步FL设置(用时间戳、权重衰减等机制来处理异步更新)</strong>，现有的FCL方法仍有很大的改进空间。</p>
+<ol>
+<li>针对<strong>通信效率和安全性不足</strong>的解决方案</li>
+</ol>
+<p>同时，效率和通信开销也是FCL的关键问题。联邦学习的最大瓶颈之一是：每轮通信都要上传/下载大量模型参数（几百MB甚至GB）。在持续学习（多任务、多轮更新）中，这种通信成本更高。除了数据重放策略，高效安全的通信策略还需要进一步探索。例如，张等人。[132]提出了<strong>双向压缩和误差补偿算法</strong>，以产生通信高效的FCL方法。具体措施是<strong>压缩上传与下载的参数</strong>（例如通过量化或稀疏化），<strong>误差补偿机制</strong>确保压缩导致的信息损失能在后续迭代中恢复，<strong>双向</strong>指客户端上传和云端下发的过程都进行压缩优化。</p>
+<h3 id="总结和经验教训"><a href="#总结和经验教训" class="headerlink" title="总结和经验教训"></a>总结和经验教训</h3><p>在本节中，我们推导了端-边-云协作学习的整体分类法，包括整个DL生命周期中的端边云协同训练、协同推理和协同更新。现总结及经验教训如下。</p>
+<h4 id="异构端-边-云协同训练"><a href="#异构端-边-云协同训练" class="headerlink" title="异构端-边-云协同训练"></a>异构端-边-云协同训练</h4><p>端边云协同训练从传统的分布式训练中汲取灵感，尤其是FL。然而，它需要应对更复杂的计算环境。这种复杂性来自几个来源：(i)<strong>异构的端-边缘-云计算设备</strong>，即使在相同的端、边缘或云层内，其在存储、计算能力和通信能力方面也表现出异构性。（ii）<strong>异构数据</strong>，其特征是跨计算节点的数量、质量和分布差异，尤其是非IID数据。（iii）<strong>异构模型</strong>，每个模型都针对端-边-云节点上的特定应用场景进行定制。为了应对设备异构的挑战，优化数据并行和模型并行的架构和机制方面至关重要。<strong>在处理数据和模型异构时</strong>，可以考虑个性化FL、用户上下文、迁移学习、元学习、知识蒸馏和多任务学习等策略。</p>
+<h4 id="异构端-边-云协同推理"><a href="#异构端-边-云协同推理" class="headerlink" title="异构端-边-云协同推理"></a>异构端-边-云协同推理</h4><p>与协同训练不同，<strong>协同推理不需要向后计算</strong>，这简化了其在实际应用中的部署。然而，端-边-云设备和网络的异构性和动态性仍然是重大挑战。为每种服务质量选择最佳的协同推理框架可能是一项艰巨的任务。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>挑战</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>设备异构性(算力、存储、能耗、网络、硬件、计算精度等)</strong></td>
+<td>各设备计算能力不同（如手机 vs 边缘服务器 vs 云GPU）；模型难以统一分配。 系统性能受限于<strong>最慢、最弱的节点</strong></td>
+</tr>
+<tr>
+<td><strong>网络动态性（dynamics）</strong></td>
+<td>网络带宽、延迟随时间波动；影响任务划分和数据传输。</td>
+</tr>
+<tr>
+<td><strong>环境不稳定</strong></td>
+<td>设备可能掉线、拥塞或能耗受限；系统必须自适应调整。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>异构来源</th>
+<th>影响</th>
+<th>具体表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>算力差异</strong></td>
+<td>摄像头的 CPU/NPU 性能低</td>
+<td>前 10 层计算时间太长，导致延迟高</td>
+</tr>
+<tr>
+<td><strong>网络带宽差</strong></td>
+<td>摄像头到边缘的 Wi-Fi 不稳定</td>
+<td>上传中间特征（feature maps）耗时长，延迟严重波动</td>
+</tr>
+<tr>
+<td><strong>能耗限制</strong></td>
+<td>摄像头电量有限</td>
+<td>频繁推理 + 通信会导致过热或电量耗尽</td>
+</tr>
+<tr>
+<td><strong>设备结构不同</strong></td>
+<td>摄像头仅支持 INT8 模型，边缘是 FP32</td>
+<td>同一层模型在两端计算结果不完全一致，影响精度</td>
+</tr>
+<tr>
+<td><strong>动态变化</strong></td>
+<td>边缘服务器忙于其他任务</td>
+<td>无法保证推理时延时稳定，任务排队等待</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>因此，一方面要定量评估端边云协同推理带来的性能和服务提升，如时延、能耗和鲁棒性，并仔细考虑不同指标之间的权衡。另一方面，应探索先进的协同推理机制，如早期退出和模型划分与合作，以应对复杂的端边云环境。</p>
+<p>不同的协同推理策略（例如模型切分点、任务分配方式）会影响系统的性能指标，如：</p>
+<ul>
+<li><strong>延迟（delay）</strong></li>
+<li><strong>能耗（energy consumption）</strong></li>
+<li><strong>鲁棒性（robustness）</strong></li>
+</ul>
+<p>这些指标之间往往是<strong>相互制约的</strong>，无法同时最优。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>延迟</th>
+<th>能耗</th>
+<th>准确率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全部在云端推理</td>
+<td>延迟高</td>
+<td>能耗低</td>
+<td>准确率高</td>
+</tr>
+<tr>
+<td>全部在终端推理</td>
+<td>延迟低</td>
+<td>能耗高</td>
+<td>准确率较低</td>
+</tr>
+<tr>
+<td>端–边分段推理</td>
+<td>中等延迟</td>
+<td>平衡能耗</td>
+<td>较高准确率</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> 协同推理系统不应只定性说“更快”“更省电”，而应建立可量化的性能评估体系，比如：  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>指标类别</th>
+<th>具体指标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>性能指标</strong></td>
+<td>推理延迟（ms）、吞吐量、响应时间</td>
+</tr>
+<tr>
+<td><strong>资源指标</strong></td>
+<td>能耗、电量消耗、带宽占用</td>
+</tr>
+<tr>
+<td><strong>可靠性指标</strong></td>
+<td>任务完成率、掉线恢复时间</td>
+</tr>
+<tr>
+<td><strong>服务质量（QoS）</strong></td>
+<td>用户体验、实时性、准确率</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="基于知识的端边云协同更新（知识共享机制能成为克服异构性的解决方案吗？）"><a href="#基于知识的端边云协同更新（知识共享机制能成为克服异构性的解决方案吗？）" class="headerlink" title="基于知识的端边云协同更新（知识共享机制能成为克服异构性的解决方案吗？）"></a>基于知识的端边云协同更新（知识共享机制能成为克服异构性的解决方案吗？）</h4><p>在动态应用环境中，DLM需要不断更新以实现终身学习和个性化。为了缓解与模型更新相关的挑战，端边云框架内的知识共享成为一种有价值的方法。然而，由于DL中的可解释性问题，什么知识共享是合理和有效的，并不总是得到理论分析的支持。此外，数据、设备和模型的异质性使知识共享机制变得复杂。因此，一方面，<strong>我们需要量化来自知识共享的性能改进，加强对DL中可解释性理论的探索</strong>。另一方面，<strong>我们还需要探索端边云协同更新的知识共享机制，以适应异构环境</strong>。</p>
+<h4 id="未来趋势（ECC-CPN协作）"><a href="#未来趋势（ECC-CPN协作）" class="headerlink" title="未来趋势（ECC CPN协作）"></a>未来趋势（ECC CPN协作）</h4><p>ChatGPT和盘古等先进的预训练基础模型因其从大规模预训练数据中捕获丰富知识的前所未有的能力而获得了显著关注，这使得大模型有可能通过微调充当通用专家或领域专家。然而，基础模型的大规模部署仍面临包括个性化、算力、效率等方面的挑战。为了应对这些挑战，<strong>一种有前景的部署方案是端-边-云算力网络（CPN）中的大模型和小模型协作</strong>。一方面，这两种不同的DL范式之间的协同作用导致了一个响应更快、更高效、适应性更强的DL生态系统。另一方面，融合端-边-云计算和网络的CPN可以<strong>按需灵活分配计算资源</strong>，满足DL系统随时随地的计算需求。因此，<strong>大小模型协同和CPN的融合</strong>是继DL和端-边-云计算融合之后的一种新颖且必然的范式。</p>
+<p><strong>大模型–小模型协同</strong> 是一种协作机制：云端大模型作为“知识源”和“专家”，端或边缘的小模型作为“执行者”和“适配者”，二者通过知识共享、蒸馏或协同推理共同完成任务。  </p>
+<h5 id="协同方式（几种典型模式）"><a href="#协同方式（几种典型模式）" class="headerlink" title="协同方式（几种典型模式）"></a>协同方式（几种典型模式）</h5><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>协同类型</th>
+<th>工作机制</th>
+<th>类比理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>知识蒸馏协同（Knowledge Distillation）</strong></td>
+<td>云端大模型将知识压缩为小模型，小模型继承其能力（student-teacher 模式）</td>
+<td>老师教学生</td>
+</tr>
+<tr>
+<td><strong>任务协同（Task Collaboration）</strong></td>
+<td>小模型先做初步推理，大模型只在复杂场景时介入</td>
+<td>医生助理+专家</td>
+</tr>
+<tr>
+<td><strong>分层协同（Hierarchical Collaboration）</strong></td>
+<td>小模型在端实时执行，大模型在云端周期更新或纠错</td>
+<td>本地缓存 + 云端审查</td>
+</tr>
+<tr>
+<td><strong>个性化协同（Personalized Collaboration）</strong></td>
+<td>小模型根据用户数据进行个性化微调，大模型提供通用知识</td>
+<td>通用百科+私人顾问</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>CPN（Computing Power Network）</strong> 是近年来在中国和国际上兴起的一个新概念，它融合了 <strong>通信网络（network）</strong> 和 <strong>计算资源（computing power）</strong>，是一种端–边–云计算与网络资源协同调度的基础设施，可以像分配带宽一样动态分配算力，实现“随需而算（computing-as-a-service）“  </p>
+<h5 id="核心特征"><a href="#核心特征" class="headerlink" title="核心特征"></a>核心特征</h5><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>特征</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>资源融合（Convergence）</strong></td>
+<td>把云计算、边缘计算、终端设备的算力统一纳入“算力池”</td>
+</tr>
+<tr>
+<td><strong>智能调度（Orchestration）</strong></td>
+<td>根据任务需求（时延、能耗、精度）自动选择最合适的计算节点</td>
+</tr>
+<tr>
+<td><strong>按需供给（On-demand Computing）</strong></td>
+<td>用户或AI任务可在任意时间、地点申请算力资源</td>
+</tr>
+<tr>
+<td><strong>网络赋能（Network Empowered）</strong></td>
+<td>利用5G/6G等高速网络实现低延迟传输与资源协同</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="用于深度学习的模型压缩技术"><a href="#用于深度学习的模型压缩技术" class="headerlink" title="用于深度学习的模型压缩技术"></a>用于深度学习的模型压缩技术</h1><p>端-边-云协同学习需要在靠近数据源的端和边缘节点上部署DLM的完整或至少一部分。然而，这些末端和边缘节点上计算资源的固有限制要求采用模型压缩技术。流行的DL模型压缩技术包括剪枝和稀疏化、参数共享和量化、轻量级网络的手动设计以及神经网络架构搜索。</p>
+<h3 id="神经网络的剪枝和稀疏化"><a href="#神经网络的剪枝和稀疏化" class="headerlink" title="神经网络的剪枝和稀疏化"></a>神经网络的剪枝和稀疏化</h3><p>神经网络压缩的常用方法是权重剪枝（非结构化剪枝），旨在去除网络中“冗余”的权重参数(对单个权重进行剪除，即把一些数值接近0的参数置零)。然而，这通常会导致不规则、稀疏的权重矩阵，其依赖于索引进行存储(记录哪些位置被剪除)，使其与GPU和多核CPU的数据并行执行模型不太兼容。为了克服这些限制，最近的研究提出了结构化剪枝的思想，它在权重剪枝中结合了规律性或“结构”，即权重矩阵的行剪枝、滤波器剪枝和自我注意矩阵剪枝(整行、整列、整层、整滤波器)。<strong>结构化剪枝虽然粒度更粗，仍然包含一些冗余权重，但保持了降维的完整矩阵，更适合通用GPU或多核CPU</strong>。无论是采用结构化修剪还是非结构化修剪，最终目标都是移除网络中定义的不重要部分。根据剪枝操作阶段，<strong>现有的剪枝策略可以分为初始化时的剪枝和训练后的剪枝</strong>。</p>
+<p><details class="lake-collapse"><summary id="u85d03d6f"><strong><span class="ne-text">稀疏化的好处</span></strong></summary><p id="udea57801" class="ne-p"><strong><span class="ne-text">训练阶段稀疏 ≠ 推理阶段稀疏</span></strong></p><p id="u842b0c9d" class="ne-p"><span class="ne-text">很多研究的目标是：</span></p><p id="uee90be1d" class="ne-p"><span class="ne-text">在训练阶段</span><strong><span class="ne-text">逐步稀疏化模型结构</span></strong><span class="ne-text">，<br></span><span class="ne-text">到推理阶段再</span><strong><span class="ne-text">固定稀疏模式（或结构化剪枝）</span></strong><span class="ne-text">，从而实现加速。</span></p><p id="u46a39520" class="ne-p"><span class="ne-text">流程是：</span></p><ol class="ne-ol"><li id="ub4c8675d" data-lake-index-type="0"><span class="ne-text">训练阶段使用稀疏约束（如 L1 正则、稀疏代价）；</span></li><li id="u01b2d42f" data-lake-index-type="0"><span class="ne-text">让模型学会自动“放弃”不重要连接；</span></li><li id="u6ac29966" data-lake-index-type="0"><span class="ne-text">剪掉这些连接；</span></li><li id="u9ad290e4" data-lake-index-type="0"><span class="ne-text">推理阶段重新整理权重为“结构化”形式，<br></span><span class="ne-text">✅</span><span class="ne-text"> 这时才可以真正加速。</span></li></ol><p id="u2bc2bdb4" class="ne-p"><span class="ne-text">💡</span><span class="ne-text"> 重点：</span></p><ul class="ne-ul"><li id="ua7c65780" data-lake-index-type="0"><strong><span class="ne-text">训练阶段稀疏性是“寻找重要连接”</span></strong></li><li id="u2005e7aa" data-lake-index-type="0"><strong><span class="ne-text">推理阶段稀疏性才用于“加速执行”</span></strong></li></ul><p id="u12bbe348" class="ne-p"><span class="ne-text">所以即便 GPU 不能直接加速稀疏矩阵计算，<br></span><span class="ne-text">研究者仍然希望模型</span><strong><span class="ne-text">在训练阶段学会稀疏结构</span></strong><span class="ne-text">，<br></span><span class="ne-text">为后续压缩、部署打基础。</span></p><p id="u531e4d28" class="ne-p"><span class="ne-text"></span></p><p id="uab94820e" class="ne-p"><strong><span class="ne-text">稀疏约束训练可以节省训练成本（在某些条件下）</span></strong></p><p id="u6cf3884a" class="ne-p"><span class="ne-text">虽然 GPU 对稀疏矩阵计算加速不理想，但稀疏约束训练仍然能</span><strong><span class="ne-text">间接节省训练资源</span></strong><span class="ne-text">，原因如下</span><span class="ne-text">👇</span></p><p id="u06d5a711" class="ne-p">
+<img src="/2026/06/17/EECC-Deeplearning-Survey/Sparse constraint training.png" alt>
+</p></details></p>
+<h4 id="训练后剪枝"><a href="#训练后剪枝" class="headerlink" title="训练后剪枝"></a>训练后剪枝</h4><p>训练后的修剪遵循训练-修剪-再训练（微调）方法。最初，训练DLM，之后评估神经网络中参数或节点的重要性，并修剪冗余的。随后，网络被重新训练或微调。重复上述过程，直到模型收敛。这种方法广泛用于现有的修剪算法中，如最近的综述文献[133]、[134]、[135]、[136]中所详述的，然而，训练后修剪方法在学习方面效率较低，因为迭代修剪和再训练（微调）过程消耗相当多的时间和计算资源来获得期望的DLM。</p>
+<h4 id="初始化时剪枝"><a href="#初始化时剪枝" class="headerlink" title="初始化时剪枝"></a>初始化时剪枝</h4><p>与训练后修剪相反，初始化时修剪旨在<strong>在随机初始化阶段稀疏化神经网络</strong>。获得稀疏DLM的传统方法包括在DLM训练期间结合稀疏约束，例如使用稀疏表示、稀疏成本函数和稀疏正则化[137]。虽然这种方法具有不需要大量时间和计算资源来预训练模型的优点，但它通常导致低稀疏化率，并且神经网络不能被显著压缩。最近的彩票假说(Lottery Ticket Hypothesis)[138]，[139]挑战了大型神经网络对于实现高性能是必要的这一信念。这一假设表明，在一个更大的神经网络中存在一个稀疏网络，其性能与原始网络相当。引入了“掩码”的概念来识别这个中奖网络。步骤如下。</p>
+<p><details class="lake-collapse"><summary id="u7d9daeb4"><strong><span class="ne-text">什么是“中奖票假说”</span></strong></summary><p id="ub20a7372" class="ne-p"><strong><span class="ne-text">“Lottery Ticket Hypothesis（中奖票假说）”</span></strong><span class="ne-text">由 Frankle &amp; Carbin 于 2019 年提出（ICLR 最佳论文）。 它颠覆了“必须用大模型才能获得好性能”的传统观念。 该假说认为：<br></span><strong><span class="ne-text">在一个随机初始化的大模型中，存在一个稀疏子网络（subnetwork），只要使用合适的初始权重，它就能达到与原模型相当的性能。 这个稀疏子网络就被称为——“Winning Ticket（中奖子网络）”</span></strong></p><p id="u81026bd9" class="ne-p"><span class="ne-text"></span><strong><span class="ne-text"> </span></strong><span class="ne-text">可以类比为买彩票 </span><span class="ne-text">🎟️</span><span class="ne-text">：</span></p><ul class="ne-ul"><li id="ufd9fc3d0" data-lake-index-type="0"><span class="ne-text">大模型 = 买很多彩票（很多随机初始化的权重）；</span></li><li id="uec45fc17" data-lake-index-type="0"><span class="ne-text">中奖票 = 那一张真正能中头奖的票（即真正有效的稀疏结构）；</span></li><li id="ucf3637c2" data-lake-index-type="0"><span class="ne-text">Lottery Ticket Hypothesis 说的就是：</span></li></ul><p id="u79d9fc95" class="ne-p"><span class="ne-text">“在一大堆随机权重里，其实早就藏着一个能赢的组合。”你不需要训练完再去找，而是在初始化阶段就能“识别并保留”这些中奖票。</span></p></details></p>
+<p><details class="lake-collapse"><summary id="u2a720541"><span class="ne-text"> </span><strong><span class="ne-text"> Lottery Ticket Hypothesis（LTH）寻找步骤（原始算法）  </span></strong></summary><p id="u28d99ba8" class="ne-p"><span class="ne-text">步骤1：随机初始化原神经网络的参数，得到f（x，w0），其中x表示输入数据，w0为网络参数</span></p><p id="uc9e3d306" class="ne-p"><span class="ne-text">步骤2：对原神经网络进行j次训练，得到wj；</span></p><p id="ud0c9f4dc" class="ne-p"><span class="ne-text">步骤3：为每个参数设置相应的二进制掩码m，取值为1和0；</span></p><p id="uf1a3825a" class="ne-p"><span class="ne-text">步骤4：根据所需的修剪比率设置阈值。为绝对值小于阈值的参数赋值0，并将其对应的掩码设置为0。将绝对值大于阈值的参数重置为参数值w0（训练前），并分配掩码值1。</span></p></details><br>按照这些步骤，可以获得稀疏初始化的网络<!-- 这是一张图片，ocr 内容为： --><br><img src="https://cdn.nlark.com/yuque/0/2025/png/42376787/1761397754676-e48e0be5-4402-4374-8a48-675b26019b12.png" alt>。已经开发了各种方法或算法来识别随机初始化的神经网络中的稀疏网络，包括supermask【140】和edge-popup算法【141】，这些在综述文献【142】中有详细说明。值得注意的是，大多数研究侧重于非结构化修剪，而不是结构化修剪。</p>
+<p>型。尽管初始化时剪枝是一个有趣的想法，但就实用性能而言，它不如训练后剪枝方法。一方面，它不会给修剪比率、标准和计划(剪枝的时间和比例，比如每轮剪多少)带来太大变化【142】，例如，初始化时修剪方法中使用的许多修剪标准类似于训练后修剪方法中的标准。这导致最终修剪模型的性能相同，甚至更差，即使使用不同的修剪方法。另一方面，大多数初始化剪枝研究集中在非结构化剪枝上(权重分布变得<strong>稀疏且不规则,</strong> GPU/CPU无法高效利用)，而不是结构化剪枝，由于缺乏稀疏训练库支持导致无法获得有效的训练加速。此外，与静态掩码方法相比，动态掩码方法加剧了这个问题，因为它们的可变掩码阻碍了硬件加速。</p>
+<h3 id="神经网络的参数共享与量化"><a href="#神经网络的参数共享与量化" class="headerlink" title="神经网络的参数共享与量化"></a>神经网络的参数共享与量化</h3><p>参数共享和量化代表了一种重要的压缩方法，旨在将DLM参数有效地映射到更少量的数据。常见的方法有参数聚类、哈希共享、参数量化等。</p>
+<ol>
+<li>参数聚类(训练后聚类)：该方法通过k-means聚类等聚类方法实现参数共享。它将相同的索引分配给预训练DLM中的相似参数，并使用特定的统计指标（如索引的平均值）来表示这种类型的参数【143】、【144】。( 通过<strong>聚类（clustering）相似的参数</strong>，让多个相似的权重“共享一个值”，<br>从而减少模型中需要单独存储的参数数量，实现压缩)</li>
+<li>哈希共享(训练前随机哈希分桶)：它使用哈希函数来方便参数共享。例如，Chen等人。[145]引入了一种低成本哈希函数，将权重分组到哈希桶中，以实现参数共享。这种方法的一个优点是它不需要预训练DLM。此外，可以以与正常模型参数初始化相同的方式初始化共享参数向量，并且可以常规地训练基于散列共享的DLM。 虽然哈希分桶是随机的，但模型可以通过训练过程<strong>自动调整</strong>共享参数的取值，从而部分抵消这种随机冲突的影响。</li>
+<li>参数量化：它需要降低用于网络的参数（权重和激活）的浮点表示的精度，以节省存储和计算资源，例如，将32位浮点转换为低精度数据类型，例如8位或4位整数。在典型情况下，如二进制神经网络[146]、[147]，浮点权重被二进制表示取代。因此，最初使用32位浮点表示的模型可以被压缩32倍，以适应资源受限的终端设备和边缘节点。然而，参数量化会导致信息丢失并引入不连续性，从而使DLM优化复杂化，导致模型精度显著下降【148】。因此，<strong>压缩率和模型精度之间的权衡是一个至关重要的问题</strong>。<strong>量化位宽传统上通过手动实验确定</strong>[149]、[150]。Khoram和Li[151]提出了一种基于相应损失函数的梯度确定每个参数的量化位宽的<strong>自适应方法(</strong>如果某个权重对损失敏感（梯度大），说明它重要 → 分配更高精度<strong>)</strong>。已经出现了几项研究[152]、[153]、[154]来支持基于特定任务环境自适应地确定最佳量化比特宽度。此外，<strong>为了最小化量化导致的精度损失</strong>，Yu和Shi【155】引入了使用卷积核作为量化单元的压缩方法。周等人。[156]提出了增量量化方法，将训练好的CNN的权重以2的指数幂的形式映射到比特，通过二进制移位操作促进模型计算。</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>思路</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>均匀量化（Uniform Quantization）</strong></td>
+<td>固定步长划分数值区间</td>
+<td>简单、高效</td>
+<td>信息丢失明显</td>
+</tr>
+<tr>
+<td><strong>非均匀量化（Non-uniform Quantization）</strong></td>
+<td>动态步长或指数间隔（如2^k）</td>
+<td>准确率高</td>
+<td>实现复杂</td>
+</tr>
+<tr>
+<td><strong>混合精度量化（Mixed Precision）</strong></td>
+<td>不同层用不同比特宽度</td>
+<td>平衡性能与精度</td>
+<td>训练复杂</td>
+</tr>
+<tr>
+<td><strong>自适应量化（Adaptive Quantization）</strong></td>
+<td>根据梯度或任务动态调整</td>
+<td>最智能</td>
+<td>计算开销高</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>总体而言，（i）参数聚类将相似的参数聚类在一起，可以显著降低模型规模。然而，它可能会导致细粒度信息的丢失，从而潜在地影响模型性能。(ii)哈希共享使用哈希函数对参数进行分组。这种方法可以有效地减少内存需求，但可能会引入哈希冲突，其中不同的参数被错误地映射到相同的表示，从而导致潜在的性能下降。(iii)参数量化降低了参数的精度，将它们从浮点转换为低位表示。该方法极大地减小了模型大小，并且可以通过利用整数算法来加速推理。然而，由于精度降低，激进的量化会导致模型精度的显著损失。因此，必须仔细实现它们，以平衡模型大小、推理速度和准确性之间的权衡。</p>
+<h3 id="轻量级网络的手动设计和神经架构搜索"><a href="#轻量级网络的手动设计和神经架构搜索" class="headerlink" title="轻量级网络的手动设计和神经架构搜索"></a>轻量级网络的手动设计和神经架构搜索</h3><h4 id="轻量级网络的人工设计"><a href="#轻量级网络的人工设计" class="headerlink" title="轻量级网络的人工设计"></a>轻量级网络的人工设计</h4><p>一些研究侧重于制作高效的轻量级模块和网络，也是为了网络优化，如fire模块【157】、Xception模块【158】、深度卷积模块【19】、具有线性瓶颈的反向残差【159】和挤压和激励模块【160】。手动设计轻量级网络需要考虑各种因素，如层间连接、DNN深度和卷积层的计算设置，需要根据模型性能不断调整网络结构。有效的设计依赖于设计师广泛的专业知识、领域知识、经验和直觉。然而，基于经验和直觉的手动设计并不能保证目标任务的最优性，并且手动在大解空间中搜索最优解是不切实际的。</p>
+<h4 id="神经架构搜索"><a href="#神经架构搜索" class="headerlink" title="神经架构搜索"></a>神经架构搜索</h4><p>相比之下，神经架构搜索（NAS）【161】类似于机器学习中的超参数优化，自动探索和设计神经网络架构，以实现特定任务的峰值性能。NAS技术由三个主要部分组成：<strong>搜索空间、搜索策略和性能评估</strong>。基于NAS的轻量级网络设计旨在<strong>通过NAS技术获得轻量级的网络结构</strong>。</p>
+<h5 id="间接搜索"><a href="#间接搜索" class="headerlink" title="间接搜索"></a>间接搜索</h5><p>一种方法是使用现有的轻量级神经网络结构作为框架，然后使用NAS对网络进行微调。例如，无代理NAs[162]、MDENAS[163]、MNasNet[164]、MobileNet-V3[160]、FB-Net[165]、ChamNet[166]、EfficientNet[167]和FB-Net-V2[168]都建立在MobileNetV2之上，作为其搜索和调整的基础。MobileNet信元(cells)的搜索空间主要包括<strong>可分离卷积的类型、跳过连接的类型、信道计数、卷积核大小、扩展比和层计数</strong>。</p>
+<h5 id="直接搜索"><a href="#直接搜索" class="headerlink" title="直接搜索"></a>直接搜索</h5><blockquote>
+<p>让 NAS 直接去搜索 <strong>轻量化架构本身</strong>，包括网络层数、卷积类型、通道数、比特宽度等，而不是“在别人造好的架子上调整螺丝”。  </p>
+</blockquote>
+<p>另一种方法涉及直接搜索轻量级网络结构。在【169】中，具有由二值化卷积组成的搜索空间的二值化NAS被引入到部分连接可微架构搜索中，以产生高度压缩的模型。Chen等人。[170]将信道采样和操作空间缩减引入可微NAS中，以显著降低搜索成本。他们使用基于绩效的策略来丢弃效率较低的潜在操作。Shen等人。[171]提出了一种紧凑和精确的二进制CNN的自动搜索框架，将每层中的通道数编码到搜索空间中，并使用进化算法对其进行优化。实验表明，该方法可以以可接受的模型大小和计算开销产生二进制CNN，达到与全精度模型匹配的性能。</p>
+<h5 id="搜索策略"><a href="#搜索策略" class="headerlink" title="搜索策略"></a>搜索策略</h5><p>有各种搜索策略可用，包括随机搜索、贝叶斯优化、进化算法、强化学习和基于梯度的方法。最近的NAS研究集中于通过强化学习和基于梯度的方法探索搜索空间[172]，[173]。</p>
+<h5 id="NAS的限制"><a href="#NAS的限制" class="headerlink" title="NAS的限制"></a>NAS的限制</h5><p>总体而言，NAS在自动化高性能轻量级网络设计方面具有巨大潜力。然而，它有以下几个限制。（i）在间接搜索方法中，利用预先存在的轻量级神经网络结构/框架进行后续经由NAS策略的微调倾向于将探索空间限制在预定义的架构。这种方法可能会无意中忽略更优化或创新的网络结构。（ii）在直接搜索方法中，尽管它允许直接探索轻量级网络结构，但设置搜索空间本身可能具有挑战性。太大的搜索空间可能导致低效的搜索，而太小的搜索空间可能不包含有效的网络架构。（iii）NAS通常需要大量的计算资源。为了找到最优的网络架构，需要评估大量不同的架构，这往往涉及到充分训练每个架构并评估其性能。尽管最近的一些方法旨在减少这种计算负担，但NAS仍然是一个资源密集型过程。（iv）NAS涉及多个组件和超参数的选择，导致架构缺乏可解释性，难以理解和调整。</p>
+<h3 id="总结与经验教训"><a href="#总结与经验教训" class="headerlink" title="总结与经验教训"></a>总结与经验教训</h3><p>在物联网和嵌入式设备上部署DL是端边云协作框架的一个重要方面。在本节中，我们回顾了最近主流的DLM压缩方法，并得出以下经验教训。</p>
+<ol>
+<li>剪枝和稀疏化的整体和系统考虑</li>
+</ol>
+<p>剪枝和稀疏化的整体和系统考虑：剪枝方法有两种主要形式：训练后剪枝和初始化时剪枝。训练后剪枝包括预训练一个大的过参数化模型，然后迭代地剪枝不重要的权重，然后进行微调。初始化时的剪枝优先考虑模型结构超重，旨在从一开始就创建一个更稀疏的网络。然而，模型结构和参数是相互关联的，需要开发整体和系统的剪枝方法，在这两个方面之间取得平衡。这也有望增强DLM的可解释性。</p>
+<ol>
+<li>参数共享和量化需要与其他方法协作</li>
+</ol>
+<p>参数共享涉及将参数映射到更小的数据空间，有效地减少存储需求，特别是在全连接层中。然而，它并不容易概括，例如，它在卷积层的应用仍然具有挑战性。相对而言，参数量化具有良好的兼容性，在实际使用中可以与其他压缩技术相结合。然而，它在压缩率方面面临限制，可能会损害网络容量和功能质量。此外，<strong>量化将噪声引入梯度信息</strong>，使得基于梯度的训练过程中的收敛更具挑战性，二值化网络经历更显著的精度下降。</p>
+<ol>
+<li>人工设计和NAS需要创造性和探索性</li>
+</ol>
+<p>一方面，轻量级网络的人工设计依赖于设计师的专业知识、直觉和实验。由于其独特的结构，这些网络通常与其他压缩和加速方法的兼容性有限。同时，基于轻量级卷积核的模型可能由于其有限的容量而难以有效地泛化特征。另一方面，当前的NAS方法通常建立在作为主干网络的现有模型上，并且涉及用于结构搜索的手动选择或启发式策略，限制了搜索空间并潜在地导致次优解。<strong>未来的发展可能涉及利用强化学习等策略来自动化网络结构搜索并实现性能更好的网络结构</strong>。</p>
+<ol>
+<li>未来趋势</li>
+</ol>
+<p>以ChatGPT、盘古为例的基础大模型快速推进，迎来了在边缘或终端设备上高效、高性价比部署的需求。然而，现有的压缩和加速技术主要是为CNN定制的，并且通常只关注软件级优化。因此，<strong>设计专门针对大型模型定制的专用压缩技术和硬件架构已经成为一种势在必行的趋势</strong>。</p>
+<h1 id="深度学习的模型划分技术-针对推理"><a href="#深度学习的模型划分技术-针对推理" class="headerlink" title="深度学习的模型划分技术(针对推理)"></a>深度学习的模型划分技术(针对推理)</h1><p>模型划分是端边云模型分布式协同训练和协同推理的一个重要方面。与仅涉及前向计算的推理相比，端边云上下文中的并行训练需要节点之间频繁交换参数和梯度信息。这可能导致可推广性和效率的降低(难以在端-边-云环境上部署)。因此，工业界和学术界都非常关注模型分布式协同推理。<strong>本节旨在介绍专门为端-边-云协同推理设计的模型划分技术</strong>。这里介绍的相关概念和技术也可以为协同训练场景提供有价值的见解。</p>
+<h2 id="层级划分"><a href="#层级划分" class="headerlink" title="层级划分"></a>层级划分</h2><p>用于端边云协同推理的层级划分的概念源于以下几个关键观察结果。（i）DLM的总执行时间受模型计算时间和数据传输时间的影响。在基于云的DL中，主要瓶颈在于数据源和云之间的数据传输开销。（ii）在DLM内存在中间层，其中<strong>输出数据量明显小于原始数据</strong>，这为数据传输期间的较低等待时间和减少能量消耗提供了机会。例如，tiny YOLOv2的输入数据量为0.95 MB，而中间层（max5）的输出数据量仅为0.08 MB，减少了93%【174】。(iii)增强的计算能力可以减少DLM或其组件的计算时间，潜在地导致超过端-边缘-云节点之间的数据传输时间的时间节省。</p>
+<p>这些观察结果构成了将DLM划分为多个部分并跨端-边-云计算节点部署它们的基础。如图4所示，这些段以流水线方式串行运行，每个分区的输出作为下一个分区的输入，所有分区都通过网络互连。实现这种层级计算分区策略的关键挑战是确定DLM内的最佳分区点，<strong>同时考虑资源约束，例如能量、计算能力、存储和动态网络条件</strong>。目标是满足延迟和准确性等性能要求。</p>
+<h3 id="Neurosurgeon"><a href="#Neurosurgeon" class="headerlink" title="Neurosurgeon"></a>Neurosurgeon</h3><p>解决这一挑战的一个值得注意的尝试是Neurosurgeon[101]。首先，它使用基于DLM类型的特定回归模型来预测端节点和云节点上每一层的执行时间和能耗。这些预测模型利用输入变量，如输入和输出特征图的大小和数量，以及输入神经元的数量。然后，Neurosurgeon评估各种分区方案，以确定最佳分区点，最大限度地减少端边云场景的延迟或能耗。在8个DLM的实验测试中，与纯云DLM执行相比，Neurosurgeon为移动设备实现了3.1倍（最高达40.7倍）的平均运行时间加速和59.5%（最高达94.7%）的平均能耗降低。此外，该框架将云数据吞吐量平均提高了1.5倍（最高可达6.7倍）。</p>
+<p>Neurosurgeon开辟了面向端-边-云协同推理的层级计算分区研究领域。然而，它仍然有一定的局限性，值得考虑：</p>
+<ol>
+<li>最优性：Neurosurgeon的目标是将一个DLM分成两部分，并在终端设备上执行前端部分，在云服务器上执行后端部分。这可能不是最佳解决方案，因为DLM中可能存在多个分区点，从而允许在不同的端边云节点上计算不同的层。此外，Neurosurgeon用于估计移动设备和云服务器上的延迟和计算功耗的预测模型存在预测准确性问题。Caffe、TensorFlow和PyTorch等编程框架的运行时优化导致一系列层的执行时间不同于每个层的独立执行时间之和，这一事实加剧了这种情况[102]、[175]。</li>
+<li>适应性：随着DLM变得越来越复杂，结合了剩余连接、密集连接和注意力机制等特征，<strong>它们通常采用有向图结构，而不是简单的链状结构</strong>，例如，具有有向无环图（DAG）的GoogleNet和ResNet、长短期记忆或具有递归结构的递归神经网络（RNN）。然而，Neurosurgeon和随后的研究【176】、【177】、【178】更适合于更简单的链状DLM，如Tiny-YOLOv2、VGG16和AlexNet，并且不能最佳地划分具有更复杂结构（如DAGs或循环结构）的DLM【174】。<strong>为了处理如此复杂的DLM，需要更高级的图论分析。</strong></li>
+<li>动态性：Neurosurgeon的预测模型是针对特定的硬件平台和网络环境提前构建的。然而，端-边-云设备的日益多样性和网络条件的不稳定性质带来了挑战。为每个独特的硬件和网络环境创建预测模型需要大量的测量和资源，这使得适应端边云环境中的动态变化变得不切实际。</li>
+</ol>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/Neurpsurgeon.png" alt></p>
+<h3 id="DADS"><a href="#DADS" class="headerlink" title="DADS"></a>DADS</h3><p>针对上述问题，胡等人。[174]研究了以DAGs为特征的DLMs的层级划分。他们提出了一种动态自适应DNN手术（ Dynamic Adaptive DNN Surgery, DADS）方案，并在网络负载较轻的情况下，<strong>将分区问题公式化为DAG上的最小割问题</strong>。如图8所示，对于神经网络M，DADS构建了一个DAG模型G=<V，E>，其中V={v1，v2，…，vn}表示G中的n个顶点，每个vi∈V对应于M中的一个层，v1，vn分别表示输入层和输出层，而边描绘了层vi、vj之间的依赖性。基于G和后续步骤，可以构建如图9所示的延迟图G’，为将最优DLM分区问题公式化为G’上的最小割问题铺平道路。</V，E></p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/DADS.png" alt></p>
+<p>步骤1：将分别代表DAG的起点和终点的顶点e和c添加到G。在图9(b)中，这些顶点以红色和灰色突出显示；</p>
+<p>步骤2：将顶点e连接到V中的所有顶点，边的权重<e，vi>表示层i<strong>在云中的执行时间</strong>。这由图9(b)中的红色边缘示出；<code>&lt;e, v_i&gt;</code> = “如果把层 i 放到云端执行，增加的代价”  </e，vi></p>
+<p>步骤3：将V中的所有顶点连接到顶点c，边权重<vi，c>表示层i<strong>在边中的执行延迟</strong>ei。这些连接在图9(b)中被描绘为蓝色边缘；<code>&lt;v_i, c&gt;</code> = “如果把层 i 放到边缘执行，增加的代价”。 </vi，c></p>
+<p>步骤4：将E中每条边<vi，vj>的权重设置为从顶点vi到顶点vj的<strong>数据传输延迟</strong>ti。如果顶点vi具有两个以上的后续顶点，则在vi之后添加一个额外的虚拟顶点vi’，并且边权重<vi，vi’>和边权重<vi’，vj>分别设置为ti和+∞。一个例子是图9(b)中的顶点v1。</vi’，vj></vi，vi’></vi，vj></p>
+<p>一旦构建了延迟图G’，DADS就利用DNN surgery算法来识别将顶点划分为两个不相交集Ve和Vc的最小链路切割，从而实现最小总推理延迟Ttotal。Ve中的顶点和Vc中的顶点对应的神经网络层分别在边缘和云中执行。例如，图9(b)中的Ve={v1}和Vc={v2，v3，v4}。同时，总推理延迟计算为<script type="math/tex">T_{total}=T_e + T_c + T_t</script>，其中<script type="math/tex">T_e = \sum_{v_i \in V_e} e_i</script>表示边缘处的总执行延迟，<script type="math/tex">T_c = \sum_{v_j \in V_c} c_j</script>表示云中的总执行延迟，<script type="math/tex">T_t = \sum_{(i,j) \in E_c} t_i</script>表示连接Ve和Vc的链路的总传输延迟。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T_e</td>
+<td>边缘节点上各层的执行时间</td>
+</tr>
+<tr>
+<td>T_c</td>
+<td>云端上各层的执行时间</td>
+</tr>
+<tr>
+<td>T_t</td>
+<td>跨边缘–云的通信延迟（上传中间特征）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>然而，由于与边缘节点相比，云中每一层需要显著更短的计算时间，DADS可以选择将所有神经网络层分配给云(因为云端算得太快、延迟太低，最小割往往倾向“全放云上”)。这种选择不切实际，忽略了边缘节点和终端设备的优势。此外，DADS的执行可能是耗时的。例如，在树莓派3B平台上划分111层的ResNet-18模型需要超过18.14秒[175]。</p>
+<h3 id="QDMP"><a href="#QDMP" class="headerlink" title="QDMP"></a>QDMP</h3><p>因此，Zhang等[175]在构建时延图G′的过程中引入了额外的传输代价τ，以增强分区方案的真实感。如图9（c）所示，该修改包括添加一个顶点o和三个链路<e，o>、<o，c>和<o，v1>，权重为+∞，0，以及模型相关值，确保<script type="math/tex">\tau > \sum_{v_j \in V} (e_j - c_j) + t_1</script>。还提出了一种测量层计算延迟的新方法，其中<script type="math/tex">t_i = T(1,i) - \max_{j \in i-1} T(1,j)</script>，其中ti表示第i个网络层的执行时间，T（1，i）表示执行第1至第i个网络层所需的总时间(这样能准确反映层间依赖带来的真实延迟)。由于模型的最优划分必须在DAG中两个相邻的切割顶点之间，因此提出了一种称为快速深度模型划分（QDMP, Quick Deep Model Partition）的两阶段算法来解决DAG上的最小切割问题。相比DADS，解速度提升了66.3倍。</o，v1></o，c></e，o></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>边</th>
+<th>权重</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><e, o></e,></td>
+<td>+∞</td>
+<td>禁止直接跳过边缘</td>
+</tr>
+<tr>
+<td><o, c></o,></td>
+<td>0</td>
+<td>云端执行结束连接</td>
+</tr>
+<tr>
+<td><o, v1></o,></td>
+<td>τ（模型相关的传输代价）</td>
+<td>表示端→边或边→云的额外传输成本</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><script type="math/tex">\tau > \sum_{v_i \in V} (e_i - c_i) + t_1</script>相当于给“把所有层放云端”的方案加了一个<strong>很大的惩罚项</strong>，防止 DADS 一味倾向全云端。  </p>
+<h3 id="JointDNN"><a href="#JointDNN" class="headerlink" title="JointDNN"></a>JointDNN</h3><p>虽然QDMP可以为每一层计算更准确的推理时间，但QDMP和DADS只获得一个分区点，<strong>没有考虑能耗、电量、QoS等综合指标</strong>，潜在地导致次优解。相比之下，JointDNN【102】提供了将模型最佳地分割成两个或多个部分的能力，用于跨端和云节点的协作计算。此外，它可以扩展到处理复杂的神经网络，例如具有残差连接的神经网络。JointDNN引入了JointDNN图模型的概念，该模型将DNN表示为具有线性拓扑的不同层序列(每个节点代表一段连续的层，边表示不同计算段之间的衔接（以及通信代价）)。如图10中所描绘的，节点C<sub>i:j</sub>表示在云中计算层i至j，而节点M<sub>i:j</sub>指示在移动设备上计算层i至j。使用这种表示，<strong>JointDNN将划分DNN计算的问题转化为在图中寻找从S到F的最短路径</strong>。对于训练和推理，它通过结合移动端电池限制、云拥塞和服务质量要求等约束来构建整数线性规划模型。该模型旨在以最小的延迟或能量成本找到模型的最优分区。然而，<strong>由于JointDNN依赖于特定于应用程序的分析方法来测量运行时DNN架构、网络执行延迟和能耗，因此在动态端-边-云场景中可能效果不佳</strong>。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/JointDNN.png" alt></p>
+<p><details class="lake-collapse"><summary id="ub108790e"><span class="ne-text">JointDNN例子</span></summary><p id="u53487852" class="ne-p"><span class="ne-text">假设有4层DNN：[1][2][3][4]</span></p><p id="ubce4e222" class="ne-p"><span class="ne-text"> JointDNN 图会包含：  </span></p><p id="ud7254162" class="ne-p"><span class="ne-text">M1:1, M1:2, M1:3, M1:4</span></p><p id="uf16eeca7" class="ne-p"><span class="ne-text">C1:1, C1:2, C1:3, C1:4</span></p><p id="u97736870" class="ne-p"><span class="ne-text">M2:4, M3:4, ...</span></p><p id="u01e65af8" class="ne-p"><span class="ne-text">起点 S → F 的不同路径可能是：</span></p><ol class="ne-ol"><li id="u5c5a59eb" data-lake-index-type="0"><span class="ne-text">S → M1:2 → C3:4 → F<br></span><span class="ne-text">（前两层在端，后两层在云）</span></li><li id="u848ce449" data-lake-index-type="0"><span class="ne-text">S → M1:1 → C2:2 → M3:4 → F<br></span><span class="ne-text">（端→云→端）</span></li><li id="u8cfabb9e" data-lake-index-type="0"><span class="ne-text">S → C1:4 → F<br></span><span class="ne-text">（全云方案）</span></li></ol><p id="uc3f55794" class="ne-p"><span class="ne-text">每条路径的总代价（延迟+能耗）不同。<br></span><span class="ne-text">JointDNN 用最短路径算法（或整数规划）找到代价最小的一条。</span></p></details></p>
+<h3 id="层级划分总结"><a href="#层级划分总结" class="headerlink" title="层级划分总结"></a>层级划分总结</h3><p>总的来说，DADS、QDMP和JointDNN拥有将DLM建模为DAG并执行分区的能力。尽管各具优势，但它们仍面临以下共同的问题和挑战。(i)这些方法需要针对特定于某些硬件和通信环境的网络层的计算等待时间的事先测量。这种对动态环境适应性的缺乏可能是一种限制。（ii）所有三种方法都依赖于在端（边缘）和云上维护完整的DLM来支持动态分区(根据当前网络延迟、带宽、负载情况，动态决定在哪一层切割最优)。然而，随着DLM规模的不断增长，终端或边缘节点上的存储空间变成一个约束。结合模型压缩技术可能是进一步减小模型大小和计算负载的潜在解决方案。例如，Auto-Split【12】联合优化了边缘设备上权重和层激活的分割点和位宽，而BBNet【103】结合了通道剪枝、特征压缩和模型分区方法(在划分前对模型进行通道剪枝，然后对传输特征图进行特征压缩(设计特征压缩和解压模块)，最后再执行模型划分)。（iii）<strong>网络通信仍是端边云场景的瓶颈</strong>。为了解决这一挑战，<strong>可以使用数据压缩技术</strong>，例如无损压缩[102]、有损压缩[176]和JPEG特征编码器[179]来减少在终端设备、边缘节点和云之间传输的数据量。然而，需要注意的是，数据压缩通常以一定水平的推理准确性为代价。</p>
+<h2 id="神经元级划分"><a href="#神经元级划分" class="headerlink" title="神经元级划分"></a>神经元级划分</h2><p>神经元级划分涉及在单个神经元的粒度上，如权重矩阵、滤波器、卷积核等。沿着特定维度分成几个部分。然后在端-边-云节点上分别计算这些分区。神经元级分区有两种主要策略：<strong>通道分区和空间分区</strong>。</p>
+<h3 id="通道分区"><a href="#通道分区" class="headerlink" title="通道分区"></a>通道分区</h3><p>通道分区策略可分为输入数据通道划分和输出数据通道划分(都是针对一层的划分)。</p>
+<h4 id="输入数据通道划分-对输入数据的通道进行划分"><a href="#输入数据通道划分-对输入数据的通道进行划分" class="headerlink" title="输入数据通道划分(对输入数据的通道进行划分)"></a>输入数据通道划分(对输入数据的通道进行划分)</h4><p>如图11（b）所示，上层神经元{a1，a2，a3，a4}产生的输出数据{I1，I2，I3，I4}分为多个子集，例如{I1，I2}，{I3，I4}，然后将其作为输入传输到下游计算节点。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/neuron-level partition.png" alt></p>
+<p>因此，每个节点拥有计算输出子数据集所需的DLM权重参数的关键部分，例如{O1,1,O2,1,O3,1,O4,1}或{O1,2,O2,2,O3,2,O4,2}。随后，来自不同节点的输出子数据集被聚合(例如，使用向量加法方案)，以形成完整的输出数据集{O1，O2，O3，O4}，然后将其转发到下一层。以卷积层为例，如图12所示，RGB图像作为输入，由3个通道组成，对应每个滤波器内的3个内核。将这3个核的输出相加以生成滤波器的输出特征图。如果有4个滤波器，则产生4个特征图（4个通道）作为输出。卷积层的输入数据通道分区具体涉及对内核进行分区。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/Input data channel partitioning of a convolutional layer.png" alt></p>
+<p>输入数据集根据每个通道的计算节点数量进行划分，每个节点使用相应的内核来计算输入特征图。然后聚合特征图以用于下一层中的后续处理。</p>
+<h4 id="输出数据通道划分-对中间模型参数进行划分"><a href="#输出数据通道划分-对中间模型参数进行划分" class="headerlink" title="输出数据通道划分(对中间模型参数进行划分)"></a>输出数据通道划分(对中间模型参数进行划分)</h4><p>如图11（c）所示，该策略涉及将所有输出数据{I1，I2，I3，I4}从上层的神经元{a1，a2，a3，a4}传输到计算节点。每个节点拥有权重参数的必要部分，以生成对应于输入数据的输出数据子集，例如{O1，O2}和{O3，O4}。来自所有节点的输出数据被合并以获得完整的输出数据{O1，O2，O3，O4}。在卷积层的上下文中，输出数据通道分区基本上涉及对滤波器进行分区。如图13所示，滤波器分布在两个计算节点上，每个计算节点拥有输入数据的完整副本。这些单独的滤波器用于处理输入数据并产生相应的特征图。随后，组合所有特征图以形成用于下一层的输入数据。输出数据通道划分在DLM训练期间提供了更多优点，因为它降低了与同步网络参数相关联的通信成本。然而，<strong>将输入数据分发到所有计算节点会引入显著的额外通信开销，这使得输出数据通道划分对于推理场景不太实用【180】</strong>。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/output data channel partitioning of a convolutional layer.png" alt></p>
+<h4 id="实际应用场景"><a href="#实际应用场景" class="headerlink" title="实际应用场景"></a>实际应用场景</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>含义</th>
+<th>例子(假设有一个三层卷积网络Conv1 → Conv2 → Conv3，两个节点A、B)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>逐层划分</strong></td>
+<td>每一层单独划分通道并并行执行(每个节点只保存该层部分权重参数  )</td>
+<td>Conv1: A,B 并行 + 聚合  <br>Conv2:  A,B 并行 + 聚合  <br>Conv2:  A,B 并行 + 聚合</td>
+</tr>
+<tr>
+<td><strong>融合层划分</strong></td>
+<td>把多层卷积层合并成一个整体单元进行通道划分(把<strong>若干连续的层打包成一个“计算块（fused block）”</strong>)</td>
+<td>Conv1: Conv1+Conv2 都在 A,B 上执行 <br> Conv2:  Conv1+Conv2 都在 A,B 上执行  <br>Conv3:   Conv3 仍可单独划分或放云端</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在实际应用中，通道划分策略可以采用<strong>逐层或融合层</strong>的方式实现。例如，DeeperThings【181】采用两层融合方法，最初利用输出数据通道策略，随后在多设备并行计算期间针对CNN中的卷积层采用输入数据通道策略。与逐层通道划分相比，融合层方法被证明在降低设备之间的通信成本方面是有效的，因为它仅需要用于第一层的输入和最后一层的输出的节点之间的通信。然而，它确实对节点的计算和存储资源提出了更高的要求。</p>
+<h3 id="空间分区"><a href="#空间分区" class="headerlink" title="空间分区"></a>空间分区</h3><p>空间分区涉及将输入或输出数据分成几个部分，并跨端-边缘-云节点处理这些分区。在该方法中，如图12（d）所示，输入数据{I1，I2，I3，I4}被分割成段，例如{I<sub>1,1</sub>，I<sub>2,1</sub>，I<sub>3,1</sub>，I<sub>4,1</sub>}和{I<sub>1,2</sub>，I<sub>2,2</sub>，I<sub>3,2</sub>，I<sub>4,2</sub>}。这些段中的每一个数据段然后被传输到<strong>拥有所有模型参数</strong>的计算节点。这些节点处理分区的输入数据以生成分段的输出数据，例如{O<sub>1,1</sub>,O<sub>2,1</sub>,O<sub>3,1</sub>,O<sub>4,1</sub>}和{O<sub>1,2</sub>,O<sub>2,2</sub>,O<sub>3,2</sub>,O<sub>4,2</sub>}。最后，来自所有节点的分段输出数据被组合以形成完整的输出数据{O1，O2，O3，O4}。空间分区在降低设备之间的通信成本方面提供了优势，使其适用于涉及大量输入数据的场景。然而，<strong>它要求每个设备维护DLM的副本，这对于具有有限存储容量的资源受限设备可能是不切实际的</strong>。</p>
+<h4 id="网格分区"><a href="#网格分区" class="headerlink" title="网格分区"></a>网格分区</h4><p>如图14（a）所示，网格划分用于将输出数据（特征图）横向和纵向分为n个部分。通过考虑卷积核的大小，以及输出特征图的每个片段所需的输入特征图的尺寸和位置，可以将输入数据划分为“n”个副本，用于跨卷积层的分布式处理。</p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/output data channel partitioning of a convolutional layer-2.png" alt></p>
+<h4 id="垂直分区"><a href="#垂直分区" class="headerlink" title="垂直分区"></a>垂直分区</h4><p>如图14(b)所示，垂直分割涉及将输出数据(特征图)划分为n个垂直段。垂直分割还依赖于基于卷积核的大小以及每个输出段所需输入特征图的尺寸和位置的反向推理。</p>
+<h4 id="空间分区总结"><a href="#空间分区总结" class="headerlink" title="空间分区总结"></a>空间分区总结</h4><p>这些划分策略通常应用于卷积层，以优化DLM中的分布式处理。值得注意的是，除了1*1卷积，网格划分和垂直划分方法都可能导致图14（a）和（b）中输入特征图的重叠部分(因为卷积操作的“感受野（receptive field）”跨越空间边界)。这种重叠会导致冗余的通信成本。具体地，对于网格划分，如果输出特征图（具有m × m的大小）被相等地划分为n个副本，则可以使用公式<script type="math/tex">\left[ sm + \sqrt{n}(f - s) \right]^2 - \left( sm + f - s \right)^2</script>)来计算生成的重叠数据量。对于垂直分区，重叠数据可以计算为<script type="math/tex">(sm + f - s)^2 \cdot \left[ sm + n(f - s) \right] - (sm + f - s)^2</script>。这里，卷积核的大小为f × f，s为步长，通常f≥s。当n相同时，网格划分产生的重叠趋于小于垂直划分。因此，在这些空间划分方法之间的选择应该仔细进行，考虑到特定场景，以减少设备之间建立的通信信道的数量并减少数据传输时间。</p>
+<p>类似于通道分区，空间分区策略可以实现为逐层或融合层方法。多层融合方法是有利的，因为它们可以降低节点之间的通信成本并实现显著的计算加速。毛等人。[109]设计了BODP（偏置一维分区）模型分区方法，该方法使用垂直分区技术分割VGG16的每个卷积层。赵等人。[110]设计了DeepThings，这是一种面向边缘节点的分布式CNN部署框架，它利用融合层的网格划分方法来减少终端设备的内存使用和设备间通信开销。然而，DeepThings没有优化CNN中的全连接层，这已经在DeepThings中解决了[181]。Zhou等[180]提出了<strong>一种基于计算资源状态和网络条件动态选择最优分区策略的自适应CNN加速框架</strong>。他们使用了带有卷积层融合的网格划分。实验结果显示，在8个无线连接的Raspberry Pi3设备上，三种流行的CNN模型的加速范围为1.9至3.7倍。</p>
+<h2 id="总结与经验教训-1"><a href="#总结与经验教训-1" class="headerlink" title="总结与经验教训"></a>总结与经验教训</h2><h3 id="端到端环境感知层级分区"><a href="#端到端环境感知层级分区" class="headerlink" title="端到端环境感知层级分区"></a>端到端环境感知层级分区</h3><p>使用层级分区的DLM的切点的选择可以根据几个因素而变化，例如模型大小、可用计算资源、端-边-云节点的数量、网络条件和优化目标，例如端到端推理延迟、能量消耗、优化时间等。为了确定最佳划分点，特别是对于具有有向图结构的DLM，可以应用图论分析和路径优化方法。应特别注意具有有向循环图结构的DLM，这需要进一步探索。鉴于终端设备中功率、存储和网络带宽的动态性质，开发用于端到端层级分区的轻量级和自适应方法仍然是一个持续的挑战。</p>
+<h3 id="定制神经元级分区"><a href="#定制神经元级分区" class="headerlink" title="定制神经元级分区"></a>定制神经元级分区</h3><p>神经元级分区适用于具有大量层的较大DLM，使其成为跨资源受限的端-边-云节点分布一个或多个水平层的有用方法。该方法还可以与层级分区相结合，用于细粒度任务。然而，由于模型结构和设备类型的多样性，通常需要定制的神经元级分区方法，可能与硬件优化相结合。同时，神经元级分区可以增加计算节点之间的通信和数据同步，使其更适合在健壮的网络环境中运行的DLM。</p>
+<h3 id="未来趋势"><a href="#未来趋势" class="headerlink" title="未来趋势"></a>未来趋势</h3><p>DL模型变体的复杂性不断增加（例如，动态DL可以根据不同的任务和输入有条件地跳过或添加网络层的计算，如早期退出、跳层和动态路由），以及边缘云智能协作范例的层出不穷，对端-边-云框架中高效、动态和灵活的分区和编排大规模DLM提出了挑战。这些问题可以通过深度学习即服务（DLaaS）架构来解决，这是一种开发面向服务的DL服务和应用的新兴范例。在端-边-云算力网络中部署DLaaS有以下几个优点：</p>
+<h4 id="模块化和个性化"><a href="#模块化和个性化" class="headerlink" title="模块化和个性化"></a>模块化和个性化</h4><p><strong>DLaaS将DL模型分解为独立的服务或微服务</strong>，每个服务或微服务专注于特定的任务或功能。这种模块化特性使得DL模型更易于管理和个性化，以支持动态DL和边缘云智能协作范例。</p>
+<h4 id="灵活性和可扩展性"><a href="#灵活性和可扩展性" class="headerlink" title="灵活性和可扩展性"></a>灵活性和可扩展性</h4><p>大规模DL服务可以定制和优化，以满足动态需求和资源可用性。一方面，DLaaS支持选择最适合每个DL微服务的端边云计算节点。另一方面，DL微服务可以根据负载的波动独立扩展。</p>
+<h4 id="独立性和稳健性"><a href="#独立性和稳健性" class="headerlink" title="独立性和稳健性"></a>独立性和稳健性</h4><p>DL微服务可以独立部署和更新，允许在不影响整个系统的情况下升级或修复单个模型。此外，还可以通过冗余部署DL微服务来增强DL系统的鲁棒性。</p>
+<h4 id="效率和快速响应"><a href="#效率和快速响应" class="headerlink" title="效率和快速响应"></a>效率和快速响应</h4><p>DL微服务允许跨多个应用程序重利用，节省开发时间和资源。此外，DLaaS使智能能够下沉到靠近用户的边缘和终端，以获得快速响应和低延迟的能力。</p>
+<p><strong>因此，基于端-边-云框架中的DLaaS对大规模DLM进行分区编排将成为未来的大趋势</strong>。</p>
+<h1 id="深度学习的知识迁移技术"><a href="#深度学习的知识迁移技术" class="headerlink" title="深度学习的知识迁移技术"></a>深度学习的知识迁移技术</h1><p>有效的知识共享在促进端边云系统之间的相互学习和协作更新方面发挥着关键作用。本节重点介绍DL领域内的知识转移技术，<strong>包括迁移学习和知识蒸馏</strong>。</p>
+<h2 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h2><ul>
+<li><strong>源域（source domain）</strong>：数据多、标注全；</li>
+<li><strong>目标域（target domain）</strong>：数据少、分布不同或无标注。</li>
+</ul>
+<p>迁移学习是利用来自源领域或任务的现有知识来增强目标领域或任务的学习的实践。迁移学习的有效性通常取决于源域和目标域或任务之间的相关程度。识别这些领域之间共享的共同知识对于成功的迁移学习至关重要。根据知识的性质，如III-C节所示，端-边-云迁移学习可以分为以下类型。</p>
+<h3 id="基于数据的迁移学习"><a href="#基于数据的迁移学习" class="headerlink" title="基于数据的迁移学习"></a>基于数据的迁移学习</h3><p>它旨在共享源领域知识，包括实例知识、数据表示知识和数据关系知识。</p>
+<h4 id="基于实例知识的迁移学习"><a href="#基于实例知识的迁移学习" class="headerlink" title="基于实例知识的迁移学习"></a>基于实例知识的迁移学习</h4><p>它从源域数据集中仔细选择相关样本，以辅助目标域内的训练。<strong>加权和重要性抽样是两种主要策略</strong>。例如，提出ITrAdaBoost算法[182]根据实例到目标域的分布距离来调整源域中错误分类实例的权重，然后将这些加权样本与来自目标域的样本集成以训练目标域DLM。</p>
+<h4 id="基于数据表示知识的迁移学习"><a href="#基于数据表示知识的迁移学习" class="headerlink" title="基于数据表示知识的迁移学习"></a>基于数据表示知识的迁移学习</h4><p>它旨在<strong>找到源域和目标域的公共特征空间</strong>，包括将源特征变换以匹配目标特征，以及将源特征和目标特征都变换为新的特征表示。通过这样做，它有助于利用来自源域的现有标记数据样本在这个新的特征空间内进行训练，从而增强迁移学习能力。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>(a) 把源域特征变换成目标域风格</strong></td>
+<td>例如：对源域图像做风格迁移（style transfer），让它们更像目标域图像。</td>
+</tr>
+<tr>
+<td><strong>(b) 同时把源域和目标域都映射到一个新的中间空间</strong></td>
+<td>找一个中间表示（latent space），使得两个域的特征分布在此空间中尽量相似。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="基于数据关系知识的迁移学习"><a href="#基于数据关系知识的迁移学习" class="headerlink" title="基于数据关系知识的迁移学习"></a>基于数据关系知识的迁移学习</h4><p>它使用实例之间的相关性，通常以逻辑关系或规则的形式，源自源域和目标域。利用这种相关性来促进领域之间的知识转移，从而增强目标领域中的学习过程。</p>
+<h3 id="基于知识的迁移学习模型"><a href="#基于知识的迁移学习模型" class="headerlink" title="基于知识的迁移学习模型"></a>基于知识的迁移学习模型</h3><p>这种形式的迁移学习涉及利用来自源域DLM的预先存在的知识，<strong>该知识包括参数或先前的超参数，被归类为结构化知识（如第III-C节所述）</strong>。本质上，已经在源域中针对一个任务预训练的模型可以被微调或适配以在目标域中执行另一个特定任务。例如，来自云DLM的诸如权重参数的结构化知识可以与基于边缘或端的DLM共享，所述DLM使用新的本地数据进一步训练或个性化。<strong>此外，模型知识超越了结构知识，包含了特征知识和模型关系知识。然而，这些类型的模型知识的迁移通常不属于经典迁移学习的范围，并且通常通过应用知识蒸馏技术来实现</strong>。</p>
+<h3 id="高级迁移学习技术"><a href="#高级迁移学习技术" class="headerlink" title="高级迁移学习技术"></a>高级迁移学习技术</h3><p>从技术角度来看，出现了许多创新技术和方法。虽然篇幅限制阻止了对这些技术的详尽讨论，但迁移学习的一些最新进展可以在文献[44]、[183]、[184]中找到。</p>
+<h4 id="Meta-learning-元学习"><a href="#Meta-learning-元学习" class="headerlink" title="Meta-learning 元学习"></a>Meta-learning 元学习</h4><p>它旨在通过有效学习“如何学习”来增强跨多个任务或领域的泛化性能。这涉及自动选择适当的模型架构、优化算法和超参数，有助于在新任务上快速实现强大的性能。</p>
+<h4 id="迁移强化学习"><a href="#迁移强化学习" class="headerlink" title="迁移强化学习"></a>迁移强化学习</h4><p>结合迁移学习和强化学习的技术，这种方法在不同的任务中利用强化学习的共享知识和经验。这导致针对目标任务的策略的加速学习和优化。</p>
+<h4 id="迁移生成对抗网络"><a href="#迁移生成对抗网络" class="headerlink" title="迁移生成对抗网络"></a>迁移生成对抗网络</h4><p>从生成对抗网络中汲取灵感，该方法采用迁移学习将数据从源域映射到目标域。这种映射支持目标域中的数据扩充和样本生成。</p>
+<p><strong>GAN</strong> 的能力是：从已有分布中“生成”出新的样本（数据生成 / 数据增强），所以用 GAN 把源域数据“变换成”目标域风格的数据  </p>
+<h4 id="增量迁移学习"><a href="#增量迁移学习" class="headerlink" title="增量迁移学习"></a>增量迁移学习</h4><p>该方法旨在通过不断引入新的目标任务来实现渐进式迁移学习。DLM通过逐步学习积累知识，并随着时间的推移适应越来越多的目标任务。</p>
+<h4 id="多模态迁移学习"><a href="#多模态迁移学习" class="headerlink" title="多模态迁移学习"></a>多模态迁移学习</h4><p>该技术旨在处理多模态数据，有助于跨不同数据模态传输和共享信息。它通过利用来自不同来源的见解来实现目标任务的全面学习。</p>
+<p>总体而言，与模型结构和参数的传输相比，<strong>源域数据的传输通常会产生更高的隐私和通信成本。因此，基于模型知识的迁移学习方法往往更适合端-边-云协同更新的上下文</strong>。同时，这些先进的迁移学习技术各有独特的优势和应用，为多样化、个性化的端边云协同更新场景提供了强大的技术支撑。</p>
+<h2 id="知识蒸馏-1"><a href="#知识蒸馏-1" class="headerlink" title="知识蒸馏"></a>知识蒸馏</h2><p>知识蒸馏最初是为模型压缩而提出的[185]，其目的是将知识从大型“教师”模型转移到紧凑的“学生”模型。最近，它已经在模型增强中找到了应用，专注于通过蒸馏其他DLM的知识来提高DLM的性能，例如相互蒸馏或自蒸馏。与迁移学习强调来自领域数据的知识不同，<strong>知识蒸馏主要强调包括特征知识（中间或输出特征知识）、模型结构知识和模型关系知识在内的模型知识</strong>，如图6所示。例如，经典知识蒸馏的概念涉及训练学生模型以在呈现相同输入时复制教师模型的输出。这个过程旨在使学生模型能够学习教师模型固有的表征能力。</p>
+<h3 id="端边云协同学习中的知识蒸馏"><a href="#端边云协同学习中的知识蒸馏" class="headerlink" title="端边云协同学习中的知识蒸馏"></a>端边云协同学习中的知识蒸馏</h3><p>知识蒸馏过程的配置涉及“教师”和“学生”模型，与端边云架构非常一致。“教师”模型和“学生”模型可以跨端-边-云计算节点部署，实现协同更新。例如，较小的“学生”模型可以部署在边缘或端节点上，而较大的“教师”模型驻留在云端，指导“学生”模型的训练。最近的研究已经确定了知识蒸馏在端边云协同学习中的可行性。<strong>适用于end-edge-cloud环境的知识蒸馏技术包括多教师学习、知识融合、助教、跨模态蒸馏和互蒸馏</strong>。</p>
+<h4 id="Multi-teacher-learning-多教师学习-多对一"><a href="#Multi-teacher-learning-多教师学习-多对一" class="headerlink" title="Multi-teacher learning 多教师学习(多对一)"></a>Multi-teacher learning 多教师学习(多对一)</h4><blockquote>
+<p>利用多个教师对<strong>同一任务</strong>的知识，增强学生的表现  </p>
+</blockquote>
+<p>它涉及在单个学生模型的上下文中使用多个教师模型获得的知识。一种简单的方法是利用由多个“教师”模型通过投票、随机或加权策略生成的软标签或中间/输出特征图[186]、[187]。这有助于增强“学生”模型的性能。同时，“教师”模型所拥有的互补知识[188]、[189]可用于指导“学生”模型的训练。</p>
+<h4 id="Knowledge-amalgamation-知识融合-多对一"><a href="#Knowledge-amalgamation-知识融合-多对一" class="headerlink" title="Knowledge amalgamation 知识融合(多对一)"></a>Knowledge amalgamation 知识融合(多对一)</h4><blockquote>
+<p>将多个教师来自<strong>不同任务</strong>的知识汇聚到一个学生中  </p>
+</blockquote>
+<p>它是将知识从通常与不同任务相关联的多个“教师”模型（多个任务）转移到单个“学生”模型。例如，来自多个“教师”模型的具有最高置信度的软标签知识可用于训练和更新“学生”模型[190]。或者，可以融合来自多个“教师”模型的特征图，以促进“学生”模型的训练和更新[191]、[192]。</p>
+<h4 id="Teacher-assistant-助教"><a href="#Teacher-assistant-助教" class="headerlink" title="Teacher assistant 助教"></a>Teacher assistant 助教</h4><p>指利用中间模型辅助“学生”模型从“教师”模型获取知识[193]。这种方法有效地弥合了“教师”和“学生”模型之间关于模型容量的巨大差异的差距。在端-边-云框架内，可以在边缘部署中等规模的模型（小于“教师”模型，但大于“学生”模型），充当教师助手。它首先从云端的“教师”模型中学习，然后将获得的知识转移到终端设备上的“学生”模型中。</p>
+<h4 id="Cross-modal-distillation-跨模态蒸馏"><a href="#Cross-modal-distillation-跨模态蒸馏" class="headerlink" title="Cross-modal distillation 跨模态蒸馏"></a>Cross-modal distillation 跨模态蒸馏</h4><p>它涉及使用来自不同模态的标记数据来训练教师模型，然后使用教师模型来使用来自其他模态的信息来指导学生模型。这有助于跨模式的知识提炼。<strong>例如，在情感识别中，基于图像的情感识别模型（“教师”）生成的软标签可以指导基于语音的情感识别模型（“学生”）的训练[194]</strong>。跨模态蒸馏有效地利用了多模态样本数据，<strong>但面临着与模态对齐相关的挑战</strong>。</p>
+<h4 id="Mutual-distillation-互蒸馏"><a href="#Mutual-distillation-互蒸馏" class="headerlink" title="Mutual distillation 互蒸馏"></a>Mutual distillation 互蒸馏</h4><p>就是使一组未经训练的“学生”模型能够相互学习[195]、[196]、[197]。获取的知识包括特征知识（如中间或输出特征）、模型结构化知识和模型关系知识。相互蒸馏具有重要意义，因为它允许“学生”模型相互学习，以提高模型性能并加快训练过程[197]。</p>
+<p>知识融合和多教师学习都属于“多教师对单学生”培训模式的范畴。它们的区别在于它们的目标：知识融合使用多个“教师”模型来装备“学生”模型的处理多任务的能力，从而增强其整体泛化能力。相比之下，多教师学习旨在提高“学生”模型在单个特定任务上的表现。一般来说，知识蒸馏技术为端边云协同更新提供了广泛的方法和技术支持。知识蒸馏的最新研究进展可以在文献[46]、[47]、[198]中找到。</p>
+<h3 id="联邦知识蒸馏"><a href="#联邦知识蒸馏" class="headerlink" title="联邦知识蒸馏"></a>联邦知识蒸馏</h3><p>知识蒸馏已被用作一种重要的技术来解决与FL中的通信和计算效率、异构性和个性化相关的挑战。</p>
+<h4 id="资源高效的联邦知识蒸馏"><a href="#资源高效的联邦知识蒸馏" class="headerlink" title="资源高效的联邦知识蒸馏"></a>资源高效的联邦知识蒸馏</h4><blockquote>
+<p>让设备之间不再交换“模型参数”，而是<strong>交换知识</strong></p>
+</blockquote>
+<p><strong>降低通信成本的知识蒸馏式联邦学习</strong>：一方面，在经典的FL范式中，参数服务器和客户端需要密集地交流模型更新信息，导致巨大的通信成本，尤其是当模型包含众多参数时。为了解决这个问题，FL引入了知识蒸馏。例如，在FedKD[199]中，有一个小模型通过相互知识蒸馏从一个大的全局模型中学习，该模型由不同的客户端共享，而不是在客户端和参数服务器之间直接通信大模型。Itahara等人。[200]提出了一种基于蒸馏的半监督FL算法，该算法在公共数据集上交换本地模型的输出，而不是移动设备之间的模型参数，以实现高效通信。同样，Sattler等人。[201]将量化和增量编码引入局部模型的交换输出（软标签）。</p>
+<p><strong>在资源受限设备上训练大模型的蒸馏策略</strong>：另一方面，一系列研究【202】、【203】、【204】专注于在资源受限的设备上训练大模型。例如，He等人。[202]设计了交替最小化方法的变体，在边缘节点上训练小型CNN，并通过知识蒸馏定期将其知识转移到大型服务器端CNN。</p>
+<h4 id="异构联合知识蒸馏"><a href="#异构联合知识蒸馏" class="headerlink" title="异构联合知识蒸馏"></a>异构联合知识蒸馏</h4><p>当前的大多数FL算法都需要具有相同设备上模型的同构本地设备。鉴于端-边-云环境中广泛存在的异构设备，研究【205】、【206】旨在<strong>利用知识蒸馏来使FL训练异构设备上模型以适应异构设备</strong>。Yu等人。[205]提出了一种资源感知FL方法，该方法聚合了来自边缘模型的本地知识，适用于具有不同计算能力的异构设备。张等人。[206]通过zero-shot蒸馏引入了一种具有异构设备上模型的联邦学习框架。</p>
+<h4 id="其他研究-数据异构-非IID、个性化联邦学习"><a href="#其他研究-数据异构-非IID、个性化联邦学习" class="headerlink" title="其他研究(数据异构 非IID、个性化联邦学习)"></a>其他研究(数据异构 非IID、个性化联邦学习)</h4><ul>
+<li>客户端（client）各自持有本地私有数据（Private Data）；</li>
+<li>它们的数据分布往往是 <strong>Non-IID（非独立同分布）</strong>；</li>
+<li>若直接聚合模型参数（FedAvg），就会因为数据差异导致全局模型性能下降</li>
+</ul>
+<p>其他研究旨在解决FL中的数据异质性和个性化问题。一方面，研究【207】、【208】、【209】、【210】、【211】、【212】致力于解决全局模型的非IID挑战，通过从由不同客户端训练的多个教师模型中提取诸如软目标的知识到全局服务器模型。林等人。[207]利用未标记的公共数据集(来自全局模型在的服务器)从多个本地客户端模型获得软标签（logits），然后用这些软标签更新全局模型。同样，朱等人。[208]和张等人。[209]通过用生成模型生成的数据替换公共共享数据集，改进了这种联合知识蒸馏方法。然而，这些软标签可能是错误的，导致全局模型的性能下降。因此，DaFKD【210】被提出来辨别每个客户端模型输出的重要性，以减少错误软标签的影响。此外，FedGKD【211】融合了来自历史全局模型的知识，并指导本地训练，以缓解客户端漂移问题，该问题可能会极大地阻碍全局模型训练的收敛。另一方面，研究[213]、[214]旨在实现客户的模型个性化。在FedICT【213】中，提出了一个双向蒸馏框架，以加强客户端对本地数据的拟合，同时缓解客户端漂移问题。Jin等人。[214]提出了一种通过自知识蒸馏的个性化联合学习框架，允许客户端将以前个性化模型的知识蒸馏到当前的本地模型中(避免灾难性遗忘)。</p>
+<p><details class="lake-collapse"><summary id="u70a1dc9f"><span class="ne-text">公共无标签数据集使用过程</span></summary><h3 id="5e1d24c5"><span class="ne-text">Step </span><span class="ne-text">1️⃣</span><span class="ne-text">：各客户端本地训练</span></h3><p id="ueaf89267" class="ne-p"><span class="ne-text">每个客户端在自己的私有数据上独立训练一个本地模型（teacher）：</span></p><p id="u72f2b2e8" class="ne-p"><span class="ne-text">M</span><span class="ne-text">1</span><span class="ne-text">,</span><span class="ne-text">M</span><span class="ne-text">2</span><span class="ne-text">,</span><span class="ne-text">M</span><span class="ne-text">3</span><span class="ne-text">,</span><span class="ne-text">…</span><span class="ne-text">M_1, M_2, M_3, \dots</span><span class="ne-text">M</span><span class="ne-text">1</span><span class="ne-text">,</span><span class="ne-text">M</span><span class="ne-text">2</span><span class="ne-text">,</span><span class="ne-text">M</span><span class="ne-text">3</span><span class="ne-text">,</span><span class="ne-text">…</span></p><h3 id="6d31cfcc"><span class="ne-text">Step </span><span class="ne-text">2️⃣</span><span class="ne-text">：服务器提供公共未标注样本</span></h3><p id="u84820b14" class="ne-p"><span class="ne-text">服务器准备一份公共数据集：</span></p><p id="u452f8485" class="ne-p"><span class="ne-text">D</span><span class="ne-text">p</span><span class="ne-text">u</span><span class="ne-text">b</span><span class="ne-text">=</span><span class="ne-text">{</span><span class="ne-text">x</span><span class="ne-text">1</span><span class="ne-text">,</span><span class="ne-text">x</span><span class="ne-text">2</span><span class="ne-text">,</span><span class="ne-text">…</span><span class="ne-text">,</span><span class="ne-text">x</span><span class="ne-text">n</span><span class="ne-text">}</span><span class="ne-text">D_{pub} = \{x_1, x_2, \dots, x_n\}</span><span class="ne-text">D</span><span class="ne-text">p</span><span class="ne-text">u</span><span class="ne-text">b</span><span class="ne-text">=</span><span class="ne-text">{</span><span class="ne-text">x</span><span class="ne-text">1</span><span class="ne-text">,</span><span class="ne-text">x</span><span class="ne-text">2</span><span class="ne-text">,</span><span class="ne-text">…</span><span class="ne-text">,</span><span class="ne-text">x</span><span class="ne-text">n</span><span class="ne-text">}</span></p><p id="ue8634c60" class="ne-p"><span class="ne-text">这些样本没有标签，只是输入图片、文本或信号。</span></p><h3 id="c7672448"><span class="ne-text">Step </span><span class="ne-text">3️⃣</span><span class="ne-text">：客户端推理（inference）</span></h3><p id="u4d63ec85" class="ne-p"><span class="ne-text">服务器把 </span><span class="ne-text">D</span><span class="ne-text">p</span><span class="ne-text">u</span><span class="ne-text">b</span><span class="ne-text">D_{pub}</span><span class="ne-text">D</span><span class="ne-text">p</span><span class="ne-text">u</span><span class="ne-text">b</span><span class="ne-text"> 下发给客户端。<br></span><span class="ne-text">每个客户端用自己的模型在这些样本上做预测：</span></p><p id="u75918d53" class="ne-p"><span class="ne-text">M</span><span class="ne-text">i</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">→</span><span class="ne-text">p</span><span class="ne-text">i</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">M_i(x_k) \rightarrow p_i(x_k)</span><span class="ne-text">M</span><span class="ne-text">i</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">→</span><span class="ne-text">p</span><span class="ne-text">i</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span></p><p id="uc84be10d" class="ne-p"><span class="ne-text">其中 </span><span class="ne-text">p</span><span class="ne-text">i</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">p_i(x_k)</span><span class="ne-text">p</span><span class="ne-text">i</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text"> 是 soft label（即类别概率分布）。</span></p><h3 id="4ee5a18d"><span class="ne-text">Step </span><span class="ne-text">4️⃣</span><span class="ne-text">：服务器聚合知识</span></h3><p id="uaefe29a0" class="ne-p"><span class="ne-text">服务器收集所有客户端的预测结果，并进行融合（比如平均或加权）：</span></p><p id="ua5ec610e" class="ne-p"><span class="ne-text">p</span><span class="ne-text">g</span><span class="ne-text">l</span><span class="ne-text">o</span><span class="ne-text">b</span><span class="ne-text">a</span><span class="ne-text">l</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">=</span><span class="ne-text">∑</span><span class="ne-text">i</span><span class="ne-text">w</span><span class="ne-text">i</span><span class="ne-text">⋅</span><span class="ne-text">p</span><span class="ne-text">i</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">p_{global}(x_k) = \sum_i w_i \cdot p_i(x_k)</span><span class="ne-text">p</span><span class="ne-text">g</span><span class="ne-text">l</span><span class="ne-text">o</span><span class="ne-text">ba</span><span class="ne-text">l</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">=</span><span class="ne-text">i</span><span class="ne-text">∑</span><span class="ne-text">w</span><span class="ne-text">i</span><span class="ne-text">⋅</span><span class="ne-text">p</span><span class="ne-text">i</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span></p><h3 id="705734bf"><span class="ne-text">Step </span><span class="ne-text">5️⃣</span><span class="ne-text">：全局模型蒸馏学习</span></h3><p id="ued071008" class="ne-p"><span class="ne-text">服务器利用这些“伪标签”（soft labels）去训练全局模型 </span><span class="ne-text">M</span><span class="ne-text">g</span><span class="ne-text">M_g</span><span class="ne-text">M</span><span class="ne-text">g</span><span class="ne-text">，<br></span><span class="ne-text">使得：</span></p><p id="ueffe7c8e" class="ne-p"><span class="ne-text">M</span><span class="ne-text">g</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">≈</span><span class="ne-text">p</span><span class="ne-text">g</span><span class="ne-text">l</span><span class="ne-text">o</span><span class="ne-text">b</span><span class="ne-text">a</span><span class="ne-text">l</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">M_g(x_k) \approx p_{global}(x_k)</span><span class="ne-text">M</span><span class="ne-text">g</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span><span class="ne-text">≈</span><span class="ne-text">p</span><span class="ne-text">g</span><span class="ne-text">l</span><span class="ne-text">o</span><span class="ne-text">ba</span><span class="ne-text">l</span><span class="ne-text">(</span><span class="ne-text">x</span><span class="ne-text">k</span><span class="ne-text">)</span></p><p id="ueed3e47e" class="ne-p"><span class="ne-text">最终得到一个反映所有客户端综合知识的全局模型。</span></p></details><br>上述方法中的大多数要求公开可用数据集的数据分布应该非常类似于客户端的本地训练数据。然而，无论是否标记，获取或生成这样的数据集都不容易。同时，值得注意的是，所有联邦知识蒸馏方法的有利性质都是以知识蒸馏引起的额外计算开销为代价的。这种额外的计算开销对于资源有限的客户端设备来说可能是具有挑战性的。此外，这些方法还递归地交换模型参数或logits等知识，从而导致隐私问题。龚等人。[215]在FL框架中开发了一种隐私保护和通信高效的方法，<strong>该方法对logits进行量化和添加噪声以进行聚合和蒸馏</strong>。</p>
+<h2 id="基础模型的高效微调"><a href="#基础模型的高效微调" class="headerlink" title="基础模型的高效微调"></a>基础模型的高效微调</h2><p>基础模型通常通过自监督学习在大规模、多样化和未标记的数据集上进行训练，并且可以应用于许多下游任务[216]，[217]。在技术层面上，基础模型是通过迁移学习实现的，其中模型在源域上训练，然后通过微调适应下游任务（目标域）【216】。本小节介绍了具有代表性的高效微调方法的两个分支，<strong>包括参数高效微调和资源高效微调</strong>。</p>
+<h3 id="参数高效微调"><a href="#参数高效微调" class="headerlink" title="参数高效微调"></a>参数高效微调</h3><p>由于计算和存储的高成本，用不同任务的不同实例更新所有参数的全参数微调对于大规模基础模型来说是不切实际的【218】。这需要一个关于参数有效微调的研究分支，<strong>旨在通过更新一小部分模型参数来减少计算和存储开销，从而使基础模型适应下游任务</strong>。一种简单的方法涉及手动或启发式地使基础模型的一小部分参数适应不同的下游任务。例如，BitFit【219】冻结了大部分transformer编码器参数，只训练偏差项和特定于任务的分类层，这仍然可以在几个基准上再现超过95%的性能。然而，这种方法依赖于专家经验，并且需要有针对性地设计特定基础模型。最近的研究引入了适量的可训练参数，通过<strong>在定制的数据集上优化这些附加参数</strong>，促进了预训练的广泛模型的领域适应，显著减少了计算开销并降低了微调基础模型的障碍。<strong>这些方法主要包括基于适配器的微调、基于提示的微调和低秩自适应</strong>。</p>
+<h4 id="Adapter-based-tuning-基于适配器的微调"><a href="#Adapter-based-tuning-基于适配器的微调" class="headerlink" title="Adapter-based tuning 基于适配器的微调"></a>Adapter-based tuning 基于适配器的微调</h4><p>Adapter是小规模和可训练的神经模块，可以集成到基础模型的层中。例如，Adapter被单独插入transformer层中的多头自关注和前馈网络子层之后，并且只有这些Adapter被微调用于域自适应。Adapter的简单实例化包含一个向下投影(down-projection)和一个向上投影(up-projection)[220]。下投影将输入d维特征<!-- 这是一张图片，ocr 内容为： --><br><img src="https://cdn.nlark.com/yuque/0/2025/png/42376787/1761663607847-81bd7054-9478-43f6-836e-6e72a962540d.png" alt>转换为具有参数矩阵<!-- 这是一张图片，ocr 内容为： --><br><img src="https://cdn.nlark.com/yuque/0/2025/png/42376787/1761663624033-40761403-386b-4432-9981-ad399c14b442.png" alt>的r维空间，后跟非线性函数f（·）。然后，上投影<!-- 这是一张图片，ocr 内容为： --><br><img src="https://cdn.nlark.com/yuque/0/2025/png/42376787/1761663650294-c44e4c41-de09-4ae0-b5c3-9603fbb19534.png" alt>将r维表示映射回d维空间，并添加残差连接。由于Adapter已经展示了令人印象深刻的参数调整效率和鲁棒性【221】，因此已被广泛采用。工作[222]、[223]、[224]、[225]致力于设计有效的Adapter和放置策略。例如，AdaMix【223】可以利用Houlsby等Adapter的混合或LoRA等低秩分解矩阵的混合来提高下游任务性能。AdapterDrop[224]在训练和推理期间从较低的transformer层移除Adapter。</p>
+<h4 id="Prompt-based-tuning-基于提示的微调"><a href="#Prompt-based-tuning-基于提示的微调" class="headerlink" title="Prompt-based tuning 基于提示的微调"></a>Prompt-based tuning 基于提示的微调</h4><p>它向原始输入注入带有附加上下文的可训练提示tokens。目前，这些可训练的提示tokens可以合并到输入层（称为提示微调[226]）和每个中间层（称为前缀微调[227]）中。Prefixtuning[227]将可训练的连续前缀tokens添加到大型语言模型中的每一层，并在优化这些连续前缀tokens的同时保持语言模型参数冻结。类似地，LLaMA-Adapter【228】采用一组可学习的自适应prompt作为更高transformer层的输入字嵌入的前缀。与前缀微调相比，提示微调【226】是一种更简化的策略，它只向输入层注入软提示，如软提示【226】、P-tuning【229】和P-tuning V2【230】。最近的进展探索了软提示如何用于few-shot[231]、预训练[232]或多任务[233]。</p>
+<h4 id="Low-rank-adaptation-低秩自适应"><a href="#Low-rank-adaptation-低秩自适应" class="headerlink" title="Low-rank adaptation 低秩自适应"></a>Low-rank adaptation 低秩自适应</h4><p>它<strong>利用低秩表示来最小化可训练参数的数量</strong>。例如，LoRA【234】冻结预训练的模型权重，并将两个可训练的秩分解矩阵<script type="math/tex">A \in \mathbb{R}^{m \times r}</script>和<script type="math/tex">B \in \mathbb{R}^{r \times n}</script>注入transformer架构的每一层(假设任务相关的调整可以用一个<strong>低秩矩阵</strong>来近似表示<script type="math/tex">\Delta W \approx A \cdot B</script>)，以将权重矩阵<script type="math/tex">W \in \mathbb{R}^{m \times n}</script>调整为$W’ = W + A \cdot B$。这种方法实现简单，<strong>减少了可训练参数的数量</strong>，同时仍然允许调整高维矩阵。</p>
+<p>总的来说，参数有效的微调是计算效率，例如，Adapter的训练可能比普通微调快60%【218】。然而，<strong>基于Adapter的调优和基于提示的调优都存在增加推理延迟的问题</strong>。基于adapter based的调优通过Adapter模块使预训练模型适应下游任务，这增加了额外的模型参数，带来了推理延迟问题。对于基于提示的调优，将输入的长度增加20-100个令牌可以显著增加计算量【235】。此外，基于提示的调谐方法存在优化困难的问题，因为它们比全参数微调和其他参数高效微调方法收敛得慢【218】。相比之下，<strong>低秩自适应脱颖而出，因为它不引入额外的推理延迟，表现出降低的训练阈值，并表现出鲁棒的兼容性</strong>。这种方法与大多数有效的参数微调算法一致，允许其集成以进一步增强大规模模型在新任务上的性能。</p>
+<h3 id="资源高效微调"><a href="#资源高效微调" class="headerlink" title="资源高效微调"></a>资源高效微调</h3><p>随着基础模型的扩展，微调所需的计算和内存急剧增加，这限制了资源受限的端边云设备的微调效率。因此，<strong>在微调中最小化计算和内存使用已经成为一个关键主题</strong>。一种方法基于量化[236]、[237]、[238]、[239]。例如，QLoRA【236】将模型参数量化为4位，并使用低秩适配器对该量化模型进行微调，这减少了在单个48GB GPU上微调65B参数模型的内存使用，同时保留了完整的16位微调任务性能。另一种方法基于梯度[240]、[241]。例如，Lv等人。[241]采用经典的零阶SGD方法就地操作，从而微调具有与推理相同内存占用的语言模型。此外，LoRA-FA[242]是一种内存高效的微调方法，它选择冻结向下投影权重并在每个LoRA层中更新向上投影权重。</p>
+<h2 id="总结与经验学习"><a href="#总结与经验学习" class="headerlink" title="总结与经验学习"></a>总结与经验学习</h2><h3 id="知识蒸馏与迁移学习"><a href="#知识蒸馏与迁移学习" class="headerlink" title="知识蒸馏与迁移学习"></a>知识蒸馏与迁移学习</h3><p>知识提炼和迁移学习都涉及知识的迁移。然而，知识蒸馏和迁移学习分别强调从模型中迁移知识和从数据中迁移知识。知识提炼和迁移学习之间的区别和联系概述如下。</p>
+<ol>
+<li>迁移学习的概念比较宽泛，既包括基于数据的迁移，也包括基于模型的迁移，而知识蒸馏本质上是基于模型的迁移学习的一种具体形式。本质上，知识蒸馏是实现迁移学习的一种手段。</li>
+<li>知识蒸馏主要服务于压缩或增强“学生”DLM的目的，重点是模型大小和性能改进。相比之下，迁移学习通常不解决轻量级模型问题，而是更倾向于解决诸如有限的标记数据或使用来自其他领域的数据或模型知识的领域适应等挑战。</li>
+<li>在迁移学习中，目标域和源域可以是同质的或异质的，学习通常发生在不同的数据集上，解决像域适应这样的任务。然而，知识蒸馏通常在同一数据集中运行，重点是增强或压缩模型。</li>
+<li>知识蒸馏主要涉及可以源自一个或多个同构或异构DLM的模型知识，通常集中于模型的特征知识。然而，传统的迁移学习方法主要使用来自其他领域数据的知识来训练目标领域的模型，很少使用模型知识。</li>
+</ol>
+<h3 id="高效微调"><a href="#高效微调" class="headerlink" title="高效微调"></a>高效微调</h3><p>参数高效微调已经证明了其实用性。然而，这种方法仍然没有被很好地理解，并且对超参数高度敏感。此外，现有方法将可训练参数引入不同的任务，仅依赖于人类启发法，而忽略了领域差距【243】。因此，匹配全微调方法的性能仍然是一个挑战。此外，边缘和末端节点在内存、计算甚至能量方面都有约束。为了减轻这些挑战，可以通过集成诸如量化和修剪的技术来有效地实现用于微调的资源优化。</p>
+<h3 id="未来趋势-1"><a href="#未来趋势-1" class="headerlink" title="未来趋势"></a>未来趋势</h3><p>在现实世界中运行的DL系统暴露于连续的信息流，因此需要从动态数据分布中连续学习和记忆多个任务。持续学习是指DLM在不忘记先前学习的知识的情况下不断获取新知识和适应新数据的能力，已成为未来的主流趋势。然而，传统的知识迁移技术并不关心灾难性遗忘和持续学习。因此，<strong>伴随着知识迁移的持续学习将成为未来的趋势</strong>。</p>
+<h1 id="端-边-云协同深度学习的挑战与前景"><a href="#端-边-云协同深度学习的挑战与前景" class="headerlink" title="端-边-云协同深度学习的挑战与前景"></a>端-边-云协同深度学习的挑战与前景</h1><h2 id="端-边-云协同深度学习系统的挑战"><a href="#端-边-云协同深度学习系统的挑战" class="headerlink" title="端-边-云协同深度学习系统的挑战"></a>端-边-云协同深度学习系统的挑战</h2><p>端边云协同DL系统面临多种挑战，包括多样化的应用需求、不平衡的数据分布、异构的计算资源、动态的网络环境和复杂的通信协议。这些挑战影响了系统的优化、适应性和可靠性。</p>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>一个显著的挑战是<strong>高效实现端-边-云系统内分布式算力、网络、数据、应用的统一调度和优化</strong>。这必须在延迟、准确性和能效之间取得平衡，同时考虑不同的应用需求。</p>
+<p>CPN【244】是一种新的范式，它进一步向计算能力和网络的合作和集成发展。它旨在提供无处不在的端-边-云计算、存储和网络资源，为各种应用提供无处不在、智能、低延迟和灵活的服务[245]。然而，CPN仍处于早期阶段，在实现如图15所示的全部潜力之前，需要解决几个开放的问题，<strong>包括（i）如何衡量计算能力？（ii）如何估计应用在特定资源平台上的计算时延和能耗？(iii)如何快速同步CPN信息？以及（iv）如何有效地交易计算资源？</strong></p>
+<p><img src="/2026/06/17/EECC-Deeplearning-Survey/EEC-CPN-DL-Challenges.png" alt></p>
+<h3 id="适应性"><a href="#适应性" class="headerlink" title="适应性"></a>适应性</h3><p>端-边-云DLM的适应性对于满足快速变化的场景和多样化的应用需求至关重要。潜在的挑战包括过度拟合、不平衡数据、领域自适应和few-shot学习。应对这些挑战需要设计高效的模型更新方法，如迁移学习和联合知识蒸馏。此外，动<strong>态神经网络dynamic neural networks[246]提供了作为解决方案的前景。这些网络可以根据不同的输入调整其结构或参数</strong>，与静态模型相比，使其更加高效、适应性强、兼容、可推广和可解释[246]。例如，Zhong等人。[247]提出了一种DNN模型，能够通过改变其结构来动态调整数据分布的变化。未来的研究可以集中在动态神经网络的架构设计、最优方法和泛化上。</p>
+<p>此外，系统的适应性涉及管理异构的端-边-云节点。这方面的挑战包括如何为不同的端-边-云节点设计定制化的模型，以及如何促进大规模DL应用的快速开发和部署。有一些潜在的解决方案：<strong>（i）集成模型压缩、模型分割和动态神经网络等各种技术，为特定的硬件平台量身定制合适的模型。（ii）融合微服务和虚拟化技术，实现DLM的快速分发和部署</strong>。</p>
+<h3 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h3><p>由于复杂的网络环境和终端设备的多样性，如何保证端-边-云系统在跨网络、跨地域环境下的稳定性和可靠性非常重要，尤其是对于很多要求超低时延和高可靠性的工业应用。因此，探索云边缘端系统的智能监控和维护技术至关重要。<strong>利用跨端-边-云基础设施的实时监控机制（SDN？）</strong>，加上应用先进的人工智能技术对积累的监控数据进行分析处理，有助于预测早期系统故障，从而先发制人地解决潜在的中断并增强整体系统的弹性和可靠性。</p>
+<h2 id="异构端边云节点间的通信瓶颈"><a href="#异构端边云节点间的通信瓶颈" class="headerlink" title="异构端边云节点间的通信瓶颈"></a>异构端边云节点间的通信瓶颈</h2><p>端-边-云协同学习的成功实施依赖于地理上分布的端-边-云计算节点之间通过高速网络的高效互联。尽管当前的互连网络（例如千兆/万兆以太网和Infiniband网络）可以提供高达100 Gb/s的令人印象深刻的速度，但与内部存储器内可实现的快速数据交换速率相比，仍然存在明显的差异。此外，随着端-边-云节点数量的增长，相关联的通信开销增加，潜在地导致“桶效应”，其中整体系统性能受到具有最慢网络带宽的节点的限制。<strong>因此，在设计端边云协同学习的异构集群时，需要考虑网络带宽、时延、抖动对系统性能的影响</strong>。</p>
+<p>有一些潜在的解决方案：(i)<strong>数据压缩</strong>。一种常见的方法是对节点间传输的数据进行压缩，包括无损压缩和有损压缩。无损压缩虽然提供有限的压缩比，但通常不影响DL算法的性能。有损压缩可以实现更高的压缩比，但可能会影响压缩数据的可用性和有效性。因此，<strong>如何在降低通信成本和保留数据效用之间取得平衡成为关键问题</strong>。（ii）<strong>第六代移动通信技术（6G）</strong>：向6G过渡可以显著提高端边云协同学习系统的通信能力。与前几代不同，6G的目标不仅是提供增强的通信性能，还包括更大的覆盖范围、更高的计算能力和更快的传感效率。它集成了通信、传感和计算，为端边云DL应用提供实时和超可靠的通信服务。发展天-空-地一体化网络，可以确保无缝、泛在的网络接入。</p>
+<h2 id="深度学习模型的自适应压缩与加速"><a href="#深度学习模型的自适应压缩与加速" class="headerlink" title="深度学习模型的自适应压缩与加速"></a>深度学习模型的自适应压缩与加速</h2><p>端-边-云DLM的适应性意味着<strong>它们能够根据特定的应用需求、可用的硬件资源和目标硬件平台上的普遍网络环境动态调整和优化压缩技术</strong>。在实现自适应之前，仍需应对以下挑战。</p>
+<p>(i)<strong>如何评估压缩方法的质量是一个关键挑战</strong>。现有的评估标准通常比较后压缩和前压缩模型之间的性能指标，如TOP-1、TOP-5、加速比、存储空间节省率、压缩率等。虽然Cheng等人。[248]给出了一些建议来<strong>为特定任务选择压缩方法</strong>，<strong>但用于实验的硬件平台的差异会使各种压缩方法的统一评估变得复杂</strong>。此外，在动态的端-边-云框架中，任务、可用计算资源和网络环境频繁变化，<strong>自动选择高效的压缩方法和压缩率变得具有挑战性</strong>。因此，需要开发更准确的评估模型，这些模型可以指导压缩方法的选择，考虑不同的环境因素。（ii）虽然许多压缩方法主要是为CNN设计的，但重要的是要考虑这些方法对其他类型的DLM的适应性，如RNN、GNN和基于transformer based模型。传统的压缩方法是否适用于这些网络还有待探索。</p>
+<p><strong>除了模型压缩，还应进一步研究先进的模型架构和加速技术</strong>，如量子神经网络、光学神经网络和超导神经网络。例如，光学神经网络【249】、【250】利用光子硬件加速进行复杂的矩阵向量乘法，与传统电子网络相比，提供了诸如高带宽、快速计算速度和广泛并行性等优势。</p>
+<h2 id="深度学习模型的自适应分区"><a href="#深度学习模型的自适应分区" class="headerlink" title="深度学习模型的自适应分区"></a>深度学习模型的自适应分区</h2><p>在端-边-云框架中，<strong>根据可用的计算资源、网络条件和特定任务确定DLM的最佳分区策略和分区点至关重要</strong>。而且，末端和边缘节点的数量也是动态变化的。为不同的端边云环境选择最合适的模型分区策略是一个重大挑战。因此，为了充分利用这些设备，有必要动态调整节点数量、分区策略和分区点，以确保端边云协同学习的可扩展性和适应性，尤其是在物联网和移动设备快速增长的背景下。此外，许多现有研究假设DLM是静态的，不能适应不断变化的输入或设备能力。然而，随着动态网络变得更加普遍，静态网络分段方法可能变得不太有效。因此，<strong>未来的研究应该集中在开发动态网络的自适应划分技术上</strong>。</p>
+<h2 id="端-边-云协同深度学习中的有效知识迁移"><a href="#端-边-云协同深度学习中的有效知识迁移" class="headerlink" title="端-边-云协同深度学习中的有效知识迁移"></a>端-边-云协同深度学习中的有效知识迁移</h2><p>在基于知识的端边云协同更新方法中，知识可以包括实例知识，例如样本数据之间的关系，以及模型知识，例如DLM参数、中间特征和层之间的关系。然而，在这种情况下需要应对几个挑战：（i）在这种情况下缺乏统一的指标和全面的知识框架。现有的知识迁移技术主要基于实验或经验方法。（ii）需要有效的理论解释，以更好地理解选择要迁移的知识和选择最佳结果的迁移技术。（iii）当迁移的知识对目标学习者产生不利影响时，就会发生负迁移[183]。减轻这些负面影响和实现成功的知识迁移学习的策略需要进一步研究。</p>
+<h2 id="端-边-云协同深度学习的安全与隐私"><a href="#端-边-云协同深度学习的安全与隐私" class="headerlink" title="端-边-云协同深度学习的安全与隐私"></a>端-边-云协同深度学习的安全与隐私</h2><p>端-边-云架构利用多样化的计算资源来满足DL任务的实时性、准确性和弹性需求。然而，这种分布式和协作计算范式也引起了重大的安全和隐私问题。一方面，在端-边-云协同框架内，数据在不同层和各种设备之间有规律地遍历。其中一些端边缘云节点的安全能力较弱，使其容易受到潜在攻击。这些安全漏洞可能会危及数据完整性、可用性和整体系统安全性。另一方面，端边云协同系统往往涉及多个组织，它们之间的信任程度不同。这种恶意行为者可能会破坏协作计算过程的透明度和安全性，潜在地导致各种安全漏洞。</p>
+<p>因此，如图16所示，（i）在追求有效的端边云解决方案的过程中，必须结合隐私保护技术，包括差分隐私、安全多方计算、加密和区块链[251]。然而，数据可用性和隐私保护是一对矛盾。特别是，DLM具有复杂的结构并且缺乏可解释性，使得隐私保护和数据可用性之间的微妙平衡难以量化。因此，一个关键的研究问题围绕着在数据可用性和隐私保护之间实现权衡，以满足应用需求。此外，当在资源受限的终端设备上部署模型时，与当前隐私保护方法相关联的大量计算开销提出了巨大的障碍。因此，<strong>在端边云协同学习架构的框架内开发更简化的隐私或加密算法变得势在必行</strong>。（ii）熟练训练的模型可以跨端-边缘-云节点传播，潜在地导致不受限制的访问和侵犯模型所有者的知识产权的风险。因此，模型授权的探索成为未来研究的一个重要领域。例如，可以采用类似后门水印的方法来增强对模型的知识产权的保护。（iii）<strong>端边云协同学习引入了模型攻击的新视角</strong>。这种新颖的攻击模式主要不是为了破坏DLM的准确性。相反，<strong>它的重点是破坏协作机制或降低端边云协作的效率</strong>。例如，<strong>早期退出攻击</strong>【252】有可能阻碍渐进推理机制。因此，端-边-云协作机制的攻击策略和保护措施成为不可避免的研究轨迹。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>对时间敏感的个性化DL需求以及端边计算的快速发展推动研究人员和企业拥抱端边云协同计算范式。这种范式在提高DL性能方面发挥着重要作用，但仍处于成功的初级阶段。为了全面介绍端边云协同学习的基本原理，我们系统地回顾了这一方向的进展，并试图建立一个全面的研究框架。具体来说，在本文中，我们从系统和协作的角度对端边云DL中的协作元素进行了系统分析。这些要素包括数据、模型和计算能力的考虑。我们还确定了端边云协同学习的潜在方式和机制，如分布式和协作训练、推理和模型更新。然后，我们重点介绍了端边云协同学习的使能技术的细节和进展。这些技术包括为端和边缘计算量身定制的模型压缩和轻量级技术，用于端-边缘-云协同推理的模型划分方法，以及用于端-边缘-云协同更新的知识转移策略。最后，我们讨论了端边云协同学习中仍然存在的问题和挑战以及未来可能的研究方向。</p>
+<p>我们预计，随着端边云计算平台的快速演进和DL应用的不断扩展，端边云协同将走向成熟。这种发展将能够解决实时和个性化的DL挑战，从而为各个行业创造巨大的价值。我们希望这项调查将激发进一步的讨论和研究工作，旨在推进DL和端边云计算在这一有前途的范式中的集成。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>CaesarCaser
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/" title="End-Edge-Cloud Collaborative Computing for  Deep Learning: A Comprehensive Survey">https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/End-Edge-Cloud-Collaborative/" rel="tag"># End-Edge-Cloud Collaborative</a>
+              <a href="/tags/Survey/" rel="tag"># Survey</a>
+              <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/06/17/coding-tips/" rel="prev" title="编码Tips">
+      <i class="fa fa-chevron-left"></i> 编码Tips
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#New-Term"><span class="nav-number">1.</span> <span class="nav-text">New Term</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Board-Learning-%E5%B9%BF%E4%B9%89%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.1.</span> <span class="nav-text">Board Learning 广义学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Broad-Learning-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="nav-number">1.1.1.</span> <span class="nav-text">Broad Learning 的核心思想</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broad-Learning-System%EF%BC%88BLS%EF%BC%89%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.2.</span> <span class="nav-text">Broad Learning System（BLS）的基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broad-Learning-%E7%9A%84%E8%AE%AD%E7%BB%83%E6%96%B9%E5%BC%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">Broad Learning 的训练方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broad-Learning-%E7%9A%84%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7%E4%B8%8E%E5%A2%9E%E9%87%8F%E5%AD%A6%E4%B9%A0%E6%9C%BA%E5%88%B6"><span class="nav-number">1.1.4.</span> <span class="nav-text">Broad Learning 的可扩展性与增量学习机制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94%E4%B8%8E%E4%BD%9C%E8%80%85%E7%9A%84%E8%B4%A1%E7%8C%AE"><span class="nav-number">2.1.</span> <span class="nav-text">对比与作者的贡献</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-AI-for-End-Edge-Cloud-Computing%EF%BC%88AI-%E6%9C%8D%E5%8A%A1%E4%BA%8E%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E8%AE%A1%E7%AE%97%EF%BC%89"><span class="nav-number">2.1.1.</span> <span class="nav-text">1. AI for End-Edge-Cloud Computing（AI 服务于端-边-云计算）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-End-Edge-Cloud-Computing-for-AI%EF%BC%88%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E8%AE%A1%E7%AE%97%E6%9C%8D%E5%8A%A1%E4%BA%8E-AI%EF%BC%89"><span class="nav-number">2.1.2.</span> <span class="nav-text">2. End-Edge-Cloud Computing for AI（端-边-云计算服务于 AI）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%9C%AC%E6%96%87%E7%9A%84%E7%8B%AC%E7%89%B9%E8%B4%A1%E7%8C%AE"><span class="nav-number">2.1.3.</span> <span class="nav-text">3. 本文的独特贡献</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E7%BB%BC%E8%BF%B0%E7%9A%84%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.</span> <span class="nav-text">本综述的组织结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C%E8%AE%A1%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">面向深度学习的端边云协同计算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%B4%E5%BA%A6"><span class="nav-number">3.1.</span> <span class="nav-text">数据维度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E7%9A%84%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C"><span class="nav-number">3.1.1.</span> <span class="nav-text">基于数据的端边云协同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E4%BF%A1%E6%81%AF%E7%9A%84%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C"><span class="nav-number">3.1.2.</span> <span class="nav-text">基于信息的端边云协同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%9F%A5%E8%AF%86%E7%9A%84%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C"><span class="nav-number">3.1.3.</span> <span class="nav-text">基于知识的端边云协同</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%B4%E5%BA%A6"><span class="nav-number">3.2.</span> <span class="nav-text">模型维度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E5%8A%9B%E7%BB%B4%E5%BA%A6"><span class="nav-number">3.3.</span> <span class="nav-text">算力维度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">深度学习的端-边-云协作机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C%E8%AE%AD%E7%BB%83"><span class="nav-number">4.1.</span> <span class="nav-text">端边云协同训练</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E7%9A%84%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C%E8%AE%AD%E7%BB%83"><span class="nav-number">4.1.1.</span> <span class="nav-text">基于数据并行的端边云协同训练</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C"><span class="nav-number">4.1.1.1.</span> <span class="nav-text">集中式数据并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C"><span class="nav-number">4.1.1.2.</span> <span class="nav-text">分布式数据并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#39c17f38"><span class="nav-number">4.1.1.3.</span> <span class="nav-text">阶段1：Scatter-Reduce（分散-归约）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bce5ea29"><span class="nav-number">4.1.1.4.</span> <span class="nav-text">阶段2：All-Gather（全收集）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0-%E8%A7%A3%E5%86%B3%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E4%B8%AD%E9%9D%9EIID%E7%89%B9%E6%80%A7%E5%AF%BC%E8%87%B4%E7%9A%84%E6%A8%A1%E5%9E%8B%E4%B8%8D%E6%94%B6%E6%95%9B%E3%80%81%E6%80%A7%E8%83%BD%E4%B8%8D%E4%BC%98%E9%97%AE%E9%A2%98"><span class="nav-number">4.1.1.5.</span> <span class="nav-text">个性化联邦学习(解决数据并行中非IID特性导致的模型不收敛、性能不优问题)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c97252c2"><span class="nav-number">4.1.2.</span> <span class="nav-text">核心问题：从“理想世界”到“现实世界”的挑战</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#fd4d6a19"><span class="nav-number">4.1.2.1.</span> <span class="nav-text">1. 传统数据并行的“理想假设”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#49ea17ae"><span class="nav-number">4.1.2.2.</span> <span class="nav-text">2. 现实世界的“骨感现实”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#babca111"><span class="nav-number">4.1.3.</span> <span class="nav-text">Non-IID数据带来的严重后果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1a87ecf4"><span class="nav-number">4.1.4.</span> <span class="nav-text">解决方案：个性化联邦学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E5%B9%B6%E8%A1%8C%E7%9A%84%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C%E8%AE%AD%E7%BB%83-%E5%8F%AF%E4%BB%A5%E8%A7%A3%E5%86%B3%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C%E4%B8%AD%EF%BC%8C%E5%BC%82%E6%9E%84%E8%AE%BE%E5%A4%87%E6%80%A7%E8%83%BD%E4%B8%8D%E4%B8%80%EF%BC%8C%E6%9C%89%E4%BA%9B%E8%AE%BE%E5%A4%87%E6%97%A0%E6%B3%95%E6%89%BF%E6%8B%85%E5%A6%82%E6%AD%A4%E5%A4%A7%E7%9A%84%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">4.1.5.</span> <span class="nav-text">基于模型并行的端边云协同训练(可以解决数据并行中，异构设备性能不一，有些设备无法承担如此大的模型的问题)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E5%B9%B6%E8%A1%8C"><span class="nav-number">4.1.5.1.</span> <span class="nav-text">层级并行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E5%85%83%E7%BA%A7%E5%B9%B6%E8%A1%8C"><span class="nav-number">4.1.5.2.</span> <span class="nav-text">神经元级并行</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C%E6%8E%A8%E7%90%86"><span class="nav-number">4.2.</span> <span class="nav-text">端边云协同推理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%97%A9%E6%9C%9F%E9%80%80%E5%87%BA%E7%9A%84%E9%AB%98%E6%95%88%E7%AB%AF%E8%BE%B9%E4%BA%91%E6%B8%90%E8%BF%9B%E5%8D%8F%E5%90%8C%E6%8E%A8%E7%90%86"><span class="nav-number">4.2.1.</span> <span class="nav-text">基于早期退出的高效端边云渐进协同推理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%97%A9%E6%9C%9F%E9%80%80%E5%87%BA%E7%9A%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%8D%8F%E5%90%8C%E6%8E%A8%E7%90%86%E6%9C%BA%E5%88%B6"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">利用早期退出的端-边-云渐进式协同推理机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E6%B8%90%E8%BF%9B%E5%BC%8F%E5%8D%8F%E5%90%8C%E6%8E%A8%E7%90%86%E7%9A%84%E9%80%80%E5%87%BA%E5%87%86%E5%88%99"><span class="nav-number">4.2.1.2.</span> <span class="nav-text">端-边-云渐进式协同推理的退出准则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.2.1.3.</span> <span class="nav-text">训练端-边-云深度学习模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.2.1.4.</span> <span class="nav-text">更新端-边-云深度学习模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E5%88%86%E5%89%B2%E7%9A%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E5%90%8C%E6%8E%A8%E7%90%86"><span class="nav-number">4.2.2.</span> <span class="nav-text">基于模型分割的端-边-云分布式协同推理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E5%90%8C%E6%8E%A8%E7%90%86"><span class="nav-number">4.2.2.1.</span> <span class="nav-text">层级分布式协同推理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E5%85%83%E7%BA%A7%E5%88%86%E5%B8%83%E5%BC%8F%E5%8D%8F%E5%90%8C%E6%8E%A8%E7%90%86"><span class="nav-number">4.2.2.2.</span> <span class="nav-text">神经元级分布式协同推理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%9B%B4%E6%96%B0-%E6%8C%81%E7%BB%AD%E5%AD%A6%E4%B9%A0"><span class="nav-number">4.3.</span> <span class="nav-text">端-边-云协同更新(持续学习)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%9C%BA"><span class="nav-number">4.3.1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%9B%B4%E6%96%B0%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">4.3.2.</span> <span class="nav-text">端-边-云协同更新的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%AE%9E%E4%BE%8B%E3%80%81%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E5%92%8C%E6%95%B0%E6%8D%AE%E5%85%B3%E7%B3%BB%E7%9F%A5%E8%AF%86%E7%9A%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%9B%B4%E6%96%B0"><span class="nav-number">4.3.2.1.</span> <span class="nav-text">基于实例、数据表示和数据关系知识的端-边-云协同更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%89%B9%E5%BE%81%E7%9F%A5%E8%AF%86%E7%9A%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%9B%B4%E6%96%B0"><span class="nav-number">4.3.2.2.</span> <span class="nav-text">基于特征知识的端-边-云协同更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E5%85%B3%E7%B3%BB%E7%9F%A5%E8%AF%86%E7%9A%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%9B%B4%E6%96%B0"><span class="nav-number">4.3.2.3.</span> <span class="nav-text">基于模型关系知识的端-边-云协同更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%BB%93%E6%9E%84%E5%8C%96%E7%9F%A5%E8%AF%86%E7%9A%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%9B%B4%E6%96%B0"><span class="nav-number">4.3.2.4.</span> <span class="nav-text">基于结构化知识的端-边-云协同更新</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%94%E9%82%A6%E6%8C%81%E7%BB%AD%E5%AD%A6%E4%B9%A0"><span class="nav-number">4.3.3.</span> <span class="nav-text">联邦持续学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E9%9A%94%E7%A6%BB"><span class="nav-number">4.3.3.1.</span> <span class="nav-text">参数隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F"><span class="nav-number">4.3.3.2.</span> <span class="nav-text">知识蒸馏</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E5%92%8C%E7%BB%8F%E9%AA%8C%E6%95%99%E8%AE%AD"><span class="nav-number">4.3.4.</span> <span class="nav-text">总结和经验教训</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E8%AE%AD%E7%BB%83"><span class="nav-number">4.3.4.1.</span> <span class="nav-text">异构端-边-云协同训练</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%8E%A8%E7%90%86"><span class="nav-number">4.3.4.2.</span> <span class="nav-text">异构端-边-云协同推理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%9F%A5%E8%AF%86%E7%9A%84%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C%E6%9B%B4%E6%96%B0%EF%BC%88%E7%9F%A5%E8%AF%86%E5%85%B1%E4%BA%AB%E6%9C%BA%E5%88%B6%E8%83%BD%E6%88%90%E4%B8%BA%E5%85%8B%E6%9C%8D%E5%BC%82%E6%9E%84%E6%80%A7%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E5%90%97%EF%BC%9F%EF%BC%89"><span class="nav-number">4.3.4.3.</span> <span class="nav-text">基于知识的端边云协同更新（知识共享机制能成为克服异构性的解决方案吗？）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%E8%B6%8B%E5%8A%BF%EF%BC%88ECC-CPN%E5%8D%8F%E4%BD%9C%EF%BC%89"><span class="nav-number">4.3.4.4.</span> <span class="nav-text">未来趋势（ECC CPN协作）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%8F%E5%90%8C%E6%96%B9%E5%BC%8F%EF%BC%88%E5%87%A0%E7%A7%8D%E5%85%B8%E5%9E%8B%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="nav-number">4.3.4.4.1.</span> <span class="nav-text">协同方式（几种典型模式）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%89%B9%E5%BE%81"><span class="nav-number">4.3.4.4.2.</span> <span class="nav-text">核心特征</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9%E6%8A%80%E6%9C%AF"><span class="nav-number">5.</span> <span class="nav-text">用于深度学习的模型压缩技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%89%AA%E6%9E%9D%E5%92%8C%E7%A8%80%E7%96%8F%E5%8C%96"><span class="nav-number">5.0.1.</span> <span class="nav-text">神经网络的剪枝和稀疏化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E5%90%8E%E5%89%AA%E6%9E%9D"><span class="nav-number">5.0.1.1.</span> <span class="nav-text">训练后剪枝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%97%B6%E5%89%AA%E6%9E%9D"><span class="nav-number">5.0.1.2.</span> <span class="nav-text">初始化时剪枝</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%8F%82%E6%95%B0%E5%85%B1%E4%BA%AB%E4%B8%8E%E9%87%8F%E5%8C%96"><span class="nav-number">5.0.2.</span> <span class="nav-text">神经网络的参数共享与量化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%BD%91%E7%BB%9C%E7%9A%84%E6%89%8B%E5%8A%A8%E8%AE%BE%E8%AE%A1%E5%92%8C%E7%A5%9E%E7%BB%8F%E6%9E%B6%E6%9E%84%E6%90%9C%E7%B4%A2"><span class="nav-number">5.0.3.</span> <span class="nav-text">轻量级网络的手动设计和神经架构搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E7%BD%91%E7%BB%9C%E7%9A%84%E4%BA%BA%E5%B7%A5%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.0.3.1.</span> <span class="nav-text">轻量级网络的人工设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E6%9E%B6%E6%9E%84%E6%90%9C%E7%B4%A2"><span class="nav-number">5.0.3.2.</span> <span class="nav-text">神经架构搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%97%B4%E6%8E%A5%E6%90%9C%E7%B4%A2"><span class="nav-number">5.0.3.2.1.</span> <span class="nav-text">间接搜索</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E6%90%9C%E7%B4%A2"><span class="nav-number">5.0.3.2.2.</span> <span class="nav-text">直接搜索</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E7%AD%96%E7%95%A5"><span class="nav-number">5.0.3.2.3.</span> <span class="nav-text">搜索策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NAS%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-number">5.0.3.2.4.</span> <span class="nav-text">NAS的限制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E7%BB%8F%E9%AA%8C%E6%95%99%E8%AE%AD"><span class="nav-number">5.0.4.</span> <span class="nav-text">总结与经验教训</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%88%92%E5%88%86%E6%8A%80%E6%9C%AF-%E9%92%88%E5%AF%B9%E6%8E%A8%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">深度学习的模型划分技术(针对推理)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E5%88%92%E5%88%86"><span class="nav-number">6.1.</span> <span class="nav-text">层级划分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Neurosurgeon"><span class="nav-number">6.1.1.</span> <span class="nav-text">Neurosurgeon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DADS"><span class="nav-number">6.1.2.</span> <span class="nav-text">DADS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QDMP"><span class="nav-number">6.1.3.</span> <span class="nav-text">QDMP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JointDNN"><span class="nav-number">6.1.4.</span> <span class="nav-text">JointDNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E5%88%92%E5%88%86%E6%80%BB%E7%BB%93"><span class="nav-number">6.1.5.</span> <span class="nav-text">层级划分总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E5%85%83%E7%BA%A7%E5%88%92%E5%88%86"><span class="nav-number">6.2.</span> <span class="nav-text">神经元级划分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E9%81%93%E5%88%86%E5%8C%BA"><span class="nav-number">6.2.1.</span> <span class="nav-text">通道分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E9%80%9A%E9%81%93%E5%88%92%E5%88%86-%E5%AF%B9%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E7%9A%84%E9%80%9A%E9%81%93%E8%BF%9B%E8%A1%8C%E5%88%92%E5%88%86"><span class="nav-number">6.2.1.1.</span> <span class="nav-text">输入数据通道划分(对输入数据的通道进行划分)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%95%B0%E6%8D%AE%E9%80%9A%E9%81%93%E5%88%92%E5%88%86-%E5%AF%B9%E4%B8%AD%E9%97%B4%E6%A8%A1%E5%9E%8B%E5%8F%82%E6%95%B0%E8%BF%9B%E8%A1%8C%E5%88%92%E5%88%86"><span class="nav-number">6.2.1.2.</span> <span class="nav-text">输出数据通道划分(对中间模型参数进行划分)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">6.2.1.3.</span> <span class="nav-text">实际应用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E5%88%86%E5%8C%BA"><span class="nav-number">6.2.2.</span> <span class="nav-text">空间分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E5%88%86%E5%8C%BA"><span class="nav-number">6.2.2.1.</span> <span class="nav-text">网格分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9E%82%E7%9B%B4%E5%88%86%E5%8C%BA"><span class="nav-number">6.2.2.2.</span> <span class="nav-text">垂直分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E5%88%86%E5%8C%BA%E6%80%BB%E7%BB%93"><span class="nav-number">6.2.2.3.</span> <span class="nav-text">空间分区总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E7%BB%8F%E9%AA%8C%E6%95%99%E8%AE%AD-1"><span class="nav-number">6.3.</span> <span class="nav-text">总结与经验教训</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%8E%AF%E5%A2%83%E6%84%9F%E7%9F%A5%E5%B1%82%E7%BA%A7%E5%88%86%E5%8C%BA"><span class="nav-number">6.3.1.</span> <span class="nav-text">端到端环境感知层级分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E5%88%B6%E7%A5%9E%E7%BB%8F%E5%85%83%E7%BA%A7%E5%88%86%E5%8C%BA"><span class="nav-number">6.3.2.</span> <span class="nav-text">定制神经元级分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%E8%B6%8B%E5%8A%BF"><span class="nav-number">6.3.3.</span> <span class="nav-text">未来趋势</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E5%92%8C%E4%B8%AA%E6%80%A7%E5%8C%96"><span class="nav-number">6.3.3.1.</span> <span class="nav-text">模块化和个性化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%81%B5%E6%B4%BB%E6%80%A7%E5%92%8C%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7"><span class="nav-number">6.3.3.2.</span> <span class="nav-text">灵活性和可扩展性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E6%80%A7%E5%92%8C%E7%A8%B3%E5%81%A5%E6%80%A7"><span class="nav-number">6.3.3.3.</span> <span class="nav-text">独立性和稳健性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%88%E7%8E%87%E5%92%8C%E5%BF%AB%E9%80%9F%E5%93%8D%E5%BA%94"><span class="nav-number">6.3.3.4.</span> <span class="nav-text">效率和快速响应</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E7%9F%A5%E8%AF%86%E8%BF%81%E7%A7%BB%E6%8A%80%E6%9C%AF"><span class="nav-number">7.</span> <span class="nav-text">深度学习的知识迁移技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.</span> <span class="nav-text">迁移学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E7%9A%84%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.1.</span> <span class="nav-text">基于数据的迁移学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%AE%9E%E4%BE%8B%E7%9F%A5%E8%AF%86%E7%9A%84%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.1.1.</span> <span class="nav-text">基于实例知识的迁移学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA%E7%9F%A5%E8%AF%86%E7%9A%84%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.1.2.</span> <span class="nav-text">基于数据表示知识的迁移学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E6%8D%AE%E5%85%B3%E7%B3%BB%E7%9F%A5%E8%AF%86%E7%9A%84%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.1.3.</span> <span class="nav-text">基于数据关系知识的迁移学习</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%9F%A5%E8%AF%86%E7%9A%84%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.1.2.</span> <span class="nav-text">基于知识的迁移学习模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E6%8A%80%E6%9C%AF"><span class="nav-number">7.1.3.</span> <span class="nav-text">高级迁移学习技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Meta-learning-%E5%85%83%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.3.1.</span> <span class="nav-text">Meta-learning 元学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.3.2.</span> <span class="nav-text">迁移强化学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9C"><span class="nav-number">7.1.3.3.</span> <span class="nav-text">迁移生成对抗网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A2%9E%E9%87%8F%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.3.4.</span> <span class="nav-text">增量迁移学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E6%A8%A1%E6%80%81%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.1.3.5.</span> <span class="nav-text">多模态迁移学习</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F-1"><span class="nav-number">7.2.</span> <span class="nav-text">知识蒸馏</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E8%BE%B9%E4%BA%91%E5%8D%8F%E5%90%8C%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F"><span class="nav-number">7.2.1.</span> <span class="nav-text">端边云协同学习中的知识蒸馏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-teacher-learning-%E5%A4%9A%E6%95%99%E5%B8%88%E5%AD%A6%E4%B9%A0-%E5%A4%9A%E5%AF%B9%E4%B8%80"><span class="nav-number">7.2.1.1.</span> <span class="nav-text">Multi-teacher learning 多教师学习(多对一)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Knowledge-amalgamation-%E7%9F%A5%E8%AF%86%E8%9E%8D%E5%90%88-%E5%A4%9A%E5%AF%B9%E4%B8%80"><span class="nav-number">7.2.1.2.</span> <span class="nav-text">Knowledge amalgamation 知识融合(多对一)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Teacher-assistant-%E5%8A%A9%E6%95%99"><span class="nav-number">7.2.1.3.</span> <span class="nav-text">Teacher assistant 助教</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cross-modal-distillation-%E8%B7%A8%E6%A8%A1%E6%80%81%E8%92%B8%E9%A6%8F"><span class="nav-number">7.2.1.4.</span> <span class="nav-text">Cross-modal distillation 跨模态蒸馏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mutual-distillation-%E4%BA%92%E8%92%B8%E9%A6%8F"><span class="nav-number">7.2.1.5.</span> <span class="nav-text">Mutual distillation 互蒸馏</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%94%E9%82%A6%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F"><span class="nav-number">7.2.2.</span> <span class="nav-text">联邦知识蒸馏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E9%AB%98%E6%95%88%E7%9A%84%E8%81%94%E9%82%A6%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F"><span class="nav-number">7.2.2.1.</span> <span class="nav-text">资源高效的联邦知识蒸馏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E8%81%94%E5%90%88%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F"><span class="nav-number">7.2.2.2.</span> <span class="nav-text">异构联合知识蒸馏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%A0%94%E7%A9%B6-%E6%95%B0%E6%8D%AE%E5%BC%82%E6%9E%84-%E9%9D%9EIID%E3%80%81%E4%B8%AA%E6%80%A7%E5%8C%96%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.2.2.3.</span> <span class="nav-text">其他研究(数据异构 非IID、个性化联邦学习)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5e1d24c5"><span class="nav-number">7.2.3.</span> <span class="nav-text">Step 1️⃣：各客户端本地训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6d31cfcc"><span class="nav-number">7.2.4.</span> <span class="nav-text">Step 2️⃣：服务器提供公共未标注样本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c7672448"><span class="nav-number">7.2.5.</span> <span class="nav-text">Step 3️⃣：客户端推理（inference）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4ee5a18d"><span class="nav-number">7.2.6.</span> <span class="nav-text">Step 4️⃣：服务器聚合知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#705734bf"><span class="nav-number">7.2.7.</span> <span class="nav-text">Step 5️⃣：全局模型蒸馏学习</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%AB%98%E6%95%88%E5%BE%AE%E8%B0%83"><span class="nav-number">7.3.</span> <span class="nav-text">基础模型的高效微调</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E9%AB%98%E6%95%88%E5%BE%AE%E8%B0%83"><span class="nav-number">7.3.1.</span> <span class="nav-text">参数高效微调</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Adapter-based-tuning-%E5%9F%BA%E4%BA%8E%E9%80%82%E9%85%8D%E5%99%A8%E7%9A%84%E5%BE%AE%E8%B0%83"><span class="nav-number">7.3.1.1.</span> <span class="nav-text">Adapter-based tuning 基于适配器的微调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Prompt-based-tuning-%E5%9F%BA%E4%BA%8E%E6%8F%90%E7%A4%BA%E7%9A%84%E5%BE%AE%E8%B0%83"><span class="nav-number">7.3.1.2.</span> <span class="nav-text">Prompt-based tuning 基于提示的微调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Low-rank-adaptation-%E4%BD%8E%E7%A7%A9%E8%87%AA%E9%80%82%E5%BA%94"><span class="nav-number">7.3.1.3.</span> <span class="nav-text">Low-rank adaptation 低秩自适应</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E9%AB%98%E6%95%88%E5%BE%AE%E8%B0%83"><span class="nav-number">7.3.2.</span> <span class="nav-text">资源高效微调</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E7%BB%8F%E9%AA%8C%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.4.</span> <span class="nav-text">总结与经验学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8F%E4%B8%8E%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.4.1.</span> <span class="nav-text">知识蒸馏与迁移学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E6%95%88%E5%BE%AE%E8%B0%83"><span class="nav-number">7.4.2.</span> <span class="nav-text">高效微调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E6%9D%A5%E8%B6%8B%E5%8A%BF-1"><span class="nav-number">7.4.3.</span> <span class="nav-text">未来趋势</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%8C%91%E6%88%98%E4%B8%8E%E5%89%8D%E6%99%AF"><span class="nav-number">8.</span> <span class="nav-text">端-边-云协同深度学习的挑战与前景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%8C%91%E6%88%98"><span class="nav-number">8.1.</span> <span class="nav-text">端-边-云协同深度学习系统的挑战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-number">8.1.1.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E5%BA%94%E6%80%A7"><span class="nav-number">8.1.2.</span> <span class="nav-text">适应性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-number">8.1.3.</span> <span class="nav-text">可靠性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E6%9E%84%E7%AB%AF%E8%BE%B9%E4%BA%91%E8%8A%82%E7%82%B9%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E7%93%B6%E9%A2%88"><span class="nav-number">8.2.</span> <span class="nav-text">异构端边云节点间的通信瓶颈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%87%AA%E9%80%82%E5%BA%94%E5%8E%8B%E7%BC%A9%E4%B8%8E%E5%8A%A0%E9%80%9F"><span class="nav-number">8.3.</span> <span class="nav-text">深度学习模型的自适应压缩与加速</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%87%AA%E9%80%82%E5%BA%94%E5%88%86%E5%8C%BA"><span class="nav-number">8.4.</span> <span class="nav-text">深度学习模型的自适应分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E6%9C%89%E6%95%88%E7%9F%A5%E8%AF%86%E8%BF%81%E7%A7%BB"><span class="nav-number">8.5.</span> <span class="nav-text">端-边-云协同深度学习中的有效知识迁移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF-%E8%BE%B9-%E4%BA%91%E5%8D%8F%E5%90%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%AE%89%E5%85%A8%E4%B8%8E%E9%9A%90%E7%A7%81"><span class="nav-number">8.6.</span> <span class="nav-text">端-边-云协同深度学习的安全与隐私</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CaesarCaser"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">CaesarCaser</p>
+  <div class="site-description" itemprop="description">Personal Blog, Computer Science, SDN, Distributed, Travel Notes</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CaesarCaser" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;CaesarCaser" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wushangyang2018@163.com" title="E-Mail → mailto:wushangyang2018@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      常用路径
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://webofscience.clarivate.cn/wos/alldb/basic-search" title="https:&#x2F;&#x2F;webofscience.clarivate.cn&#x2F;wos&#x2F;alldb&#x2F;basic-search" rel="noopener" target="_blank">Web of Science</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://dblp.org/" title="https:&#x2F;&#x2F;dblp.org&#x2F;" rel="noopener" target="_blank">dblp</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>English</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="en" data-href="/2026/06/17/EECC-Deeplearning-Survey/" selected="">
+          English
+        </option>
+      
+        <option value="zh-CNc" data-href="/zh-CNc/2026/06/17/EECC-Deeplearning-Survey/" selected="">
+          zh-CNc
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CaesarCaser</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">71k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">1:05</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset);
+            clearInterval(int);
+        }
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据
+            clearInterval(int); // 停止检测
+        }
+    }
+
+});
+</script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

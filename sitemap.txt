@@ -1,3 +1,4 @@
+https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/
 https://wushangyang.cn/2026/06/17/coding-tips/
 https://wushangyang.cn/index.html
 https://wushangyang.cn/recommend/index.html
@@ -18,11 +19,13 @@ https://wushangyang.cn/
 https://wushangyang.cn/tags/Parallel-Raft/
 https://wushangyang.cn/tags/Distributed-consistency/
 https://wushangyang.cn/tags/VLDB-2018/
-https://wushangyang.cn/tags/coding/
-https://wushangyang.cn/tags/tips/
 https://wushangyang.cn/tags/Raft/
 https://wushangyang.cn/tags/USENIX-2014/
+https://wushangyang.cn/tags/End-Edge-Cloud-Collaborative/
+https://wushangyang.cn/tags/Survey/
+https://wushangyang.cn/tags/Deep-Learning/
+https://wushangyang.cn/tags/coding/
+https://wushangyang.cn/tags/tips/
 https://wushangyang.cn/tags/travelNotes/
 https://wushangyang.cn/categories/literatureNotes/
-https://wushangyang.cn/categories/coding/
 https://wushangyang.cn/categories/travelNotes/

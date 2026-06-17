@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/</loc>
+    
+    <lastmod>2026-06-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://wushangyang.cn/2026/06/17/coding-tips/</loc>
     
     <lastmod>2026-06-17</lastmod>
@@ -176,20 +185,6 @@
   </url>
   
   <url>
-    <loc>https://wushangyang.cn/tags/coding/</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://wushangyang.cn/tags/tips/</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://wushangyang.cn/tags/Raft/</loc>
     <lastmod>2026-06-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -198,6 +193,41 @@
   
   <url>
     <loc>https://wushangyang.cn/tags/USENIX-2014/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wushangyang.cn/tags/End-Edge-Cloud-Collaborative/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wushangyang.cn/tags/Survey/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wushangyang.cn/tags/Deep-Learning/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wushangyang.cn/tags/coding/</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://wushangyang.cn/tags/tips/</loc>
     <lastmod>2026-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -214,13 +244,6 @@
   
   <url>
     <loc>https://wushangyang.cn/categories/literatureNotes/</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://wushangyang.cn/categories/coding/</loc>
     <lastmod>2026-06-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
