@@ -1,9 +1,9 @@
+https://wushangyang.cn/myPartner/index.html
 https://wushangyang.cn/2026/06/17/coding-tips/
 https://wushangyang.cn/2026/06/17/EECC-Deeplearning-Survey/
 https://wushangyang.cn/index.html
 https://wushangyang.cn/recommend/index.html
 https://wushangyang.cn/about/index.html
-https://wushangyang.cn/myPartner/index.html
 https://wushangyang.cn/baidu_verify_codeva-99uAoMxeI1.html
 https://wushangyang.cn/recommend/Games.html
 https://wushangyang.cn/2024/05/16/fanjingshanTravelNote/
@@ -19,10 +19,10 @@ https://wushangyang.cn/
 https://wushangyang.cn/tags/Raft/
 https://wushangyang.cn/tags/Distributed-consistency/
 https://wushangyang.cn/tags/USENIX-2014/
-https://wushangyang.cn/tags/Parallel-Raft/
-https://wushangyang.cn/tags/VLDB-2018/
 https://wushangyang.cn/tags/coding/
 https://wushangyang.cn/tags/tips/
+https://wushangyang.cn/tags/Parallel-Raft/
+https://wushangyang.cn/tags/VLDB-2018/
 https://wushangyang.cn/tags/travelNotes/
 https://wushangyang.cn/tags/End-Edge-Cloud-Collaborative/
 https://wushangyang.cn/tags/Survey/
