@@ -27,19 +27,19 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="名词对照    Log entries log index term commit index     日志条目 日志编号 任期号，每一次重新选举都会进入一个新的term 提交编号     Raft状态机    Acknowledge 确认 Commit 提交 Apply 确认     Leader收到客户端请求后，将请求写入日志中，化为一块日志条目，随后向各Follower发起复制请求，直到fo">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://wushangyang.cn/2024/02/08/Raft/logEntries.png">
-<meta property="og:image" content="https://wushangyang.cn/2024/02/08/Raft/Synchronization.png">
-<meta property="og:image" content="https://wushangyang.cn/2024/02/08/Raft/log.png">
-<meta property="og:image" content="https://wushangyang.cn/2024/02/08/Raft/Inconsistency.png">
-<meta property="og:image" content="https://wushangyang.cn/2024/02/08/Raft/Safty.png">
+<meta property="og:image" content="https://wushangyang.cn/literatureNotes/Raft/images/logEntries.png">
+<meta property="og:image" content="https://wushangyang.cn/literatureNotes/Raft/images/Synchronization.png">
+<meta property="og:image" content="https://wushangyang.cn/literatureNotes/Raft/images/log.png">
+<meta property="og:image" content="https://wushangyang.cn/literatureNotes/Raft/images/Inconsistency.png">
+<meta property="og:image" content="https://wushangyang.cn/literatureNotes/Raft/images/Safty.png">
 <meta property="article:published_time" content="2024-02-08T09:43:59.000Z">
-<meta property="article:modified_time" content="2024-02-08T09:56:46.273Z">
+<meta property="article:modified_time" content="2026-09-14T12:00:03.151Z">
 <meta property="article:author" content="CaesarCaser">
 <meta property="article:tag" content="Distributed consistency">
 <meta property="article:tag" content="Raft">
 <meta property="article:tag" content="USENIX 2014">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wushangyang.cn/2024/02/08/Raft/logEntries.png">
+<meta name="twitter:image" content="https://wushangyang.cn/literatureNotes/Raft/images/logEntries.png">
 
 <link rel="canonical" href="https://wushangyang.cn/2024/02/08/Raft/">
 
@@ -150,7 +150,7 @@
   </li>
         <li class="menu-item menu-item-literaturenotes">
 
-    <a href="/categories/literatureNotes/" rel="section"><i class="fa fa-book fa-fw"></i>Literature Notes</a>
+    <a href="/literatureNotes/" rel="section"><i class="fa fa-book fa-fw"></i>Literature Notes</a>
 
   </li>
         <li class="menu-item menu-item-recommend">
@@ -228,10 +228,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-02-08 17:43:59 / Modified: 17:56:46" itemprop="dateCreated datePublished" datetime="2024-02-08T17:43:59+08:00">2024-02-08</time>
+              <time title="Created: 2024-02-08 17:43:59" itemprop="dateCreated datePublished" datetime="2024-02-08T17:43:59+08:00">2024-02-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-09-14 20:00:03" itemprop="dateModified" datetime="2026-09-14T20:00:03+08:00">2026-09-14</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -312,10 +318,10 @@
 </tbody>
 </table>
 </div>
-<p><img align="center" src="/2024/02/08/Raft/logEntries.png" height="100px" width="500px" alt></p>
+<p><img align="center" src="/literatureNotes/Raft/images/logEntries.png" height="100px" width="500px" alt></p>
 <h2 id="日志同步"><a href="#日志同步" class="headerlink" title="日志同步"></a>日志同步</h2><p> Leader选出后，就开始接收客户端的请求。Leader把请求作为日志条目（Log entries）加入到它的日志中，然后并行的向其他服务器发起 AppendEntries RPC （RPC细节参见八、Raft算法总结）复制日志条目。当这条日志被复制到大多数服务器上，Leader将这条日志应用到它的状态机并向客户端返回执行结果。</p>
-<p><img align="center" src="/2024/02/08/Raft/Synchronization.png" height="350px" width="500px" alt></p>
-<p><img align="center" src="/2024/02/08/Raft/log.png" height="350px" width="500px" alt></p>
+<p><img align="center" src="/literatureNotes/Raft/images/Synchronization.png" height="350px" width="500px" alt></p>
+<p><img align="center" src="/literatureNotes/Raft/images/log.png" height="350px" width="500px" alt></p>
 <p>日志由有序编号（log index）的日志条目组成。每个日志条目包含它被创建时的任期号（term），和用于状态机执行的命令。如果一个日志条目被复制到大多数服务器上，就被认为可以提交（commit）了。</p>
 <p>Raft日志同步保证如下两点：</p>
 <ul>
@@ -325,10 +331,10 @@
 <p>第一条特性源于Leader在一个term内在给定的一个日志索引最多创建一条日志条目，同时该条目在日志中的位置也从来不会改变。</p>
 <p>第二条特性源于 AppendEntries 的一个简单的一致性检查。当发送一个 AppendEntries RPC 时，Leader会把新日志条目紧接着之前的条目的log index和term都包含在里面。如果Follower没有在它的日志中找到log index和term都相同的日志，它就会拒绝新的日志条目。(相当于leader在发送增加条目请求的时候，会把自己新增的日志条目之前的日志条目的日志索引和任期都带上，如果Follower没有在自己的日志中找到索引和任期都对应的上的日志条目，根据第一条特性，它与leader存在着不同的日志条目，这就可能存在着该follower存在落后日志或者旧Leader可能没有完全复制完日志中的所有条目的情况)。</p>
 <p>一般情况下，Leader和Followers的日志保持一致，因此 AppendEntries 一致性检查通常不会失败。然而，Leader崩溃可能会导致日志不一致：旧的Leader可能没有完全复制完日志中的所有条目。</p>
-<p><img align="center" src="/2024/02/08/Raft/Inconsistency.png" height="350px" width="500px" alt></p>
+<p><img align="center" src="/literatureNotes/Raft/images/Inconsistency.png" height="350px" width="500px" alt></p>
 <p>上图阐述了一些Followers可能和新的Leader日志不同的情况。一个Follower可能会丢失掉Leader上的一些条目，也有可能包含一些Leader没有的条目，也有可能两者都会发生。丢失的或者多出来的条目可能会持续多个任期。Leader通过强制Followers复制它的日志来处理日志的不一致，Followers上的不一致的日志会被Leader的日志覆盖。</p>
 <p>Leader为了使Followers的日志同自己的一致，Leader需要找到Followers同它的日志一致的地方，然后覆盖Followers在该位置之后的条目。Leader会从后往前试，每次AppendEntries失败后尝试前一个日志条目，直到成功找到每个Follower的日志一致位点，然后向后逐条覆盖Followers在该位置之后的条目。</p>
-<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p><img align="center" src="/2024/02/08/Raft/Safty.png" height="500px" width="500px" alt></p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p><img align="center" src="/literatureNotes/Raft/images/Safty.png" height="500px" width="500px" alt></p>
 <ul>
 <li>在阶段a，term为2，S1是Leader，且S1写入日志（term, index）为(2, 2)，并且日志被同步写入了S2；</li>
 <li>在阶段b，S1离线，触发一次新的选主，此时S5被选为新的Leader，此时系统term为3，且写入了日志（term, index）为（3，2）;</li>

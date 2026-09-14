@@ -27,17 +27,17 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="个人总结：该文章根据传统Raft严格守序确认和提交以达到协议正确性的特性，提出现有硬件技术和数据库技术支持乱序提交，而守序确认和提交在事务繁忙时会造成一定的时延，尤其是当IO深度变长时，所以基于Raft提出了乱序确认和乱序提交的ParallelRaft协议，该协议通过在leader选举阶段新增加一个合并阶段来保证乱序确认下Leader的完整性，而对于乱序应用apply(提交)下状态机的一致性，作者">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://wushangyang.cn/2024/02/08/PolarFS/RDMA.png">
-<meta property="og:image" content="https://wushangyang.cn/2024/02/08/PolarFS/LeaderElection.png">
-<meta property="og:image" content="https://wushangyang.cn/2024/02/08/PolarFS/System.jpg">
+<meta property="og:image" content="https://wushangyang.cn/literatureNotes/PolarFS/images/RDMA.png">
+<meta property="og:image" content="https://wushangyang.cn/literatureNotes/PolarFS/images/LeaderElection.png">
+<meta property="og:image" content="https://wushangyang.cn/literatureNotes/PolarFS/images/System.jpg">
 <meta property="article:published_time" content="2024-02-08T07:49:10.000Z">
-<meta property="article:modified_time" content="2024-02-08T09:45:07.829Z">
+<meta property="article:modified_time" content="2026-09-14T12:00:03.148Z">
 <meta property="article:author" content="CaesarCaser">
 <meta property="article:tag" content="Parallel Raft">
 <meta property="article:tag" content="Distributed consistency">
 <meta property="article:tag" content="VLDB 2018">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wushangyang.cn/2024/02/08/PolarFS/RDMA.png">
+<meta name="twitter:image" content="https://wushangyang.cn/literatureNotes/PolarFS/images/RDMA.png">
 
 <link rel="canonical" href="https://wushangyang.cn/2024/02/08/PolarFS/">
 
@@ -148,7 +148,7 @@
   </li>
         <li class="menu-item menu-item-literaturenotes">
 
-    <a href="/categories/literatureNotes/" rel="section"><i class="fa fa-book fa-fw"></i>Literature Notes</a>
+    <a href="/literatureNotes/" rel="section"><i class="fa fa-book fa-fw"></i>Literature Notes</a>
 
   </li>
         <li class="menu-item menu-item-recommend">
@@ -226,10 +226,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-02-08 15:49:10 / Modified: 17:45:07" itemprop="dateCreated datePublished" datetime="2024-02-08T15:49:10+08:00">2024-02-08</time>
+              <time title="Created: 2024-02-08 15:49:10" itemprop="dateCreated datePublished" datetime="2024-02-08T15:49:10+08:00">2024-02-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-09-14 20:00:03" itemprop="dateModified" datetime="2026-09-14T20:00:03+08:00">2026-09-14</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -300,7 +306,7 @@
 <li>每一个QP包括一个SQ(发送队列)和RQ(接收队列)</li>
 <li>每一个CQ可以跟多个SQ或者RQ相关联</li>
 </ol>
-<p><img align="center" src="/2024/02/08/PolarFS/RDMA.png" height="300px" width="400px" alt></p>
+<p><img align="center" src="/literatureNotes/PolarFS/images/RDMA.png" height="300px" width="400px" alt></p>
 <p>传统Raft存在的问题：Raft被设计为高度序列化的简单性和可理解性。它的日志不允许在leader和follower上都有空洞，这意味着日志条目由follower确认，由leader提交，并按顺序应用到所有副本。因此，当写请求并发执行时，它们将按顺序提交。在所有前面的请求被持久地存储到磁盘并得到响应之前，不能提交和响应队列尾部的请求，这会增加平均延迟并降低吞吐量。我们观察到，当I/O深度从8增加到32时，吞吐量下降了一半。<br>Raft不太适合使用多个连接在领导者和追随者之间传输日志的环境。当一个连接阻塞或变慢时，日志条目将无序地到达follower。换句话说，队列前面的一些日志条目实际上会比后面的日志条目晚到达。但是Raft跟随者必须按顺序接受日志条目，这意味着它不能发送一个确认来通知leader后续的日志条目已经被记录到磁盘上，直到之前丢失的日志条目到达。此外，当大多数follower因为缺少日志条目而被阻止时，leader会陷入困境。然而，在实践中，对于高度并发的环境，使用多个连接是很常见的。我们需要修改Raft协议以适应这种情况。<br>在事务处理系统(如数据库)中，并发控制算法允许以交错和乱序的方式执行事务，同时生成可序列化的结果。这些系统自然可以容忍由传统存储语义引起的乱序I/O完成，并自行处理以确保数据一致性。实际上，像MySQL和AliSQL这样的数据库并不关心底层存储的I/O序列。数据库的锁系统将保证在任何时候，只有一个线程可以在一个特定的页面上工作。当不同的线程并发地在不同的页面上工作时，数据库只需要成功执行I/ o，它们的完成顺序无关紧要。因此，我们利用这一点放宽Raft在PolarFS中的一些约束，开发出更适合高I/O并发性的共识协议。<br>作者将ParallelRaft分成更小的部分:日志复制、leader选举和catch up来介绍。</p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32052223">原文连接</a> <a target="_blank" rel="noopener" href="https://raft.github.io/raft.pdf">论文链接</a>。</p>
 <h2 id="1-无序日志复制"><a href="#1-无序日志复制" class="headerlink" title="1.无序日志复制"></a>1.无序日志复制</h2><p>Raft在两个方面进行序列化:(1)leader向follower发送日志条目后，follower需要对其进行确认，告知该日志条目已被接收并记录;这也隐式地表明已经查看并保存了前面的所有日志条目。(2)当leader提交一个日志条目并将该事件广播给所有follower时，它也承认之前所有的日志条目已经提交。ParallelRaft打破了这些限制，乱序地执行所有这些步骤。因此，在ParallelRaft和Raft之间有一个基本的区别。在ParallelRaft中，当一个条目被识别为已提交时，并不意味着之前的所有条目都已成功提交。为了保证该协议的正确性，我们必须保证:(1)如果没有这些串行限制，所有提交的状态也将与经典的理性数据库所使用的存储语义一致。(2)所有已提交的修改不会在任何角落丢失。</p>
@@ -339,14 +345,14 @@
 </li>
 </ol>
 <p>以具有3个副本的情况为例，图5显示了领导者选举的过程。</p>
-<p><img align="center" src="/2024/02/08/PolarFS/LeaderElection.png" height="300px" width="500px" alt></p>
+<p><img align="center" src="/literatureNotes/PolarFS/images/LeaderElection.png" height="300px" width="500px" alt></p>
 <p>首先，follower候选人将其本地日志条目发送给leader候选人。leader候选者接收这些条目并与自己的日志条目合并。其次，leader候选人将状态同步到follower候选人。之后，leader候选人可以提交所有条目，并通知follower候选人提交。最后，leader候选人升级为leader，follower候选人也升级为follower。</p>
 <p>使用上述机制，所有提交的条目都可以被新的leader恢复，这意味着ParallelRaft不会丢失任何提交状态。</p>
 <p>在ParallelRaft中，一个checkpoint是不定时进行的，检查点之前的所有日志条目都应用于数据块(LBA)(即被committed且apply的)，并且检查点允许包含在检查点之后提交的一些日志条目。为简单起见，检查点之前的所有日志条目都可以被视为已修剪(pruned)，尽管在实践中它们会保留一段时间，直到资源不足或达到某个阈值。</p>
 <p>在我们的实际实现中，为了Catch Up实现，ParallelRaft选择具有最新checkpoint的节点作为leader候选者，而不是具有最长日志的节点。在合并阶段，很容易看到新的leader在开始服务时达到相同的状态。因此，这种选择不会影响ParallelRaft的正确性。</p>
 <h3 id="checkpoint"><a href="#checkpoint" class="headerlink" title="checkpoint"></a>checkpoint</h3><p>ParallelRaft会不时地做checkpoint，checkpoint会记录一个当前系统的快照(snapshot)，所有checkpoint之前的日志条目都已经apply到了数据块上，checkpoint允许包含checkpoint之后的日志条目(文中没有解释为什么，也没有介绍怎么处理的)。在实际实现中，ParallelRaft会选择有用最新checkpoint的节点作为主，而不是拥有最新日志条目的节点，原因就是catch-up的实现(为了让follower更容易的追上leader的状态)。在merge阶段拥有最新checkpoint的节点更容易处理，因为不需要处理checkpoint之前的日志条目(就是checkpoint越新，相对来说需要做merge的日志条目就越少)。</p>
 <h2 id="3-Catch-up-追赶机制"><a href="#3-Catch-up-追赶机制" class="headerlink" title="3.Catch up 追赶机制"></a>3.Catch up 追赶机制</h2><p> 当一个滞后的follower想要跟上leader的当前数据状态时，它将使用fast-catch-up或streaming-catch-up来重新与leader同步。使用哪一个取决于follower的状态有多陈旧。fast-catch-up机制是当leader和follower之间的差异相对较小时，为他们之间的增量同步而设计的。但follower可能远远落后于leader，例如，follower已经离线好几天了，所以完全的数据重新同步是不可避免的，因此，PolarFS提出了一个名为streaming-catch-up的方法来完成这个任务。</p>
-<p><img align="center" src="/2024/02/08/PolarFS/System.jpg" height="370px" width="650px" alt></p>
+<p><img align="center" src="/literatureNotes/PolarFS/images/System.jpg" height="370px" width="650px" alt></p>
 <p>上图给出了重新同步开始时leader和follower的不同情况。在case1中，leader的检查点比follower的最新日志索引更新，并且它们之间的日志条目将被leader修剪pruned。因此，快速赶上不能处理这种情况，而应该使用流赶上。案例2和案例3可以通过快速追赶来解决。</p>
 <p>在以下情况下，我们总是可以假设leader的检查点比follower的更新，因为如果不满足这个条件，leader可以立即建立一个比其他任何检查点都更新的检查点。检查点之后的日志条目可以分为四类:已提交并应用、已提交但未应用、未提交和漏洞。</p>
 <h3 id="Fast-Catch-Up"><a href="#Fast-Catch-Up" class="headerlink" title="Fast-Catch-Up"></a>Fast-Catch-Up</h3><p>   Follower在其检查点之后可能会有漏洞，这些漏洞将在快速追赶期间被填补。首先，再次利用look-behind-buffer填充follower检查点和leader检查点之间的漏洞，通过这个漏洞我们可以找到所有缺失修改的LBAs。这些漏洞是直接通过复制leader的数据块来填补的，这些数据块包含比follower的检查点更新的数据。其次，follower也通过从leader的日志块中读取块上的数据来填充leader的检查点之后的漏洞。</p>
